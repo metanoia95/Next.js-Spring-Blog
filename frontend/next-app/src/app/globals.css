@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* 커스텀 클래스. main.ts에 반드시 css파일이 임포트 되어야함.  */
+@layer components {
+  .input-floating {
+    @apply  w-full px-4 pt-5 pb-2 border border-gray-300 rounded-md placeholder-transparent focus:outline-none focus:ring-2 focus:ring-blue-500;
+  }
+
+  .label-floating {
+    @apply absolute left-4 top-2 text-gray-500 text-sm transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:top-1 peer-focus:text-sm;
+  }
+
+  .btn-blue {
+    @apply bg-blue-300 text-white p-1 m-1  text-xs
+
+  }
+
+  .name-tag{
+    @apply bg-purple-300 text-white p-1 m-1  text-xs
+
+  }
+
+  .post-title{
+    @apply text-3xl font-semibold p-2
+  }
+  
+  .modal-background{
+    @apply fixed inset-0 bg-black/50 flex items-center justify-center z-50
+  }
+
+  .modal-window{
+    @apply bg-white p-6 rounded-lg w-full max-w-lg shadow-lg max-h-[80vh] overflow-y-auto
+  }
+  
+}
+
+.code {
+  background-color: #f7fafb;
+  font-family: Menlo, Consolas, Monaco, monospace;
+  display: block;
+  padding: 8px 8px 8px 52px;
+  line-height: 1.6;
+  font-size: 14px;
+  margin: 8px 0;
+  tab-size: 2;
+  /* white-space: pre; */
+  overflow-x: auto;
+  position: relative;
+
+  &::before {
+    content: attr(data-gutter);
+    color: #999;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #d9dddf;
+    padding: 8px;
+    min-width: 32px;
+    height: 100%;
+    text-align: right;
+  }
+}
