@@ -7,9 +7,11 @@ import { NextResponse, NextRequest } from "next/server";
 
 import { jwtVerify } from "jose";
 
-const PUBLIC_PATHS = ["/login", "/blog", "/signup", "/", "/refresh"]; // 로그인이 필요없는 경로
+const PUBLIC_PATHS = ["/login", "/blog", "/","/signup", "/refresh"]; // 로그인이 필요없는 경로
 
 export async function middleware(request: NextRequest) {
+  console.log("🔥 미들웨어 작동 중: ", request.nextUrl.pathname);
+
   const accessToken = request.cookies.get("accessToken")?.value; // 액세스 토큰 쿠키 추출
   const refreshToken = request.cookies.get("refreshToken")?.value; // 리프레시 토큰
 
@@ -48,7 +50,7 @@ export async function middleware(request: NextRequest) {
 
   try {
     // 공개경로가 아니면서 토큰이 있는 경우
-    console.log(process.env.JWT_SECRET);
+    console.log("미들웨어 검증 : ",process.env.JWT_SECRET);
     // jwtVerify로 토큰 검증.
     await jwtVerify(
       accessToken,
@@ -63,5 +65,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next|favicon.ico|.*\\..*).*)"], // 모든 경로 포함
+  matcher: ["/((?!_next|favicon\\.ico|images|assets).*)"], // 모든 경로 포함
 };

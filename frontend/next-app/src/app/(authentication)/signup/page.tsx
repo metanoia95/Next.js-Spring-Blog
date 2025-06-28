@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import InputField from "@/components/common/InputField";
-import { signUp } from "@/lib/services/authService";
+//import { signUp } from "@/lib/services/authService";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
@@ -17,10 +17,11 @@ export default function SignUpPage() {
   // 회원가입 핸들러
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(email, password, name)
+    //console.log(email, password, name)
   
     try{
-      await signUp({email, password, name })
+      alert("현재 회원가입 기능은 막혀있습니다")
+      //await signUp({email, password, name })
       // 성공 시 자동으로 로그인 되게 설정
       // 성공했으면 토큰 저장
 

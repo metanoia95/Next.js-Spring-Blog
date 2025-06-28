@@ -1,22 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { useTheme } from "next-themes";
-import { Sun, Moon, Home } from "lucide-react";
+//import { useTheme } from "next-themes";
+import { //Sun, Moon, 
+  Home } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import UserDropdown from "./UserDropdown";
 import { getUserInfo, UserInfo } from "@/lib/services/userService";
 
 export default function NavBar() {
-  const { theme, setTheme } = useTheme();
+  //const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false); // 다크모드 용 훅
   const pathname = usePathname(); // 현재 경로를 확인하는 훅
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const navLinks = [
-    { href: "/blog", label: "블로그" },
-    { href: "/portfolios", label: "게시판" },
+    { href: "/", label: "HOME" },
+    { href: "/blog", label: "BLOG" },
+    //{ href: "/portfolios", label: "게시판" },
     //{ href: "/resume", label: "RESUME"},
   ];
 
@@ -62,7 +64,7 @@ export default function NavBar() {
         </nav>
         <div className="flex items-center gap-2">
           {/* 다크모드 전환 */}
-          <button
+          {/* <button
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             className="inline-flex items-center justify-center border border-primary bg-transparent hover:border-2 h-8 w-8 rounded-full"
             aria-label="Toggle theme"
@@ -73,7 +75,7 @@ export default function NavBar() {
               ) : (
                 <Sun className="h-5 w-5 text-primary stroke-1" />
               ))}
-          </button>
+          </button> */}
 
           {/* 홈페이지로 리다이렉트 */}
           <Link href="/" className="font-extrabold">

@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import {
-    MdCode,
     MdFormatBold,
     MdFormatItalic,
     MdFormatStrikethrough,

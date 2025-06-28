@@ -14,7 +14,6 @@ export default function OnChangePlugin({ onChange } : OnChangePluginProps) {
   useEffect(() => {
     return editor.registerUpdateListener(({ editorState }) => {
       onChange(editorState);
-      console.log("editorState : ",editorState)
 
     });
   }, [editor, onChange]);

@@ -30,11 +30,8 @@ export const SavePlugin = ({
         page_html: html,
       };
 
-      console.log("PostSaveData : ", dto);
       // id가 있는 경우(수정)
       if (dto.id) {
-        //console.log("update go")
-        //console.log(dto.title)
         const res = await updateBlogPost(dto);
         if (res.status === 200) {
             router.push(`/blog/${dto.id}`);

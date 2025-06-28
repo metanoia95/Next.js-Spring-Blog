@@ -24,6 +24,7 @@ export default function PostPage({ params }: { params:Promise<{ id: string }> })
             const post = await getPostJson(id);
             setInitialContent(post.page_json);    // 한 번만 세팅
             setEditorState(post.page_json);
+            setTitle(post.title);
           }
     
           fetchPost(idNumber);

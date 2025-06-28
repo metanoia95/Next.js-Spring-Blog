@@ -15,10 +15,16 @@ const Dropdown = ({userInfo} : {userInfo : UserInfo|null}) => {
       type: "link",
       link: "/profile",
     },
+     {
+      title : "글쓰기",
+      type : "link",
+      link : "/editor"
+    },
     {
       title: "로그아웃",
       type: "logout",
     },
+   
   ];
 
   const [isOpen, setIsOpen] = useState(false);
@@ -77,7 +83,7 @@ const Dropdown = ({userInfo} : {userInfo : UserInfo|null}) => {
         >
           <ul className="py-1 text-sm text-gray-700">
             <div className="m-4 gap-2">
-              <li className="text-2xl">{userInfo?.email}</li>
+              <li className="text-xl">{userInfo?.email}</li>
               <li>{userInfo?.name}</li>
               <li>{userInfo?.status_msg}</li>
             </div>

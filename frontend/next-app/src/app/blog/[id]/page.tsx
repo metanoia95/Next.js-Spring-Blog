@@ -2,6 +2,7 @@ import CommentSection from "@/components/blog/comment/CommentSection";
 import PostDeleteButton from "@/components/common/PostDeleteButton";
 import { renderFullLexicalJson } from "@/components/editor/renderLexicalHtml";
 import Link from "next/link";
+import { cookies } from "next/headers";
 
 type PostPageProps = {
   // params가 Promise<{ id: string }> 타입으로 옵니다
@@ -10,6 +11,8 @@ type PostPageProps = {
 
 export default async function PostPage({ params }: PostPageProps) {
   const { id } = await params;
+  const cookieStore = await cookies(); // ✅ 이건 Promise 아님
+  const isLoggedIn = !!cookieStore.get("accessToken");
 
   //포스트 정보
   const postRes = await fetch(`http://localhost:8089/api/blog/posts/${id}`, {
@@ -17,7 +20,6 @@ export default async function PostPage({ params }: PostPageProps) {
   }); // 별도의 필드 주입이 없으면 get 사용
 
   const post = await postRes.json();
-  console.log("Post data:", post.page_json);
 
   let postHtml = "<p>본문을 불러올 수 없습니다.</p>";
 
@@ -66,12 +68,23 @@ export default async function PostPage({ params }: PostPageProps) {
       <div className="flex justify-end mt-2">
         <Link
           className="mr-2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors"
-          href={`/blog/${post.id}/edit`}
+          href={`/blog`}
         >
           {" "}
-          수정하기{" "}
+          목록{" "}
         </Link>
-        <PostDeleteButton postId={post.id} />
+        {isLoggedIn ? (
+          <>
+            <Link
+              className="mr-2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors"
+              href={`/blog/${post.id}/edit`}
+            >
+              {" "}
+              수정하기{" "}
+            </Link>
+            <PostDeleteButton postId={post.id} />
+          </>
+        ) : null}
       </div>
       <CommentSection postId={post.id} initialComments={comments} />
     </div>

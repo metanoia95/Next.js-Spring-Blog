@@ -23,12 +23,12 @@ export default async function BlogList() {
         <div>
           <h1>Blog posts</h1>
         </div>
-        <Link href="/blog/editor" className="">
+        {/* <Link href="/editor" className="">
           글쓰기
-        </Link>
+        </Link> */}
       </div>
       <hr className="my-4 border-gray-300" />
-      <div>
+      <div className="flex flex-col-reverse">
         {posts.map((post: postsRes) => {
           return (
             <div key={post.id} >

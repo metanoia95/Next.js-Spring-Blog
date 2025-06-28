@@ -49,7 +49,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
-      <div className="flex flex-col md:flex-row items-center justify-center gap-20 max-w-6xl w-full">
+      <div className="flex flex-col md:flex-row items-center justify-center max-w-6xl w-full">
         
         <div className="w-full md:w-1/2 max-w-md bg-white p-10 rounded-xl shadow-lg border border-gray-200">
           <h1 className="text-3xl font-bold text-center text-gray-700 mb-8">

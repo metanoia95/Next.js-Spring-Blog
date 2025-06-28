@@ -6,6 +6,6 @@ export default function EditorLayout({
     children: React.ReactNode;
   }>) {
     return (
-          <main>{children}</main>    );
+          <main className="p-6">{children}</main>    );
   }
   
