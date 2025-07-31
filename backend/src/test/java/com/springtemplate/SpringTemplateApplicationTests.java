@@ -1,4 +1,4 @@
-package com.taskco;
+package com.springtemplate;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 
 @SpringBootTest
-class TaskcoApplicationTests {
+class SpringTemplateApplicationTests {
 
 //    환경변수 테스트 코드	
 //	  private final Environment env;

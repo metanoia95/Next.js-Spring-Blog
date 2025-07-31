@@ -11,7 +11,7 @@ import { getUserInfo, UserInfo } from "@/lib/services/userService";
 
 export default function NavBar() {
   //const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false); // 다크모드 용 훅
+  //const [mounted, setMounted] = useState(false); // 다크모드 용 훅
   const pathname = usePathname(); // 현재 경로를 확인하는 훅
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -22,9 +22,9 @@ export default function NavBar() {
     //{ href: "/resume", label: "RESUME"},
   ];
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // useEffect(() => {
+  //   setMounted(true);
+  // }, []);
 
   useEffect(() => {
     const fetchUser = async () => {

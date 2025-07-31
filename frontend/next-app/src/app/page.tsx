@@ -17,21 +17,16 @@ export default function IndexPage() {
       <div className="grid grid-cols-3 gap-4 pt-5">
         <Card>   
           <Image src="/images/lexical.png" alt="" width={0} height={0} sizes="100vw" className="w-full h-auto" />
-          {/* <span>블로그 편집기용 위지윅 에디터</span> */}
         </Card>
         <Card>   
           <Image src="/images/NextJs.png" alt="" width={0} height={0} sizes="100vw" className="w-full h-auto" />
-          {/* <span>프론트엔드 프레임워크</span> */}
         </Card>
         <Card>   
           <Image src="/images/spring.png" alt="" width={0} height={0} sizes="100vw" className="w-full h-auto" />
-          {/* <span>백엔드 프레임워크</span> */}
         </Card>
         <Card>   
           <Image src="/images/Postgre.png" alt="" width={0} height={0} sizes="100vw" className="w-full h-auto" />
-          {/* <span>데이터베이스</span> */}
         </Card>
-
       </div>
     </div>
   

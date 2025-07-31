@@ -1,4 +1,4 @@
-package com.taskco;
+package com.springtemplate;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

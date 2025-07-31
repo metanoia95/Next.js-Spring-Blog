@@ -1,4 +1,4 @@
-package com.taskco;
+package com.springtemplate;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
