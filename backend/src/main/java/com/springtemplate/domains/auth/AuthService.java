@@ -20,9 +20,11 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthService {
 
 	private final JwtUtil jwtUtil;
@@ -120,12 +122,16 @@ public class AuthService {
 		String refreshToken = cookieUtil.resolveRefreshTokenFromCookie(request);
 		// System.out.println("refreshToken : "+refreshToken);
 		if (refreshToken == null || !jwtUtil.validateRefreshToken(refreshToken)) {
+			response.addCookie(cookieUtil.deleteTokenCookie("accessToken"));
+			response.addCookie(cookieUtil.deleteTokenCookie("refreshToken"));
 			throw new BadCredentialsException("유효하지 않은 리프레시 토큰입니다");
 		}
 
 		// 2. DB에서 정보 추출
 		User user = userRepository.getByRefreshToken(refreshToken);
 		if (user == null) {
+			response.addCookie(cookieUtil.deleteTokenCookie("accessToken"));
+			response.addCookie(cookieUtil.deleteTokenCookie("refreshToken"));
 			throw new BadCredentialsException("리프레시 토큰과 일치하는 사용자을 찾을 수 없습니다.");
 
 		}

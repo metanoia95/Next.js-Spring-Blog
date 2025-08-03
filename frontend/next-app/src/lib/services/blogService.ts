@@ -1,5 +1,6 @@
 import api from "@/lib/axios";
 import { AxiosResponse } from "axios";
+import { ssrApi } from "../ssrApi";
 
 
 export interface SaveCommentReq{
@@ -39,7 +40,7 @@ export async function saveBlogPost (
 
 ): Promise<AxiosResponse> { 
 
-  return await api.post('api/blog/saveblogpost', data);
+  return await api.post('/api/blog/saveblogpost', data);
 
 }
 
@@ -48,7 +49,7 @@ export async function updateBlogPost (
 
 ): Promise<AxiosResponse> { 
 
-  return await api.put('api/blog/posts', data);
+  return await api.put('/api/blog/posts', data);
 
 }
 
@@ -56,20 +57,18 @@ export async function deletePost (
     id : number
 ) : Promise<AxiosResponse>{
 
-    return await api.delete(`api/blog/posts/${id}`)
+    return await api.delete(`/api/blog/posts/${id}`)
 }
 
 export async function getPostJson (
     id : number 
 ): Promise<getPostJsonRes>{
 
-    const res = await api.get(`api/blog/posts/getjson/${id}`);
+    const res = await api.get(`/api/blog/posts/getjson/${id}`);
 
     return res.data;
 
 }
-
-
 
 export async function SaveComment(
     data: SaveCommentReq
@@ -78,15 +77,31 @@ export async function SaveComment(
 
     console.log("save comment",data)
     
-    return await api.post(`api/blog/comment`, data)
+    return await api.post(`/api/blog/comment`, data)
 }
-
-
 
 
 export async function deleteComment (
     id : number
 ) : Promise<AxiosResponse>{
 
-    return await api.delete(`api/blog/comment/${id}`)
+    return await api.delete(`/api/blog/comment/${id}`)
+}
+
+
+export async function getPostList (){
+
+    return await ssrApi(`/api/blog/posts`)
+}
+
+export async function getBlogPost( id:number){
+    return await ssrApi(`/api/blog/posts/${id}`)
+}
+
+export async function getPostComments(postId: number){
+    return await ssrApi(`/api/blog/comments/${postId}`)
+}
+
+export async function getPostCommentsAxios(postId: number): Promise<AxiosResponse>{
+    return await api.get(`/api/blog/comments/${postId}`)
 }

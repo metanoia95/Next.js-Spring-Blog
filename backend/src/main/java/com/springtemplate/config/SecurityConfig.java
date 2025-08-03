@@ -11,14 +11,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.springtemplate.domains.auth.AuthService;
 import com.springtemplate.security.JwtAuthFilter;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 
 @Configuration // 스프링 bean 등록
 @EnableWebSecurity // ** 스프링 시큐리티 어노테이션 *필수*
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityConfig {
 	
 	
@@ -34,10 +37,14 @@ public class SecurityConfig {
  		.authorizeHttpRequests(auth -> auth
 				// requestMatchers는 리퀘스트매핑 값의 경로와 동일하게 설정함. 
 				// .requestMatchers("/admin/**").hasRole("ADMIN") - 어드민 요청 설정.
+ 				.requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
 				.requestMatchers("/api/user/**").authenticated()// /user/로 시작하는 모든 경로는 **로그인(인증된 사용자)만 접근 가능.
 				.anyRequest().permitAll()  // 그 외 요청은 누구나 접근가능
 
- 				)
+ 				).exceptionHandling(ex -> ex                           // 401/403 원인 로깅(선택)
+ 					    .authenticationEntryPoint((req,res,e) -> { res.setStatus(401);log.info("Sec : authenticationEntryPoint 401", req.getHeader("Origin")); })
+						.accessDeniedHandler((req,res,e) -> { res.setStatus(403); log.info("Security : accessDeniedHandler 403", req.getHeader("Origin"));})
+ 					    )
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 		//UsernamePasswordAuthenticationFilter.class 앞에 jwtAuthFilter를 적용함. 
 

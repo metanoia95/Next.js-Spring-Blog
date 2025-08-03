@@ -5,9 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.springtemplate.domains.auth.AuthController;
+
+import lombok.extern.slf4j.Slf4j;
+
 //전역 예외처리 핸들러
 // ControllerAdvice -> 모든 컨트롤러의 예외를 가로채서 처리.
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
@@ -19,6 +24,8 @@ public class GlobalExceptionHandler {
 	// 로그인 실패 예외처리
 	@ExceptionHandler(LoginFailException.class)
 	public ResponseEntity<String> handleLoginFailException(LoginFailException ex) {
+		log.warn("[LoginFail] {}", ex.getMessage());
+		
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
 				.body(ex.getMessage());
 	}

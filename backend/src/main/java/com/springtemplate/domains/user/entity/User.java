@@ -34,7 +34,7 @@ public class User {
 	private String pw;
 
 	// 이름
-	private String name;
+	private String user_name;
 
 	// 상태 메시지
 	private String status_msg;
@@ -62,7 +62,7 @@ public class User {
     	
     	this.email = email;
     	this.pw = pw;
-    	this.name = name;
+    	this.user_name = name;
     	this.status_msg = status_msg;
     	this.profile_img = profile_img;
     	

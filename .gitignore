@@ -1,7 +1,13 @@
 /.metadata/
 
 
-
+# 이클립스 메타데이터
 .metadata/
 
-spring/
+#환경변수
+.env
+
+# nginx
+nginx/nginx-1.29.0/
+
+/blog-full.tar

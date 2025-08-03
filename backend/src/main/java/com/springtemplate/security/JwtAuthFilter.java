@@ -11,6 +11,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.springtemplate.common.util.CookieUtil;
 import com.springtemplate.common.util.JwtUtil;
+import com.springtemplate.domains.auth.AuthService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -20,9 +21,11 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class JwtAuthFilter extends OncePerRequestFilter {
 	// jwtAuthFilter는 액세스 토큰만 신경쓰고 리프레시 토큰은 다루지 않음. 
 	
@@ -38,6 +41,22 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			FilterChain filterChain
 			)
 			throws ServletException, IOException {
+		
+		final String uri = request.getRequestURI();
+		
+		// 1) 프리플라이트는 통과
+	    if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+	      log.debug("JWT FILTER: bypass OPTIONS {}", uri);
+	      filterChain.doFilter(request, response);
+	      return;
+	    }
+
+	    // 2) 공개 경로는 통과 (signup/login/refresh 등)
+	    if (uri.startsWith("/api/auth/")) {
+	      log.debug("JWT FILTER: bypass public {}", uri);
+	      filterChain.doFilter(request, response);
+	      return;
+	    }
 		
 		
 		try {
@@ -66,8 +85,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			
 		}
 		}catch(ExpiredJwtException e){
-			
-			
+		      log.error("JWT FILTER: error at {} msg={}", uri, e.getMessage());
+				
 		}
 		
 		filterChain.doFilter(request, response);

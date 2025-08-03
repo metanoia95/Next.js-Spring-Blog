@@ -10,7 +10,7 @@ import { jwtVerify } from "jose";
 const PUBLIC_PATHS = ["/login", "/blog", "/","/signup", "/refresh"]; // 로그인이 필요없는 경로
 
 export async function middleware(request: NextRequest) {
-  console.log("🔥 미들웨어 작동 중: ", request.nextUrl.pathname);
+  console.log("middleware: ", request.nextUrl.pathname,);
 
   const accessToken = request.cookies.get("accessToken")?.value; // 액세스 토큰 쿠키 추출
   const refreshToken = request.cookies.get("refreshToken")?.value; // 리프레시 토큰

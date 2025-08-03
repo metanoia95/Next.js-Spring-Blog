@@ -25,7 +25,7 @@ interface SignUpRes {
 
 //로그인
 export async function login(data:LoginRequest): Promise<LoginResponse> { //Promise : 리턴 타입 지정
-
+    console.log("로그인 요청 데이터: ", data);
     const response = await api.post('/api/auth/login', data);
     return response.data;
     
@@ -41,6 +41,7 @@ export async function logout() {
 export async function signUp(data: SignUpReq) : Promise<SignUpRes>{
 
     const response = await api.post('/api/auth/signup', data)
+    console.log(response.data)
     return response.data
 }
 

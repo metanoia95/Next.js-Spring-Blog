@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { format } from "date-fns";
+import { getPostList } from "@/lib/services/blogService";
 
 
   type postsRes = {
@@ -10,10 +11,7 @@ import { format } from "date-fns";
 
 
 export default async function BlogList() {
-  const res = await fetch("http://localhost:8089/api/blog/posts", {
-    cache: "no-store", // SSR 목적일 경우
-  }); // 별도의 필드 주입이 없으면 get 사용
-
+  const res = await getPostList();
   const posts = await res.json();
 
 

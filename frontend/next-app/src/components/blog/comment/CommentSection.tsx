@@ -5,6 +5,7 @@
 import { useState } from "react"
 import PostCommentEditor from "./PostCommentEditor";
 import PostComment from "./PostComment";
+import { getPostCommentsAxios } from "@/lib/services/blogService";
 
 type CommentType = {
   id: number;
@@ -14,23 +15,24 @@ type CommentType = {
 };
 
 
-export default function CommentSection({postId, initialComments}:{
-    postId:number
+export default function CommentSection({id, initialComments}:{
+    id:number
     initialComments:CommentType[]
 }){
 
     const [comments, setComments] = useState(initialComments)
 
     const refreshComments = async () => {
-        const res = await fetch(`http://localhost:8089/api/blog/comments/${postId}`, { cache: 'no-store' });
-        const data = await res.json();
+        const res = await getPostCommentsAxios(id);
+        const data = await res.data;
+        console.log("댓글 데이터:", data);
         setComments(data);
     }
 
 
     return(
         <>
-        <PostCommentEditor postId={postId} onCommentSubmit={refreshComments}/>
+        <PostCommentEditor postId={id} onCommentSubmit={refreshComments}/>
         <div>
         {comments.map((comment : CommentType)=> {
           return(

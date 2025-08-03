@@ -3,6 +3,7 @@ import PostDeleteButton from "@/components/common/PostDeleteButton";
 import { renderFullLexicalJson } from "@/components/editor/renderLexicalHtml";
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { getBlogPost, getPostComments } from "@/lib/services/blogService";
 
 type PostPageProps = {
   // params가 Promise<{ id: string }> 타입으로 옵니다
@@ -13,12 +14,10 @@ export default async function PostPage({ params }: PostPageProps) {
   const { id } = await params;
   const cookieStore = await cookies(); // ✅ 이건 Promise 아님
   const isLoggedIn = !!cookieStore.get("accessToken");
+  
 
   //포스트 정보
-  const postRes = await fetch(`http://localhost:8089/api/blog/posts/${id}`, {
-    cache: "no-store", // SSR 목적일 경우
-  }); // 별도의 필드 주입이 없으면 get 사용
-
+  const postRes = await getBlogPost(Number(id))
   const post = await postRes.json();
 
   let postHtml = "<p>본문을 불러올 수 없습니다.</p>";
@@ -39,12 +38,8 @@ export default async function PostPage({ params }: PostPageProps) {
   }
 
   // 댓글정보
-  const commentRes = await fetch(
-    `http://localhost:8089/api/blog/comments/${id}`,
-    {
-      cache: "no-store",
-    }
-  );
+  const commentRes = await getPostComments(Number(id))
+
   let comments = [];
   if (commentRes.ok) {
     comments = await commentRes.json();
@@ -86,7 +81,7 @@ export default async function PostPage({ params }: PostPageProps) {
           </>
         ) : null}
       </div>
-      <CommentSection postId={post.id} initialComments={comments} />
+      <CommentSection id={post.id} initialComments={comments} />
     </div>
   );
 }

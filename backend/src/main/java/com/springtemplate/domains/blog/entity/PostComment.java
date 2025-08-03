@@ -24,7 +24,7 @@ public class PostComment {
 
     private String author; // 작성자
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", name = "comment_text" )
     private  String text; // 댓글 내용
 
     @CreationTimestamp

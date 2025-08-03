@@ -23,7 +23,7 @@ public class UserService {
 		
 		UserInfoResDto dto = UserInfoResDto.builder()
 				.email(user.getEmail())
-				.name(user.getName())
+				.name(user.getUser_name())
 				.status_msg(user.getStatus_msg())
 				.profile_img(user.getProfile_img())
 				.build();
