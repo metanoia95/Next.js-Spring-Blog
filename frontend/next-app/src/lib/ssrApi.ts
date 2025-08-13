@@ -12,7 +12,7 @@ export async function ssrApi(
 
   // baseurl 설정 - 환경변수 사용 / nginx로 연결
   // local : http://localhost:8089, prod : http://192.168.0.20:8080
-  const base_url = api_env.SSR_API_BASE_URL
+  const base_url = api_env.INTERNAL_BASE_URL
   console.log("ssrApi base_url : ", base_url);
   console.log("ssrApi path : ", path);
 

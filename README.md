@@ -75,12 +75,20 @@ docker save -o blog-full.tar {이미지 나열}
 scp blog-full.tar server@192.168.0.20:/home/server/
 
 # 4. ssh로 서버 접속 후 이미지 로드
-ssh server@192.168.0.20
+ssh server@192.168.0.20 
 docker load -i blog-full.tar 
 # -i : --input의 약자. 도커 이미지 파일을 불러와서 로컬에 등록
 
 # 리눅스에서 도커 컴포즈 실행
 docker compose -f docker-compose.prod.yml up -d
 
+# 배포에서 레지스트리 땡기기
+docker pull 192.168.0.4:5000/blog-backend
+docker pull 192.168.0.4:5000/blog-backend
+docker pull 192.168.0.4:5000/blog-nginx
 
+# 배포된 url
+next-spring-blog.duckdns.org
 
+# 호스트에서 certbot으로 인증서 발급
+sudo certbot certonly --standalone -d next-spring-blog.duckdns.org -d next-spring-blog.duckdns.org

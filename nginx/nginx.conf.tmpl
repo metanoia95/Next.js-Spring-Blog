@@ -1,0 +1,53 @@
+resolver 127.0.0.11 valid=30s ipv6=off;
+
+log_format cors '"$http_referer" $remote_addr "$request" $status '
+                'upstream:$upstream_status to:$upstream_addr '
+                'origin:$http_origin';
+
+access_log /var/log/nginx/host.access.log cors;
+
+
+# 
+server {
+    listen 80; #ipv4 전체 바인딩
+    listen [::]:80 default_server; #ipv6 전체 바인딩
+    server_name ${SERVER_NAME}; # 호스트값 : 도메인 명으로 매칭됨
+    location /.well-known/acme-challenge/ {
+         root /var/www/certbot; 
+         }
+    location / {
+         return 301 https://$host$request_uri; 
+         }
+}
+
+
+
+#https settings
+server {
+    listen       443 ssl; # https
+    server_name  ${SERVER_NAME}; # 서버 이름
+    ssl_certificate     ${SSL_CERT_PATH}; # 공개키 경로
+    ssl_certificate_key  ${SSL_KEY_PATH}; # 개인키 경로
+    ssl_protocols       TLSv1.2 TLSv1.3; # 지원하는 프로토콜
+    ssl_ciphers         HIGH:!aNULL:!MD5;
+
+    ssl_session_cache    shared:SSL:10m;
+    ssl_session_timeout  10m;
+
+
+    location / { # 프론트엔드 
+        proxy_pass http://${FE_HOST}:${FE_PORT};
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+}
+
+     location /api/ { #백엔드 api 서버
+        proxy_pass http://${BE_HOST}:${BE_PORT};
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+
+    }
+
+    }

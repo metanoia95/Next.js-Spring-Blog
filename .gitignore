@@ -9,5 +9,7 @@
 
 # nginx
 nginx/nginx-1.29.0/
+nginx/certificates/
 
+# 빌드 파일
 /blog-full.tar

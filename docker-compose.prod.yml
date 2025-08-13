@@ -5,11 +5,6 @@ version: "3.8"
 services: 
 
   frontend:   # 서비스명
-    build: 
-      context : ./frontend/next-app  #Dockerfile이 위치한 디렉토리 지정. yml이 있는 디렉토리 기준 상대경로
-      #dockerfile: Dockerfile.dev # 개발환경에서. 배포할 땐 주석처리
-    #ports:  #컨테이너 포트 설정. 만약 해당 컨테이너 내부에서 별도의 포트를 지정해준다면 그것과 맞출 것
-    # - "3000:3000"
     depends_on:  # Specifies the startup order between services : 컨테이너 순서 지정
       - backend
     environment:
@@ -18,9 +13,6 @@ services:
     image: blog-frontend:latest # 빌드된 이미지 이름 지정.
     
   backend:
-    build: ./backend   
-    #ports: 
-    #  - "8089:8089" nginx에서만 접근 가능
     environment:  #백엔드에서 사용하는 환경변수 주입. 
     # compose.yml이 위치한 디렉토리의 .env -> backend container로 주입.
       - DB_URL=${DB_URL}
@@ -48,13 +40,13 @@ services:
 
   # nginx 설정. 
   nginx:
-    build: 
-      context : ./nginx
+    image: nginx:latest
     ports: # 외부에서는 nginx의 80 포트로만 접근 가능
       - "443:443" # https
     env_file: .env # 환경변수 파일 지정
     volumes: # 호스트와 컨테이너 간의 파일 공유
-      - ./nginx/certs:/etc/nginx/certs:ro # 인증서 파일 공유
+      - /etc/ssl/certs/fullchain.pem:${SSL_CERT_PATH}:ro # 인증서 파일 공유
+      - /etc/ssl/private/privkey.pem:${SSL_KEY_PATH}:ro
     depends_on:
       - frontend
       - backend
