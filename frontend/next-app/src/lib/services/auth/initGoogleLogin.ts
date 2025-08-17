@@ -16,6 +16,7 @@ export function initGoogleLogin(buttonEl: HTMLDivElement) {
       window.google.accounts.id.initialize({
         
         client_id: api_env.GOOGLE_CLIENT_ID, // 구글에서 발급받은 클라이언트 ID(환경변수 처리)
+        callback: async (res: CredentialResponse) => {
           //GIS 에서 지정한 로그인 성공 시 발급되는 JWT 토큰을 처리하는 콜백함수
           if (!res.clientId || !res.credential) return;
           const userData:ICredential = decodeJWT(res.credential);
