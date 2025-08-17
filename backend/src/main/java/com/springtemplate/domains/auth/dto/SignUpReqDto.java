@@ -30,7 +30,7 @@ public class SignUpReqDto {
 		return User.builder()
 				.email(this.email)
 				.pw(encryptedPassword)
-				.name(this.name)
+				.user_name(this.name)
 				.build();
 		
 		

@@ -10,7 +10,6 @@ import { jwtVerify } from "jose";
 const PUBLIC_PATHS = ["/login", "/blog", "/","/signup", "/refresh"]; // 로그인이 필요없는 경로
 
 export async function middleware(request: NextRequest) {
-  console.log("middleware: ", request.nextUrl.pathname,);
 
   const accessToken = request.cookies.get("accessToken")?.value; // 액세스 토큰 쿠키 추출
   const refreshToken = request.cookies.get("refreshToken")?.value; // 리프레시 토큰
@@ -22,7 +21,7 @@ export async function middleware(request: NextRequest) {
 
   const isPublicPath = PUBLIC_PATHS.some((path) => pathname.startsWith(path));
 
-  // ✅ 1. 공개 경로인데 refreshToken은 있고 accessToken은 없으면 → refresh로 보냄
+  // 1. 공개 경로인데 refreshToken은 있고 accessToken은 없으면 → refresh로 보냄
   if (isPublicPath && refreshToken && !accessToken && pathname !== "/refresh") {
     const nextUrl = encodeURIComponent(`${pathname}${search}`);
     return NextResponse.redirect(
@@ -30,17 +29,17 @@ export async function middleware(request: NextRequest) {
     );
   }
 
-  // ✅ 2. 공개 경로는 그냥 통과
+  //  2. 공개 경로는 그냥 통과
   if (isPublicPath) {
     return NextResponse.next();
   }
 
-  // ✅ 3. 보호 경로인데 refreshToken 없으면 로그인
+  //  3. 보호 경로인데 refreshToken 없으면 로그인
   if (!refreshToken) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // ✅ 4. accessToken이 없으면 refresh
+  //  4. accessToken이 없으면 refresh
   if (!accessToken) {
     const nextUrl = encodeURIComponent(`${pathname}${search}`);
     return NextResponse.redirect(
@@ -50,7 +49,6 @@ export async function middleware(request: NextRequest) {
 
   try {
     // 공개경로가 아니면서 토큰이 있는 경우
-    console.log("미들웨어 검증 : ",process.env.JWT_SECRET);
     // jwtVerify로 토큰 검증.
     await jwtVerify(
       accessToken,

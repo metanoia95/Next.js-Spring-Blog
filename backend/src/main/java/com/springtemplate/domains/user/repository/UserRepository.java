@@ -18,12 +18,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	// Optional로 null처리
 	// 비밀번호 검증은 service 레이어에서 함. 
 	Optional<User> findByEmail(String email);
+	Optional<User> findBySub(String sub); //구글 
 	
 	// 이메일 존재여부 확인
 	boolean existsByEmail(String email);
 	
 	// 인덱스로 유저정보 불러오기
 	User getById(Long id);
+	
+	
 	
 	//리프레시 토큰으로 유저정보 불러오기
 	User getByRefreshToken(String refreshToken);
@@ -32,4 +35,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Modifying //Select문이 아닌 insert, update, delete인 경우 붙여줘야함.
 	@Query("UPDATE User u SET u.refreshToken=null where u.refreshToken = :refreshToken") //@Query의 경우 엔터티의 컬럼명과 맞출 것. 
 	int clearRefreshToken(@Param("refreshToken") String refreshToken);
+
+	boolean existsBySub(String sub);
+
+	
 }

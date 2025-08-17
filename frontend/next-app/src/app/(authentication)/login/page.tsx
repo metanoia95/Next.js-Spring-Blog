@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import InputField from "@/components/common/InputField";
 import Link from "next/link";
 
-import { login } from "@/lib/services/authService";
+import { login } from "@/lib/services/auth/authService";
 
 import axios from "axios";
+import GoogleLoginPage from "@/components/common/Googlelogin";
 
 export default function LoginPage() {
   
@@ -15,7 +16,6 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    console.log('Current password value:', password);
   }, [password]);
 
 
@@ -24,15 +24,9 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault(); // 새로고침 방지
 
-    console.log(email, password)
 
     try {
-      const { accessToken } = await login({ email, password });
-
-      
-      // 성공했으면 토큰 저장
-      console.log("로그인 요청 성공", accessToken)
-      
+      await login({ email, password });
       // 로그인 후 이동
       window.location.href = '/';
     } catch (err : unknown) {
@@ -73,7 +67,6 @@ export default function LoginPage() {
               value={password}
               placeholder="패스워드를 입력하세요"
               onChange={(e) => {
-                console.log('Password input changed:', e.target.value);
                 setPassword(e.target.value);
               }}
               required
@@ -94,7 +87,10 @@ export default function LoginPage() {
             >
               회원가입
             </Link>
+           
           </form>
+           {/* 구글 로그인 */}
+            <GoogleLoginPage />
         </div>
       </div>
     </div>

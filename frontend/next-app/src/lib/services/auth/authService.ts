@@ -31,6 +31,7 @@ export async function login(data:LoginRequest): Promise<LoginResponse> { //Promi
     
 }
 
+//로그아웃
 export async function logout() {
 
     await api.post('/api/auth/logout')
@@ -51,3 +52,11 @@ export async function refreshAccessToken() {
     const response = await api.post('/api/auth/refresh')
     return response
 }   
+
+
+// 구글 로그인 
+export async function googleLogin(data:ICredential): Promise<LoginResponse> { //Promise : 리턴 타입 지정
+    const response = await api.post('/api/auth/login/google', data);
+    return response.data;
+    
+}

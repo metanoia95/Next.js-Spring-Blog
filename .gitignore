@@ -13,3 +13,5 @@ nginx/certificates/
 
 # 빌드 파일
 /blog-full.tar
+OAuth_google.txt
+client_secret_504818698774-3ibv50h3g055433okrbo3ka9261l3lfq.apps.googleusercontent.com.json

@@ -4,7 +4,7 @@ import { User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { UserInfo } from "@/lib/services/userService";
 import { useState, useEffect, useRef } from "react";
-import { logout } from "@/lib/services/authService";
+import { logout } from "@/lib/services/auth/authService";
 
 const Dropdown = ({userInfo} : {userInfo : UserInfo|null}) => {
   const router = useRouter();
