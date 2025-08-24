@@ -44,12 +44,12 @@ const applyFormat = (text: string, format?: number): string => {
 export const renderLexicalJsonToHtml = (node: LexicalNode): string => {
   const { type, children = [], text, format, tag, listType } = node;
 
-  // ✅ 텍스트 처리 (text + code-highlight 포함)
+  // 텍스트 처리 (text + code-highlight 포함)
   if ((type === "text" || type === "code-highlight") && typeof text === "string") {
     return applyFormat(text, format);
   }
 
-  // ✅ 재귀 렌더링
+  //  재귀 렌더링
   const innerHTML = children.map(renderLexicalJsonToHtml).join("");
 
   if (type === "linebreak") {
@@ -103,7 +103,7 @@ export const renderLexicalJsonToHtml = (node: LexicalNode): string => {
 };
 
 
-// ✅ map 구조인지 확인하고 트리 구조로 변환
+// map 구조인지 확인하고 트리 구조로 변환
 const normalizeLexicalInput = (
   input: LexicalNode[] | LexicalFlatMapNode[]
 ): LexicalNode[] => {
@@ -145,7 +145,7 @@ const normalizeLexicalInput = (
   return root?.children || [];
 };
 
-// ✅ 모든 구조를 자동으로 렌더링
+// 모든 구조를 자동으로 렌더링
 export const renderFullLexicalJson = (
   input: LexicalNode[] | LexicalFlatMapNode[]
 ): string => {

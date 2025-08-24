@@ -20,4 +20,6 @@ public class PostResDto {
 	private String page_html;
 	
 	private String page_json;
+	
+	private String created_at;
 }

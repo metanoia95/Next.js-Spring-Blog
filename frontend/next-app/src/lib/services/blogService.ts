@@ -1,6 +1,7 @@
 import api from "@/lib/axios";
 import { AxiosResponse } from "axios";
 import { ssrApi } from "../ssrApi";
+import { Timestamp } from "next/dist/server/lib/cache-handlers/types";
 
 
 export interface SaveCommentReq{
@@ -11,10 +12,10 @@ export interface SaveCommentReq{
 
 export interface SaveBlogPostReq {
 
-    id? : number; // nullable. id가 없으면 -> create / id가 있으면 -> update로
+    id? : number; // undefined. id가 없으면 -> create / id가 있으면 -> update로
     title : string;
     page_json : string;
-    page_html? : string;
+    page_html? : string | null;
 
 }
 
@@ -34,6 +35,14 @@ export interface getPostJsonRes {
     page_json : string;
 
 }
+
+export interface getBlogPostRes{
+    id : number; 
+    title : string;
+    page_html : string;
+    created_at : Timestamp;
+}
+
 
 export async function saveBlogPost (
     data : SaveBlogPostReq
@@ -75,7 +84,6 @@ export async function SaveComment(
 
 ): Promise<AxiosResponse> {
 
-    console.log("save comment",data)
     
     return await api.post(`/api/blog/comment`, data)
 }
@@ -94,8 +102,10 @@ export async function getPostList (){
     return await ssrApi(`/api/blog/posts`)
 }
 
-export async function getBlogPost( id:number){
-    return await ssrApi(`/api/blog/posts/${id}`)
+export async function getBlogPost( id:number) : Promise<getBlogPostRes>{
+    const res = await ssrApi(`/api/blog/posts/${id}`)
+    const data : getBlogPostRes = await res.json();
+    return data
 }
 
 export async function getPostComments(postId: number){

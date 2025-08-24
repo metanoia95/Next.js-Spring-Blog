@@ -6,7 +6,7 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
-import { ToolbarPlugin } from "@/components/editor/plugin/ToolbarPlugin";
+import { ToolbarPlugin } from "@/components/editors/editor-lexical/plugin/ToolbarPlugin";
 
 import "./editor.css";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
@@ -38,7 +38,7 @@ type EditorProps = {
 
 
 
-const Editor: FC<EditorProps> =  ({setEditorState, initialContent}) => {
+const LexicalEditor: FC<EditorProps> =  ({setEditorState, initialContent}) => {
 
   const handleChange = (editorState : EditorState) => {
      const editorStateJSON = editorState.toJSON();
@@ -95,7 +95,7 @@ const Editor: FC<EditorProps> =  ({setEditorState, initialContent}) => {
   );
 };
 
-export default Editor;
+export default LexicalEditor;
 
 
 

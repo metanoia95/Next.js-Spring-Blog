@@ -65,11 +65,13 @@ public class BlogService {
 	public PostResDto getPost(Long id) {
 
 		BlogPost post = blogPostRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("글이 존재하지 않습니다"));
+		
+		System.out.println("getPost: "+ post);
 
-		PostResDto dto = PostResDto.builder().id(post.getId()).title(post.getTitle()).page_html(post.getPage_html())
+		PostResDto dto = PostResDto.builder().id(post.getId()).title(post.getTitle()).page_html(post.getPage_html()).page_json(post.getPage_json())
 				.build();
 
-		System.out.println(dto);
+		System.out.println("getPostDto: "+dto);
 		return dto;
 	}
 
@@ -90,24 +92,25 @@ public class BlogService {
 		PostResDto dto = PostResDto.builder().id(post.getId()).title(post.getTitle()).page_json(post.getPage_json())
 				.build();
 
-		System.out.println(dto);
+		System.out.println("getPostJsonDto: "+dto);
 		return dto;
 	}
 
 	// 글 수정
 	@Transactional
 	public void updatePost(SavePostReqDto dto) {
-
+		System.out.println("updatePostDto: "+dto);
 		// 기존 엔터티 조회
 		BlogPost post = blogPostRepository.findById(dto.getId())
 				.orElseThrow(() -> new EntityNotFoundException("Post not found: id=" + dto.getId()));
-
+		
+		
 		// 2) 세터로 필드 업데이트
 		post.setTitle(dto.getTitle());
 		post.setPage_json(dto.getPage_json());
 		post.setPage_html(dto.getPage_html());
 		// updatedAt 은 @UpdateTimestamp가 자동 반영해 줍니다.
-
+		System.out.println("updatePost: "+post);
 		blogPostRepository.save(post);
 
 	}

@@ -49,8 +49,7 @@ public class BlogController {
 	@GetMapping("/posts/{id}")
 	public ResponseEntity<?> getPostById(@PathVariable Long id) {
 
-		//PostResDto result = blogService.getPost(id);
-		PostResDto result = blogService.getPostJson(id);
+		PostResDto result = blogService.getPost(id);
 		return ResponseEntity.ok(result);
 
 	}
@@ -76,7 +75,7 @@ public class BlogController {
 	// 글 수정
 	@PutMapping("/posts")
 	public ResponseEntity<?> updatePostById(@RequestBody SavePostReqDto dto) {
-
+		System.out.println("update post: "+dto);
 		blogService.updatePost(dto);
 		return ResponseEntity.ok().build();
 

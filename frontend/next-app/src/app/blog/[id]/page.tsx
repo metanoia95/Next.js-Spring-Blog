@@ -1,6 +1,7 @@
+import '@/components/editors/tiptap/styles.scss'
 import CommentSection from "@/components/blog/comment/CommentSection";
 import PostDeleteButton from "@/components/common/PostDeleteButton";
-import { renderFullLexicalJson } from "@/components/editor/renderLexicalHtml";
+//import { renderFullLexicalJson } from "@/components/editors/editor-lexical/renderLexicalHtml";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { getBlogPost, getPostComments } from "@/lib/services/blogService";
@@ -15,21 +16,26 @@ export default async function PostPage({ params }: PostPageProps) {
   const cookieStore = await cookies(); // ✅ 이건 Promise 아님
   const isLoggedIn = !!cookieStore.get("accessToken");
   
-
   //포스트 정보
-  const postRes = await getBlogPost(Number(id))
-  const post = await postRes.json();
+  const post = await getBlogPost(Number(id))
+  
 
   let postHtml = "<p>본문을 불러올 수 없습니다.</p>";
-
+  
+  
   try {
-    const pageJson =
-      typeof post.page_json === "string"
-        ? JSON.parse(post.page_json)
-        : post.page_json;
+    // const pageJson =
+    //   typeof post.page_json === "string"
+    //     ? JSON.parse(post.page_json)
+    //     : post.page_json;
 
-    if (Array.isArray(pageJson?.root?.children)) {
-      postHtml = renderFullLexicalJson(pageJson.root.children);
+    if (post
+      // Array.isArray(pageJson?.root?.children)
+    ) {
+      // 렉시컬 에디터용
+      //postHtml = renderFullLexicalJson(pageJson.root.children); 
+      console.log(post)
+      postHtml = post.page_html
     } else {
       console.error("page_json.root.children is not an array");
     }
@@ -53,11 +59,14 @@ export default async function PostPage({ params }: PostPageProps) {
     <div className="flex flex-col">
       <div className="post-title">{post.title}</div>
       <hr />
-      <div className="prose prose-lg max-w-none">
+      <div className="tiptap prose prose-lg max-w-none">
         {/* 본문 */}
-        <div
+        {/* 렉시컬 <div 
           className="mt-5 p-4 border-2 border-gray-200 min-h-96"
           dangerouslySetInnerHTML={{ __html: postHtml }}
+        /> */}
+        <div 
+        dangerouslySetInnerHTML={{__html:postHtml}}
         />
       </div>
       <div className="flex justify-end mt-2">
