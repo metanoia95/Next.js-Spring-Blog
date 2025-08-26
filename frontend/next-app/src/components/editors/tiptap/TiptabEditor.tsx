@@ -20,7 +20,7 @@ import { MarkToolbar } from './tools/MarkToolbar'
 import Italic from '@tiptap/extension-italic'
 import Image from '@tiptap/extension-image'
 import { Dropcursor } from '@tiptap/extensions'
-
+import HardBreak from '@tiptap/extension-hard-break'
 
 const lowlight = createLowlight(all)
 lowlight.register('html', html)
@@ -39,7 +39,13 @@ const Tiptap = ({initContent, setEditorJSON, setEditorHTML} : EditorProps) => {
   const [_, forceUpdate] = useState(0);
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        hardBreak: false
+      }),
+    // HardBreak를 별도 설정으로 명시
+    HardBreak.configure({
+      keepMarks: true,       // 굵게/기울임 같은 마크 유지
+    }),
       Strike,
       Heading.configure({
         levels: [1, 2, 3],
@@ -68,6 +74,7 @@ const Tiptap = ({initContent, setEditorJSON, setEditorHTML} : EditorProps) => {
 
   });
   
+
   
 
   useEffect(()=> {
@@ -84,7 +91,7 @@ const Tiptap = ({initContent, setEditorJSON, setEditorHTML} : EditorProps) => {
         <NodeToolbar editor={editor} />
         <MarkToolbar editor={editor} />
       </div>
-      <EditorContent editor={editor} className='tiptap' />
+      <EditorContent editor={editor} className='tiptap min' />
     </>
   )
 

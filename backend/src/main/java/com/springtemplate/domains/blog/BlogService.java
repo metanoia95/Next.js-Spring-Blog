@@ -68,7 +68,10 @@ public class BlogService {
 		
 		System.out.println("getPost: "+ post);
 
-		PostResDto dto = PostResDto.builder().id(post.getId()).title(post.getTitle()).page_html(post.getPage_html()).page_json(post.getPage_json())
+		PostResDto dto = PostResDto.builder()
+				.id(post.getId())
+				.title(post.getTitle()).page_html(post.getPage_html()).page_json(post.getPage_json())
+				.created_at(post.getCreated_at())
 				.build();
 
 		System.out.println("getPostDto: "+dto);

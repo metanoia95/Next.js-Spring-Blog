@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { format } from "date-fns";
 import { getPostList } from "@/lib/services/blogService";
+import { formatDate } from "@/lib/utils/date";
 
 
   type postsRes = {
@@ -33,7 +34,7 @@ export default async function BlogList() {
               <Link href={`/blog/${post.id}`}>
                 <div className="flex justify-between p-4 border-gray-200 border rounded-2xl mt-3 hover:bg-gray-50">
                   <span className="text-xl font-bold">{post.title}</span>
-                  <span className= "text-gray-500">{format(new Date(post.created_at),"yyyy.MM.dd HH:mm")}</span>
+                  <span className= "text-gray-500">{formatDate(post.created_at)}</span>
                 </div>
               </Link>
             </div>

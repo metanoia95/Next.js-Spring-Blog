@@ -18,7 +18,6 @@ import com.springtemplate.domains.auth.dto.SignUpReqDto;
 import com.springtemplate.domains.user.entity.User;
 import com.springtemplate.domains.user.repository.UserRepository;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

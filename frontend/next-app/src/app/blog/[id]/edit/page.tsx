@@ -1,13 +1,14 @@
 'use client'
 
-import LexicalEditor from "@/components/editors/editor-lexical/LexicalEditor";
+//import LexicalEditor from "@/components/editors/editor-lexical/LexicalEditor";
 import Tiptap from "@/components/editors/tiptap/TiptabEditor";
 import { getPostJson, SaveBlogPostReq, updateBlogPost } from "@/lib/services/blogService";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
-
-export default function PostPage({ params }: { params: { id: string } }) {
-  const id = params.id; // params: params를 비동기 처리
+//{ params }: { params: Promise<{ id: string }> }
+export default function PostPage() {
+  const params = useParams<{ id: string }>(); // 타입 제네릭으로 지정
+  const id = params?.id;
   const idNumber = Number(id);
   const [title, setTitle] = useState("");
   const [editorJSON, setEditorJSON] = useState<string | null>(null);

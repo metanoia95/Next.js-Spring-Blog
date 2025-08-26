@@ -1,6 +1,6 @@
 import { Editor as TiptapEditor } from '@tiptap/react'
 import { Code, Heading1, Heading2, Heading3, Image } from 'lucide-react';
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 
 interface ToolbarProps {
   editor: TiptapEditor | null;
@@ -8,15 +8,16 @@ interface ToolbarProps {
 
 
 export const NodeToolbar = ({ editor }: ToolbarProps) => {
-
+  const fileInputRef = useRef<HTMLInputElement>(null);
   if (!editor) return null;
 
   const addImage = useCallback(() => {
-    const url = window.prompt('URL')
-
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run()
-    }
+    // const url = window.prompt('URL')
+    console.log("addImage called");
+    fileInputRef.current?.click();
+    // if (url) {
+    //   editor.chain().focus().setImage({ src: url }).run()
+    // }
   }, [editor])
 
 
@@ -57,7 +58,14 @@ export const NodeToolbar = ({ editor }: ToolbarProps) => {
           <Image />
         </button>
       </div>
-
+      <input
+        ref={fileInputRef}
+        id="fileInput"
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={addImage}
+      />
     </div>
 
   )

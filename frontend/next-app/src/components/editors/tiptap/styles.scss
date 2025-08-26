@@ -1,6 +1,5 @@
 /* Basic editor styles */
 .tiptap {
-  padding-top: 0.5rem;
   min-height: 32rem;
 
   .ProseMirror{
@@ -12,6 +11,9 @@
     
   }
 
+  p:empty::after {
+    content: "\00A0";
+}
 
 
   /* Heading styles */

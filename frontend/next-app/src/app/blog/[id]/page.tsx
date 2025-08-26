@@ -5,6 +5,7 @@ import PostDeleteButton from "@/components/common/PostDeleteButton";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { getBlogPost, getPostComments } from "@/lib/services/blogService";
+import { formatDate } from '@/lib/utils/date';
 
 type PostPageProps = {
   // params가 Promise<{ id: string }> 타입으로 옵니다
@@ -13,7 +14,7 @@ type PostPageProps = {
 
 export default async function PostPage({ params }: PostPageProps) {
   const { id } = await params;
-  const cookieStore = await cookies(); // ✅ 이건 Promise 아님
+  const cookieStore = await cookies(); // 
   const isLoggedIn = !!cookieStore.get("accessToken");
   
   //포스트 정보
@@ -59,13 +60,15 @@ export default async function PostPage({ params }: PostPageProps) {
     <div className="flex flex-col">
       <div className="post-title">{post.title}</div>
       <hr />
+      <div className="flex p-2 h-16 justify-center items-center" ><p>{formatDate(post.created_at)}</p></div>
+      {/* 본문 */}
       <div className="tiptap prose prose-lg max-w-none">
-        {/* 본문 */}
+        
         {/* 렉시컬 <div 
           className="mt-5 p-4 border-2 border-gray-200 min-h-96"
           dangerouslySetInnerHTML={{ __html: postHtml }}
         /> */}
-        <div 
+        <div className="p-4"
         dangerouslySetInnerHTML={{__html:postHtml}}
         />
       </div>

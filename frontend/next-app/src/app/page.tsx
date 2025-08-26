@@ -16,7 +16,7 @@ export default function IndexPage() {
       <h1 className="text-3xl text-bold"> 주요기술 스택</h1>
       <div className="grid grid-cols-3 gap-4 pt-5">
         <Card>   
-          <Image src="/images/lexical.png" alt="" width={0} height={0} sizes="100vw" className="w-full h-auto" />
+          <Image src="/images/tiptap.png" alt="" width={0} height={0} sizes="100vw" className="w-full h-auto" />
         </Card>
         <Card>   
           <Image src="/images/NextJs.png" alt="" width={0} height={0} sizes="100vw" className="w-full h-auto" />

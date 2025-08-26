@@ -6,18 +6,21 @@ import { useRouter } from "next/navigation";
 import Tiptap from "@/components/editors/tiptap/TiptabEditor";
 
 export default function EditorPage() {
-const [title, setTitle] = useState("");
-const [editorJson, setEditorJSON] = useState<string | null>(null);
-const [editorHTML, setEditorHTML] = useState<string | null>(null);
-const router = useRouter();
- 
+  const [title, setTitle] = useState("");
+  const [editorJson, setEditorJSON] = useState<string | null>(null);
+  const [editorHTML, setEditorHTML] = useState<string | null>(null);
+  const router = useRouter();
+
 
   const handleSave = async () => {
-    console.log(editorJson);
     try {
-      if(!editorJson) return
+      if (!title) {
+        alert("제목을 입력하십시오");
+        return;
+      }
+      if (!editorJson) return
       const dto: SaveBlogPostReq = {
-        title : title,
+        title: title,
         page_json: editorJson,
         page_html: editorHTML,
       };
@@ -44,7 +47,7 @@ const router = useRouter();
       {/* <LexicalEditor editorState={editorState} setEditorState={setEditorState} /> */}
 
       {/* 팁탭 에디터 */}
-      <Tiptap setEditorJSON={setEditorJSON} setEditorHTML={setEditorHTML}/>
+      <Tiptap setEditorJSON={setEditorJSON} setEditorHTML={setEditorHTML} />
       <div className="flex justify-end mt-2">
         <button
           className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors"

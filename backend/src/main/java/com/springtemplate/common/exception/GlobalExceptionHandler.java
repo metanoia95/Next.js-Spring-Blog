@@ -5,8 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.springtemplate.domains.auth.AuthController;
-
 import lombok.extern.slf4j.Slf4j;
 
 //전역 예외처리 핸들러

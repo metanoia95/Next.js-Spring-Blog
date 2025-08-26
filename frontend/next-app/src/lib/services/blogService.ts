@@ -40,7 +40,7 @@ export interface getBlogPostRes{
     id : number; 
     title : string;
     page_html : string;
-    created_at : Timestamp;
+    created_at : string;
 }
 
 

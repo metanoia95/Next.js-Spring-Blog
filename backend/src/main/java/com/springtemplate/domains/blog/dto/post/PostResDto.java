@@ -21,5 +21,5 @@ public class PostResDto {
 	
 	private String page_json;
 	
-	private String created_at;
+	private LocalDateTime created_at;
 }
