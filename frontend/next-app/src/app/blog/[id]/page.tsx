@@ -6,6 +6,8 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { getBlogPost, getPostComments } from "@/lib/services/blogService";
 import { formatDate } from '@/lib/utils/date';
+import { api_env } from '@/lib/env';
+import { jwtVerify } from "jose";
 
 type PostPageProps = {
   // params가 Promise<{ id: string }> 타입으로 옵니다
@@ -13,29 +15,22 @@ type PostPageProps = {
 };
 
 export default async function PostPage({ params }: PostPageProps) {
+  debugger;
   const { id } = await params;
   const cookieStore = await cookies(); // 
-  const isLoggedIn = !!cookieStore.get("accessToken");
-  
+  let isLoggedIn = false;
+  const accessToken = cookieStore.get("accessToken")?.value;
+  console.log("accessToken in post page:", accessToken);
+  console.log("JWT_SECRET",api_env.JWT_SECRET);
+
+ let userId: string | null = null;
+
+
   //포스트 정보
   const post = await getBlogPost(Number(id))
-  
-
   let postHtml = "<p>본문을 불러올 수 없습니다.</p>";
-  
-  
   try {
-    // const pageJson =
-    //   typeof post.page_json === "string"
-    //     ? JSON.parse(post.page_json)
-    //     : post.page_json;
-
-    if (post
-      // Array.isArray(pageJson?.root?.children)
-    ) {
-      // 렉시컬 에디터용
-      //postHtml = renderFullLexicalJson(pageJson.root.children); 
-      console.log(post)
+    if (post) {
       postHtml = post.page_html
     } else {
       console.error("page_json.root.children is not an array");
@@ -46,7 +41,6 @@ export default async function PostPage({ params }: PostPageProps) {
 
   // 댓글정보
   const commentRes = await getPostComments(Number(id))
-
   let comments = [];
   if (commentRes.ok) {
     comments = await commentRes.json();
@@ -56,11 +50,35 @@ export default async function PostPage({ params }: PostPageProps) {
     // 필요시 빈 배열 유지 or 오류 메시지 표시
   }
 
+  // jwt 검증으로 수정 버튼 처리
+    if (accessToken) {
+    try {
+      const { payload } = await jwtVerify(
+        accessToken,
+        new TextEncoder().encode(api_env.JWT_SECRET) // 혹은 process.env.JWT_SECRET
+      );
+
+      userId = payload.sub as string;
+      console.log("JWT Payload:", payload);
+      if(userId && userId === String(post.authorId)){
+        isLoggedIn = true;
+      }
+    } catch (err) {
+      console.error("JWT 검증 실패:", err);
+    }
+  }
+
+
   return (
     <div className="flex flex-col">
       <div className="post-title">{post.title}</div>
       <hr />
-      <div className="flex p-2 h-16 justify-center items-center" ><p>{formatDate(post.created_at)}</p></div>
+      <div
+      className='flex justify-between items-center flex-row'>
+        <div className="post-author p-2">작성자: {post.authorId}</div>
+        <div className="flex p-2 h-16 justify-end items-center" ><p>{formatDate(post.created_at)}</p></div>
+      </div>
+      
       {/* 본문 */}
       <div className="tiptap prose prose-lg max-w-none">
         

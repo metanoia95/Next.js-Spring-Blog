@@ -11,13 +11,21 @@ export const NodeToolbar = ({ editor }: ToolbarProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   if (!editor) return null;
 
-  const addImage = useCallback(() => {
+  const openFilePicker = ()=> {
+        fileInputRef.current?.click();
+  }
+
+  const addImage = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     // const url = window.prompt('URL')
-    console.log("addImage called");
-    fileInputRef.current?.click();
-    // if (url) {
-    //   editor.chain().focus().setImage({ src: url }).run()
-    // }
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const objectUrl = URL.createObjectURL(file);
+    // 에디터에 임시 이미지 삽입 (data-temp: true)
+    editor.chain().focus().setImage({ src: objectUrl, alt: file.name, 'data-temp': true } as any).run();
+    // @TODO : 타입을 as any로 우회했는데 나중에 노트 새로 추가해서 고칠 것.
+    e.target.value = "";     // 같은 파일 다시 선택 가능하게 초기화
+
   }, [editor])
 
 
@@ -54,7 +62,7 @@ export const NodeToolbar = ({ editor }: ToolbarProps) => {
       </button>
       {/* 이미지 */}
       <div className="button-group">
-        <button onClick={addImage}>
+        <button onClick={openFilePicker}>
           <Image />
         </button>
       </div>

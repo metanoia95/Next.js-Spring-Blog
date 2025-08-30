@@ -15,6 +15,8 @@ public class PostResDto {
 	
 	private Long id;
 	
+	private Long authorId; 
+	
 	private String title;
 		
 	private String page_html;
@@ -22,4 +24,5 @@ public class PostResDto {
 	private String page_json;
 	
 	private LocalDateTime created_at;
+	
 }

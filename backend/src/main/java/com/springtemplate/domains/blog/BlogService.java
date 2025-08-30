@@ -65,16 +65,17 @@ public class BlogService {
 	public PostResDto getPost(Long id) {
 
 		BlogPost post = blogPostRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("글이 존재하지 않습니다"));
-		
-		System.out.println("getPost: "+ post);
+
 
 		PostResDto dto = PostResDto.builder()
 				.id(post.getId())
-				.title(post.getTitle()).page_html(post.getPage_html()).page_json(post.getPage_json())
+				.authorId(post.getAuthorId())
+				.title(post.getTitle())
+				.page_html(post.getPage_html())
+				.page_json(post.getPage_json())
 				.created_at(post.getCreated_at())
 				.build();
 
-		System.out.println("getPostDto: "+dto);
 		return dto;
 	}
 
@@ -120,10 +121,14 @@ public class BlogService {
 
 	// 댓글 저장
 	@Transactional
-	public void saveComment(SaveCommentReqDto dto) {
+	public void saveComment(Long userId, SaveCommentReqDto dto) {
 
-		System.out.println("SaveCommentReqDto :" + dto);
-		PostComment comment = dto.toEntity();
+		PostComment comment = PostComment
+				.builder()
+				.authorId(userId)
+				.postId(dto.getPost_id())
+				.text(dto.getText())
+				.build();
 		postCommentRepository.save(comment);
 
 	}
@@ -133,12 +138,11 @@ public class BlogService {
 	public List<CommentsResDto> getCommentListByPostId(Long postId) {
 
 		List<PostComment> commentList = postCommentRepository.findAllByPostId(postId);
-		System.out.println("service commentList :" + commentList);
 
 		List<CommentsResDto> result = new ArrayList<>();
 
 		for (PostComment comment : commentList) {
-			CommentsResDto dto = CommentsResDto.builder().id(comment.getId()).author(comment.getAuthor())
+			CommentsResDto dto = CommentsResDto.builder().id(comment.getId()).authorId(comment.getAuthorId())
 					.text(comment.getText()).createdAt(comment.getCreatedAt()).build();
 			result.add(dto);
 		}

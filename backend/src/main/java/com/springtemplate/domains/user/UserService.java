@@ -22,6 +22,7 @@ public class UserService {
 		User user = userRepository.getById(id);
 		
 		UserInfoResDto dto = UserInfoResDto.builder()
+				.id(user.getId())
 				.email(user.getEmail())
 				.name(user.getUser_name())
 				.status_msg(user.getStatus_msg())

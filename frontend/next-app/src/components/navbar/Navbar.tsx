@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import UserDropdown from "./UserDropdown";
 import { getUserInfo, UserInfo } from "@/lib/services/userService";
+import { useUser } from "@/lib/hooks/useUser";
 
 export default function NavBar() {
   //const { theme, setTheme } = useTheme();
@@ -21,24 +22,17 @@ export default function NavBar() {
     //{ href: "/portfolios", label: "게시판" },
     //{ href: "/resume", label: "RESUME"},
   ];
-
-  // useEffect(() => {
-  //   setMounted(true);
-  // }, []);
+  
+  const { data, isLoading, isError } = useUser(); // 사용자 정보 훅
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const data = await getUserInfo();
-        setUserInfo(data);
-        setIsAuthenticated(true)
-      } catch (e: unknown) {
-        console.log(e)
-        setIsAuthenticated(false)
-      }
-    };
-    fetchUser();
-  }, []);
+    if (!isLoading && data) {     
+      setUserInfo(data);
+      setIsAuthenticated(true);
+    }else{
+      setIsAuthenticated(false)
+    }
+  }, [data, isLoading]);
 
   return (
     <header className="h-14  sticky top-0 z-50 w-full border-b flex justify-center items-center bg-background">

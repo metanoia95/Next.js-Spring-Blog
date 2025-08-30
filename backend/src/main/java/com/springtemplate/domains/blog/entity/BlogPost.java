@@ -33,6 +33,9 @@ public class BlogPost {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id; // 인덱스
 	
+    @Column(name = "author_id")
+	private Long authorId; 
+	
 	private String title;
 	
 	// 페이지 json 파일

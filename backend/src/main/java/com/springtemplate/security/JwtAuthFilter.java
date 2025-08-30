@@ -3,21 +3,18 @@ package com.springtemplate.security;
 import java.io.IOException;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.springtemplate.common.util.CookieUtil;
 import com.springtemplate.common.util.JwtUtil;
-import com.springtemplate.domains.auth.AuthService;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -79,9 +76,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			// 인증토큰 발급(스프링 내에서만 활용)
 			UsernamePasswordAuthenticationToken authToken = 
 					new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-			
+			log.info("authToken principal type = {}", authToken.getPrincipal().getClass().getName());
+
 			// 인증 정보를 SecurityContext에 저장. 필터나 컨트롤러에서 사용자를 여기서 꺼내서 사용함. 
 			SecurityContextHolder.getContext().setAuthentication(authToken);
+			
+			/*  인증 객체 사용방법
+			 *   
+			 * 
+			 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+					CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+					Long user_id = userDetails.getId();
+			 * 
+			 *  */
+			
 			
 		}
 		}catch(ExpiredJwtException e){

@@ -34,9 +34,10 @@ public class JwtUtil {
 	}
 
 	// 액세스 토큰 생성
-	public String generateAccessToken(String userEmail) { // 사용자 아이디(username)을 받아 jwt 생성
+	public String generateAccessToken(Long userId,String userEmail) { // 사용자 아이디(username)을 받아 jwt 생성
 		return Jwts.builder() // jwt 빌더 객체를 생성
-				.setSubject(userEmail) // 토큰의 주체 설정(사용자 이름 들어감)
+				.setSubject(String.valueOf(userId)) // 토큰의 주체 설정(사용자 이름 들어감)
+				.claim("email", userEmail)
 				.setIssuedAt(new Date()) // 발급시간 설정
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) // 만료시간 설정, 현재시간에 유효기간 추가.
 				.signWith(key, SignatureAlgorithm.HS256) // 서명 생성
@@ -97,8 +98,13 @@ public class JwtUtil {
 
 	// 이메일 정보 추출
 	public String extractUserEmail(String token) {
-		return parseClaims(token).getSubject(); // 토큰에서 subject(email) 추출
+		return parseClaims(token).get("email", String.class); // 토큰에서 (email) 추출
 		// 액세스 토큰 생성시 setSubject를 email로 설정했기 때문에 getSubject() 시 email 추출됨.
+	}
+	
+	// id 추출 
+	public Long extractUserId(String token){
+		return Long.parseLong(parseClaims(token).getSubject()); 
 	}
 
 }

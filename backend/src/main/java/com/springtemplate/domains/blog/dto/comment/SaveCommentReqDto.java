@@ -14,15 +14,11 @@ import lombok.ToString;
 public class SaveCommentReqDto {
 
     private Long post_id;
-
-    private String author;
-
     private String text;
 
     public PostComment toEntity(){
         return  PostComment.builder()
                 .postId(this.post_id)
-                .author(this.author)
                 .text(this.text)
                 .build();
 

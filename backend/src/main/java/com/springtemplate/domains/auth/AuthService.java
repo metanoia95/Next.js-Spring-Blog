@@ -106,7 +106,7 @@ public class AuthService {
 
 		}
 
-		String newAccessToken = jwtUtil.generateAccessToken(user.getEmail()); // 이메일 값으로 액세스 토큰 생성
+		String newAccessToken = jwtUtil.generateAccessToken(user.getId(),user.getEmail()); // 이메일 값으로 액세스 토큰 생성
 		response.addCookie(cookieUtil.setTokenCookie("accessToken", newAccessToken));
 
 	}
@@ -148,11 +148,12 @@ public class AuthService {
 		return resDto;
 	}
 
+	
 	private String addAcRfTokenToCookie(User user, HttpServletResponse response) {
 
 		// JWT 토큰 생성
 		// 액세스 토큰과 리프레시 토큰을 둘다 생성
-		String accessToken = jwtUtil.generateAccessToken(user.getEmail()); // 이메일 값으로 액세스 토큰 생성
+		String accessToken = jwtUtil.generateAccessToken(user.getId(),user.getEmail()); // 이메일 값으로 액세스 토큰 생성
 
 		// 서블릿에 쿠키추가
 		response.addCookie(cookieUtil.setTokenCookie("accessToken", accessToken));

@@ -21,8 +21,9 @@ public class PostComment {
 
     @Column(name = "post_id")
     private Long postId; // Fk
-
-    private String author; // 작성자
+    
+    @Column(name = "author_id")
+    private Long authorId; // 작성자 id
 
     @Column(columnDefinition = "TEXT", name = "comment_text" )
     private  String text; // 댓글 내용

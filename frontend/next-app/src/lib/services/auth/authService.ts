@@ -48,7 +48,6 @@ export async function signUp(data: SignUpReq) : Promise<SignUpRes>{
 
 // 리프레시 토큰으로 액세스 토큰 재발급 
 export async function refreshAccessToken() {
-    
     const response = await api.post('/api/auth/refresh')
     return response
 }   

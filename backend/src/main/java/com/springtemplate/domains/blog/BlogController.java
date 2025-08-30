@@ -3,6 +3,8 @@ package com.springtemplate.domains.blog;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +19,8 @@ import com.springtemplate.domains.blog.dto.comment.SaveCommentReqDto;
 import com.springtemplate.domains.blog.dto.post.PostListResDto;
 import com.springtemplate.domains.blog.dto.post.PostResDto;
 import com.springtemplate.domains.blog.dto.post.SavePostReqDto;
+import com.springtemplate.security.CustomUserDetails;
+import com.springtemplate.security.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -75,7 +79,7 @@ public class BlogController {
 	// 글 수정
 	@PutMapping("/posts")
 	public ResponseEntity<?> updatePostById(@RequestBody SavePostReqDto dto) {
-		System.out.println("update post: "+dto);
+		
 		blogService.updatePost(dto);
 		return ResponseEntity.ok().build();
 
@@ -84,8 +88,9 @@ public class BlogController {
 	// 댓글 저장
 	@PostMapping("/comment")
 	public ResponseEntity<?> saveCommentByPostId(@RequestBody SaveCommentReqDto dto) {
-
-		blogService.saveComment(dto);
+		Long userId = SecurityUtil.getCurrentUserId();
+		
+		blogService.saveComment(userId ,dto);
 
 		return ResponseEntity.ok().build();
 
@@ -94,7 +99,6 @@ public class BlogController {
 	// 댓글 목록 조회
 	@GetMapping("/comments/{postId}")
 	public ResponseEntity<?> getCommentbyPostId(@PathVariable Long postId) {
-
 
 		List<CommentsResDto> result = blogService.getCommentListByPostId(postId);
 

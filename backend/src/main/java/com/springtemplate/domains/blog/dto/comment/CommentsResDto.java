@@ -17,7 +17,7 @@ public class CommentsResDto {
 	
     private Long id;
 
-    private  String author;
+    private Long authorId;
 
     private String text;
 

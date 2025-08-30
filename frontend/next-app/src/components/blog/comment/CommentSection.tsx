@@ -1,15 +1,12 @@
 'use client'
-
-
-
 import { useState } from "react"
-import PostCommentEditor from "./PostCommentEditor";
+import CommentEditor from "./CommentEditor";
 import PostComment from "./PostComment";
 import { getPostCommentsAxios } from "@/lib/services/blogService";
 
 type CommentType = {
   id: number;
-  author: string;
+  authorId: number;
   text: string;
   created_at: string;
 };
@@ -32,14 +29,14 @@ export default function CommentSection({id, initialComments}:{
 
     return(
         <>
-        <PostCommentEditor postId={id} onCommentSubmit={refreshComments}/>
+        <CommentEditor postId={id} onCommentSubmit={refreshComments}/>
         <div>
         {comments.map((comment : CommentType)=> {
           return(
            <PostComment 
            key={comment.id} 
            id={comment.id} 
-           author={comment.author} 
+           authorId={comment.authorId} 
            comment={comment.text} 
            created_at = {comment.created_at}
             onDelete={refreshComments}

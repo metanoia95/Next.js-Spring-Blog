@@ -9,6 +9,8 @@ import lombok.Getter;
 @Builder
 public class UserInfoResDto {
 	
+	private Long id;
+	
 	private String email;
 	
 	private String name;

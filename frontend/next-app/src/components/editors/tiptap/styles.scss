@@ -126,6 +126,21 @@
     }
   }
 
+  /* 에디터 컨테이너가 .ProseMirror 라고 가정 */
+ol {
+  list-style: decimal;      /* 기본 숫자 마커 사용 */
+  padding-left: 1.5rem;     /* 들여쓰기 */
+  margin-left: 0;           /* 필요 시 조정 */
+}
+ul {
+  list-style: disc;         /* 점 마커 */
+  padding-left: 1.5rem;
+}
+li {
+  list-style: inherit;      /* 상위 ol/ul의 마커 상속 */
+}
+/* 혹시 전역에서 마커를 지웠다면 에디터 안에서는 되살리기 */
+li::marker { content: initial; }
 
 }
 
