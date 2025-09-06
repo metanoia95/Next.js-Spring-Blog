@@ -17,13 +17,5 @@ public class SavePostReqDto {
 	
 	private String page_html;
 	
-	public BlogPost toEntity(){
-		return BlogPost.builder()
-				.title(this.title)
-				.page_json(this.page_json)
-				.page_html(this.page_html)
-				.build();
-		
-	}
 	
 }

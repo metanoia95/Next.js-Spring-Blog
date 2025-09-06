@@ -61,8 +61,8 @@ public class BlogController {
 	// 글 저장
 	@PostMapping("/saveblogpost")
 	public ResponseEntity<?> savePost(@RequestBody SavePostReqDto dto) {
-
-		blogService.savePost(dto);
+		Long authorId = SecurityUtil.getCurrentUserId(); // 액세스 토큰에서 작성자 id 파싱
+		blogService.savePost(authorId ,dto);
 		return ResponseEntity.ok().build();
 
 	}

@@ -29,9 +29,15 @@ public class BlogService {
 
 	// 글 저장
 	@Transactional
-	public void savePost(SavePostReqDto dto) {
-
-		BlogPost post = dto.toEntity();
+	public void savePost(Long authorId, SavePostReqDto dto) {
+		
+		BlogPost post = BlogPost
+				.builder()
+				.authorId(authorId)
+				.title(dto.getTitle())
+				.page_html(dto.getPage_html())
+				.page_json(dto.getPage_json())
+				.build();
 
 		blogPostRepository.save(post);
 
@@ -41,7 +47,6 @@ public class BlogService {
 	@Transactional(readOnly = true)
 	public List<PostListResDto> getPostList() {
 
-		System.out.println("getPostList service");
 		List<BlogPost> listPost = blogPostRepository.findAll(); // 테이블 정보 전체 다 가져오기
 		List<PostListResDto> result = new ArrayList<>(); // 값을 담아줄 dto
 
@@ -52,8 +57,6 @@ public class BlogService {
 			result.add(dto);
 
 		}
-		System.out.println(result);
-
 		return result;
 		// 일단 엔터티 통째로 가져와서 DTO에 주입해서 프론트로 보냄.
 		// 나중에 시간되면 리팩토링 할 것.
@@ -96,14 +99,12 @@ public class BlogService {
 		PostResDto dto = PostResDto.builder().id(post.getId()).title(post.getTitle()).page_json(post.getPage_json())
 				.build();
 
-		System.out.println("getPostJsonDto: "+dto);
 		return dto;
 	}
 
 	// 글 수정
 	@Transactional
 	public void updatePost(SavePostReqDto dto) {
-		System.out.println("updatePostDto: "+dto);
 		// 기존 엔터티 조회
 		BlogPost post = blogPostRepository.findById(dto.getId())
 				.orElseThrow(() -> new EntityNotFoundException("Post not found: id=" + dto.getId()));
@@ -114,18 +115,17 @@ public class BlogService {
 		post.setPage_json(dto.getPage_json());
 		post.setPage_html(dto.getPage_html());
 		// updatedAt 은 @UpdateTimestamp가 자동 반영해 줍니다.
-		System.out.println("updatePost: "+post);
 		blogPostRepository.save(post);
 
 	}
 
 	// 댓글 저장
 	@Transactional
-	public void saveComment(Long userId, SaveCommentReqDto dto) {
+	public void saveComment(Long authorId, SaveCommentReqDto dto) {
 
 		PostComment comment = PostComment
 				.builder()
-				.authorId(userId)
+				.authorId(authorId)
 				.postId(dto.getPost_id())
 				.text(dto.getText())
 				.build();
@@ -142,8 +142,13 @@ public class BlogService {
 		List<CommentsResDto> result = new ArrayList<>();
 
 		for (PostComment comment : commentList) {
-			CommentsResDto dto = CommentsResDto.builder().id(comment.getId()).authorId(comment.getAuthorId())
-					.text(comment.getText()).createdAt(comment.getCreatedAt()).build();
+			CommentsResDto dto = CommentsResDto
+					.builder()
+					.id(comment.getId())
+					.authorId(comment.getAuthorId())
+					.text(comment.getText())
+					.createdAt(comment.getCreatedAt())
+					.build();
 			result.add(dto);
 		}
 
