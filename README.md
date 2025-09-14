@@ -67,25 +67,21 @@ docker compose build
 ### 1.1 이름 및 태그 확인
 docker images
 
-### 2. tar 생성
-docker save -o blog-full.tar {이미지 나열}
-
-### 3. server로 도커 이미지 올려서 배포하기
-#### 도커 이미지 파일 서버로 보내기 
-scp blog-full.tar server@192.168.0.20:/home/server/
-
-### 4. ssh로 서버 접속 후 이미지 로드
+### 2. ssh로 서버 접속 후 이미지 로드
 ssh server@192.168.0.20 
-docker load -i blog-full.tar 
-##### -i : --input의 약자. 도커 이미지 파일을 불러와서 로컬에 등록
+ 
+
+### 3. 도커로 배포하기 
+#### 개발에서 레지스트리로 push
+docker compose push
+
+#### 배포에서 레지스트리 pull
+docker compose pull 
+: 컴포즈 파일에서 레지스트리 경로를 지정해둘 것. 
 
 #### 리눅스에서 도커 컴포즈 실행
-docker compose -f docker-compose.prod.yml up -d
-
-#### 배포에서 레지스트리 땡기기
-docker pull 192.168.0.4:5000/blog-backend
-docker pull 192.168.0.4:5000/blog-backend
-docker pull 192.168.0.4:5000/blog-nginx
+docker compose up -d
+:데몬으로 실행
 
 #### 배포된 url
 next-spring-blog.duckdns.org

@@ -47,6 +47,7 @@ services:
     volumes: # 호스트와 컨테이너 간의 파일 공유
       - /etc/ssl/certs/fullchain.pem:${SSL_CERT_PATH}:ro # 인증서 파일 공유
       - /etc/ssl/private/privkey.pem:${SSL_KEY_PATH}:ro
+      - 
     depends_on:
       - frontend
       - backend

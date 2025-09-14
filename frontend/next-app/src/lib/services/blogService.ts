@@ -1,7 +1,7 @@
 import {api} from "@/lib/axios";
 import { AxiosResponse } from "axios";
 import { ssrApi } from "../ssrApi";
-import { Timestamp } from "next/dist/server/lib/cache-handlers/types";
+
 
 
 export interface SaveCommentReq {

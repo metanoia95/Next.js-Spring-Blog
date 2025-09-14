@@ -10,7 +10,7 @@ import Heading from '@tiptap/extension-heading'
 import Strike from '@tiptap/extension-strike'
 import { NodeToolbar } from './tools/NodeToolbar'
 import StarterKit from "@tiptap/starter-kit";
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { all, createLowlight } from 'lowlight'
 import css from 'highlight.js/lib/languages/css'
 import js from 'highlight.js/lib/languages/javascript'
@@ -36,7 +36,7 @@ type EditorProps = {
 
 
 const Tiptap = ({initContent, setEditorJSON, setEditorHTML} : EditorProps) => {
-  const [_, forceUpdate] = useState(0);
+  //const [_, forceUpdate] = useState(0);
   const editor = useEditor({
     extensions: [
       StarterKit.configure({

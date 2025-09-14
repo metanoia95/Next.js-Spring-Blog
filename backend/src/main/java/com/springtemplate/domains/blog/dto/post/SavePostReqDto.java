@@ -1,6 +1,5 @@
 package com.springtemplate.domains.blog.dto.post;
 
-import com.springtemplate.domains.blog.entity.BlogPost;
 
 import lombok.Getter;
 import lombok.ToString;

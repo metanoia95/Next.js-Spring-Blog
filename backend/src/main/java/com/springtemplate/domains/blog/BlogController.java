@@ -3,8 +3,6 @@ package com.springtemplate.domains.blog;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +17,6 @@ import com.springtemplate.domains.blog.dto.comment.SaveCommentReqDto;
 import com.springtemplate.domains.blog.dto.post.PostListResDto;
 import com.springtemplate.domains.blog.dto.post.PostResDto;
 import com.springtemplate.domains.blog.dto.post.SavePostReqDto;
-import com.springtemplate.security.CustomUserDetails;
 import com.springtemplate.security.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;

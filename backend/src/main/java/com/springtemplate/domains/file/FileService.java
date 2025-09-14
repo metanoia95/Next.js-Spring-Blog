@@ -18,13 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FileService {
 	
-	String savePath = "C:/uploads/";
+	
+	String FILE_PATH = "/data/uploads/";
 	
 	
 	@Transactional
 	public String uploadImage(MultipartFile file){
 		
-		File dir = new File(savePath);
+		File dir = new File(FILE_PATH);
 		if (!dir.exists()) {
 		    dir.mkdirs();
 		}
@@ -34,7 +35,7 @@ public class FileService {
 		
 		String filename = uuid+file.getOriginalFilename();
 		
-		Path path = Paths.get(savePath,filename);
+		Path path = Paths.get(FILE_PATH,filename);
 		
 		try {
 			file.transferTo(path);
