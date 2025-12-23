@@ -5,8 +5,8 @@ import { getPostList } from "@/lib/services/blogService";
 
 
 export default async function IndexPage() {
-    const res = await getPostList();
-    const posts = await res.json();
+    const posts = await getPostList({});
+  
 
   return (
     <div className="min-h-screen p-2">

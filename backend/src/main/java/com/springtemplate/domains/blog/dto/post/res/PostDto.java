@@ -1,4 +1,4 @@
-package com.springtemplate.domains.blog.dto.post;
+package com.springtemplate.domains.blog.dto.post.res;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @Builder
-public class PostResDto {
+public class PostDto {
 	
 	private Long id;
 	

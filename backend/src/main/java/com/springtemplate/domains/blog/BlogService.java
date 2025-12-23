@@ -3,14 +3,18 @@ package com.springtemplate.domains.blog;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.springtemplate.domains.blog.dto.post.res.PostListDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.springtemplate.domains.blog.dto.comment.CommentsResDto;
 import com.springtemplate.domains.blog.dto.comment.SaveCommentReqDto;
-import com.springtemplate.domains.blog.dto.post.PostListResDto;
-import com.springtemplate.domains.blog.dto.post.PostResDto;
-import com.springtemplate.domains.blog.dto.post.SavePostReqDto;
+import com.springtemplate.domains.blog.dto.post.res.PostDto;
+import com.springtemplate.domains.blog.dto.post.res.SavePostDto;
 import com.springtemplate.domains.blog.entity.BlogPost;
 import com.springtemplate.domains.blog.entity.PostComment;
 import com.springtemplate.domains.blog.repository.BlogPostRepository;
@@ -28,7 +32,7 @@ public class BlogService {
 
 	// 글 저장
 	@Transactional
-	public void savePost(Long authorId, SavePostReqDto dto) {
+	public void savePost(Long authorId, SavePostDto dto) {
 		
 		BlogPost post = BlogPost
 				.builder()
@@ -44,19 +48,15 @@ public class BlogService {
 
 	// 글 목록 조회
 	@Transactional(readOnly = true)
-	public List<PostListResDto> getPostList() {
+	public Page<PostListDto> getPostList(String keyword, int page, int pageSize) {
 
-		List<BlogPost> listPost = blogPostRepository.findAll(); // 테이블 정보 전체 다 가져오기
-		List<PostListResDto> result = new ArrayList<>(); // 값을 담아줄 dto
+		Pageable pageable = PageRequest.of(
+				page -1,
+				pageSize,
+				Sort.by("createdAt").descending()
+		);
 
-		for (BlogPost post : listPost) { // 매핑 반복문
-			PostListResDto dto = PostListResDto.builder().id(post.getId()).title(post.getTitle())
-					.created_at(post.getCreated_at()).build();
-
-			result.add(dto);
-
-		}
-		return result;
+		return blogPostRepository.findPostList(keyword, pageable); // 테이블 정보 전체 다 가져오기;
 		// 일단 엔터티 통째로 가져와서 DTO에 주입해서 프론트로 보냄.
 		// 나중에 시간되면 리팩토링 할 것.
 
@@ -64,12 +64,12 @@ public class BlogService {
 
 	// 글 본문 조회
 	@Transactional(readOnly = true)
-	public PostResDto getPost(Long id) {
+	public PostDto getPost(Long id) {
 
 		BlogPost post = blogPostRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("글이 존재하지 않습니다"));
 
 
-		PostResDto dto = PostResDto.builder()
+		PostDto dto = PostDto.builder()
 				.id(post.getId())
 				.authorId(post.getAuthorId())
 				.title(post.getTitle())
@@ -91,11 +91,11 @@ public class BlogService {
 
 	// 글 수정용 json 불러오기
 	@Transactional(readOnly = true)
-	public PostResDto getPostJson(Long id) {
+	public PostDto getPostJson(Long id) {
 
 		BlogPost post = blogPostRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("글이 존재하지 않습니다"));
 
-		PostResDto dto = PostResDto.builder().id(post.getId()).title(post.getTitle()).page_json(post.getPage_json())
+		PostDto dto = PostDto.builder().id(post.getId()).title(post.getTitle()).page_json(post.getPage_json())
 				.build();
 
 		return dto;
@@ -103,7 +103,7 @@ public class BlogService {
 
 	// 글 수정
 	@Transactional
-	public void updatePost(SavePostReqDto dto) {
+	public void updatePost(SavePostDto dto) {
 		// 기존 엔터티 조회
 		BlogPost post = blogPostRepository.findById(dto.getId())
 				.orElseThrow(() -> new EntityNotFoundException("Post not found: id=" + dto.getId()));

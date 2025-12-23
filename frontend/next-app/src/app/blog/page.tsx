@@ -8,8 +8,7 @@ export type postsRes = {
 };
 
 export default async function BlogList() {
-  const res = await getPostList();
-  const posts = await res.json();
+  const posts = await getPostList({});
 
 
   return (

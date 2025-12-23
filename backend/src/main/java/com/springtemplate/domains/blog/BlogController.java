@@ -2,21 +2,15 @@ package com.springtemplate.domains.blog;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.springtemplate.domains.blog.dto.comment.CommentsResDto;
 import com.springtemplate.domains.blog.dto.comment.SaveCommentReqDto;
-import com.springtemplate.domains.blog.dto.post.PostListResDto;
-import com.springtemplate.domains.blog.dto.post.PostResDto;
-import com.springtemplate.domains.blog.dto.post.SavePostReqDto;
+import com.springtemplate.domains.blog.dto.post.res.PostListDto;
+import com.springtemplate.domains.blog.dto.post.res.PostDto;
+import com.springtemplate.domains.blog.dto.post.res.SavePostDto;
 import com.springtemplate.security.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -30,9 +24,13 @@ public class BlogController {
 
 	// 글 목록 조회
 	@GetMapping("/posts")
-	public ResponseEntity<?> getPostList() {
+	public ResponseEntity<?> getPostList(
+			@RequestParam(required = false) String keyword,
+			@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "10") int pageSize
+	) {
 
-		List<PostListResDto> result = blogService.getPostList();
+		Page<PostListDto> result = blogService.getPostList(keyword, page, pageSize);
 
 		return ResponseEntity.ok(result);
 	}
@@ -41,7 +39,7 @@ public class BlogController {
 	@GetMapping("/posts/getjson/{id}")
 	public ResponseEntity<?> getPostJsonById(@PathVariable Long id) {
 
-		PostResDto result = blogService.getPostJson(id);
+		PostDto result = blogService.getPostJson(id);
 		return ResponseEntity.ok(result);
 
 	}
@@ -50,14 +48,14 @@ public class BlogController {
 	@GetMapping("/posts/{id}")
 	public ResponseEntity<?> getPostById(@PathVariable Long id) {
 
-		PostResDto result = blogService.getPost(id);
+		PostDto result = blogService.getPost(id);
 		return ResponseEntity.ok(result);
 
 	}
 
 	// 글 저장
 	@PostMapping("/saveblogpost")
-	public ResponseEntity<?> savePost(@RequestBody SavePostReqDto dto) {
+	public ResponseEntity<?> savePost(@RequestBody SavePostDto dto) {
 		Long authorId = SecurityUtil.getCurrentUserId(); // 액세스 토큰에서 작성자 id 파싱
 		blogService.savePost(authorId ,dto);
 		return ResponseEntity.ok().build();
@@ -75,7 +73,7 @@ public class BlogController {
 
 	// 글 수정
 	@PutMapping("/posts")
-	public ResponseEntity<?> updatePostById(@RequestBody SavePostReqDto dto) {
+	public ResponseEntity<?> updatePostById(@RequestBody SavePostDto dto) {
 		
 		blogService.updatePost(dto);
 		return ResponseEntity.ok().build();

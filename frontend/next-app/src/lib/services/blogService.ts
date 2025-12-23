@@ -94,9 +94,26 @@ export async function deleteComment(
 }
 
 
-export async function getPostList() {
+export async function getPostList({
+    keyword,
+    page = 1,
+    pageSize = 10
+}:{
+    keyword?: string;
+    page?: number;
+    pageSize?: number;  
+}) {
+    const params = new URLSearchParams();
+    if(keyword){
+        params.append('keyword', keyword);
+        params.append('page', page.toString());
+        params.append('pageSize', pageSize.toString());
+    }
 
-    return await ssrApi(`/api/blog/posts`)
+    const res = await ssrApi(`/api/blog/posts/?${params.toString()}`);
+    const result = res.json();
+
+    return result
 }
 
 export async function getBlogPost(id: number): Promise<getBlogPostRes> {

@@ -1,4 +1,4 @@
-package com.springtemplate.domains.blog.dto.post;
+package com.springtemplate.domains.blog.dto.post.res;
 
 
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class SavePostReqDto {
+public class SavePostDto {
 	
 	private Long id;
 	
