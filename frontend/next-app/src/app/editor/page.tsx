@@ -1,5 +1,4 @@
 "use client";
-import LexicalEditor from "@/components/editors/editor-lexical/LexicalEditor";
 import { saveBlogPost, SaveBlogPostReq } from "@/lib/services/blogService";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -12,6 +11,7 @@ export default function EditorPage() {
   const router = useRouter();
 
 
+  
   const handleSave = async () => {
     try {
       if (!title) {
@@ -35,7 +35,7 @@ export default function EditorPage() {
   };
 
   return (
-    <div className="flex flex-col justify-center">
+    <div className="flex flex-col justify-center m-6">
       <input
         type="text"
         value={title}

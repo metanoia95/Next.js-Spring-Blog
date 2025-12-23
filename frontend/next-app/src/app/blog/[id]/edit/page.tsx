@@ -4,7 +4,7 @@
 import Tiptap from "@/components/editors/tiptap/TiptabEditor";
 import { getPostJson, SaveBlogPostReq, updateBlogPost } from "@/lib/services/blogService";
 import { useParams, useRouter } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 //{ params }: { params: Promise<{ id: string }> }
 export default function PostPage() {
   const params = useParams<{ id: string }>(); // 타입 제네릭으로 지정
@@ -40,7 +40,7 @@ export default function PostPage() {
         return;
       }
       if (!editorJSON) return
-      let dto: SaveBlogPostReq = {
+      const dto: SaveBlogPostReq = {
         id: idNumber,
         title: title,
         page_json: editorJSON,

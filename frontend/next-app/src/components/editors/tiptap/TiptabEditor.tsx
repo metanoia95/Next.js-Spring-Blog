@@ -62,7 +62,7 @@ const Tiptap = ({initContent, setEditorJSON, setEditorHTML} : EditorProps) => {
     ],
     content: initContent,
     // Don't render immediately on the server to avoid SSR issues
-    immediatelyRender: true,
+    immediatelyRender: false,
     autofocus: true,
     editable: true,
     injectCSS: false,

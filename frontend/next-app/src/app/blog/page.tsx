@@ -1,15 +1,11 @@
-import Link from "next/link";
-import { format } from "date-fns";
 import { getPostList } from "@/lib/services/blogService";
-import { formatDate } from "@/lib/utils/date";
+import PostCard from "@/components/blog/post/PostCard";
 
-
-  type postsRes = {
-    id: number;
-    title: string;
-    created_at: string;
-  };
-
+export type postsRes = {
+  id: number;
+  title: string;
+  created_at: string;
+};
 
 export default async function BlogList() {
   const res = await getPostList();
@@ -31,12 +27,7 @@ export default async function BlogList() {
         {posts.map((post: postsRes) => {
           return (
             <div key={post.id} >
-              <Link href={`/blog/${post.id}`}>
-                <div className="flex justify-between p-4 border-gray-200 border rounded-2xl mt-3 hover:bg-gray-50">
-                  <span className="text-xl font-bold">{post.title}</span>
-                  <span className= "text-gray-500">{formatDate(post.created_at)}</span>
-                </div>
-              </Link>
+              <PostCard post={post} />
             </div>
           );
         })}

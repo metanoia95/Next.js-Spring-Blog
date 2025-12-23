@@ -1,13 +1,12 @@
 import '@/components/editors/tiptap/styles.scss'
 import CommentSection from "@/components/blog/comment/CommentSection";
-import PostDeleteButton from "@/components/common/PostDeleteButton";
-//import { renderFullLexicalJson } from "@/components/editors/editor-lexical/renderLexicalHtml";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { getBlogPost, getPostComments } from "@/lib/services/blogService";
 import { formatDate } from '@/lib/utils/date';
 import { api_env } from '@/lib/env';
 import { jwtVerify } from "jose";
+import PostDeleteButton from '@/components/blog/post/PostDeleteButton';
 
 type PostPageProps = {
   // params가 Promise<{ id: string }> 타입으로 옵니다
@@ -17,11 +16,9 @@ type PostPageProps = {
 export default async function PostPage({ params }: PostPageProps) {
   debugger;
   const { id } = await params;
-  const cookieStore = await cookies(); // 
+  const cookieStore = await cookies();  
   let isLoggedIn = false;
   const accessToken = cookieStore.get("accessToken")?.value;
-  console.log("accessToken in post page:", accessToken);
-  console.log("JWT_SECRET",api_env.JWT_SECRET);
 
  let userId: string | null = null;
 
@@ -73,19 +70,13 @@ export default async function PostPage({ params }: PostPageProps) {
     <div className="flex flex-col">
       <div className="post-title">{post.title}</div>
       <hr />
-      <div
-      className='flex justify-between items-center flex-row'>
+      <div className='flex justify-between items-center flex-row'>
         <div className="post-author p-2">작성자: {post.authorId}</div>
         <div className="flex p-2 h-16 justify-end items-center" ><p>{formatDate(post.created_at)}</p></div>
       </div>
       
       {/* 본문 */}
       <div className="tiptap prose prose-lg max-w-none">
-        
-        {/* 렉시컬 <div 
-          className="mt-5 p-4 border-2 border-gray-200 min-h-96"
-          dangerouslySetInnerHTML={{ __html: postHtml }}
-        /> */}
         <div className="p-4"
         dangerouslySetInnerHTML={{__html:postHtml}}
         />

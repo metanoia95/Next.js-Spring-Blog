@@ -1,34 +1,32 @@
-import Card from "@/components/common/Card";
-import Image from "next/image";
+import PostCard from "@/components/blog/post/PostCard";
+import { postsRes } from "./blog/page";
+import { getPostList } from "@/lib/services/blogService";
 
 
 
-export default function IndexPage() {
-  
-  return(
-  <div className="min-h-screen p-2">
-    <div className="flex flex-col mt-4 pb-3 justify-center gap-5 border-b-1 border-gray-400" >
-      <h1 className="text-4xl text-bold">Next.js & Spring Boot & Postgre</h1>
-      <span>Next.js와 Spring Boot, Postgre 기반의 블로그입니다.</span>
-    </div>
-    
-    <div className="mt-5">
-      <h1 className="text-3xl text-bold"> 주요기술 스택</h1>
-      <div className="grid grid-cols-3 gap-4 pt-5">
-        <Card>   
-          <Image src="/images/tiptap.png" alt="" width={0} height={0} sizes="100vw" className="w-full h-auto" />
-        </Card>
-        <Card>   
-          <Image src="/images/NextJs.png" alt="" width={0} height={0} sizes="100vw" className="w-full h-auto" />
-        </Card>
-        <Card>   
-          <Image src="/images/spring.png" alt="" width={0} height={0} sizes="100vw" className="w-full h-auto" />
-        </Card>
-        <Card>   
-          <Image src="/images/Postgre.png" alt="" width={0} height={0} sizes="100vw" className="w-full h-auto" />
-        </Card>
+export default async function IndexPage() {
+    const res = await getPostList();
+    const posts = await res.json();
+
+  return (
+    <div className="min-h-screen p-2">
+      <div className="flex flex-col mt-4 pb-3 justify-center gap-5 border-b-1 border-gray-400 items-center" >
+        <h1 className="text-4xl text-bold">Blog</h1>
+        <span>프론트엔드, 백엔드, 웹, 퀀트, 알고리즘, 그외 기타 여러 것들을 다룹니다.</span>
       </div>
-    </div>
-  
-  </div>)
+
+      <div className="mt-5">
+        <h5 className="text-2xl text-bold">최근 게시글</h5>
+        <div className="grid grid-cols-3 gap-4 pt-5">
+            {posts.map((post: postsRes) => {
+              return (
+                <div key={post.id} >
+                  <PostCard post={post} />
+                </div>
+              );
+            })}
+        </div>
+      </div>
+
+    </div>)
 }

@@ -18,8 +18,7 @@ export default function PostComment({
     created_at,
     onDelete
 }: PostCommentProps) {
-    debugger;
-    const { data, isLoading, isError } = useUser(); // 사용자 정보 훅
+    const { data, isLoading } = useUser(); // 사용자 정보 훅
     const [isAuthor, setIsAuthor] = useState(false);
     
     useEffect(() => {

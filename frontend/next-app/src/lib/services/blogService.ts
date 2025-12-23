@@ -1,4 +1,4 @@
-import {api} from "@/lib/axios";
+import { jsonApi} from "@/lib/axios";
 import { AxiosResponse } from "axios";
 import { ssrApi } from "../ssrApi";
 
@@ -49,7 +49,7 @@ export async function saveBlogPost(
 
 ): Promise<AxiosResponse> {
 
-    return await api.post('/api/blog/saveblogpost', data);
+    return await jsonApi.post('/api/blog/saveblogpost', data);
 
 }
 
@@ -58,7 +58,7 @@ export async function updateBlogPost(
 
 ): Promise<AxiosResponse> {
 
-    return await api.put('/api/blog/posts', data);
+    return await jsonApi.put('/api/blog/posts', data);
 
 }
 
@@ -66,14 +66,14 @@ export async function deletePost(
     id: number
 ): Promise<AxiosResponse> {
 
-    return await api.delete(`/api/blog/posts/${id}`)
+    return await jsonApi.delete(`/api/blog/posts/${id}`)
 }
 
 export async function getPostJson(
     id: number
 ): Promise<getPostJsonRes> {
 
-    const res = await api.get(`/api/blog/posts/getjson/${id}`);
+    const res = await jsonApi.get(`/api/blog/posts/getjson/${id}`);
 
     return res.data;
 
@@ -82,7 +82,7 @@ export async function getPostJson(
 export async function SaveComment(
     data: SaveCommentReq
 ): Promise<AxiosResponse> {
-    return await api.post(`/api/blog/comment`, data)
+    return await jsonApi.post(`/api/blog/comment`, data)
 }
 
 
@@ -90,7 +90,7 @@ export async function deleteComment(
     id: number
 ): Promise<AxiosResponse> {
 
-    return await api.delete(`/api/blog/comment/${id}`)
+    return await jsonApi.delete(`/api/blog/comment/${id}`)
 }
 
 
@@ -110,5 +110,5 @@ export async function getPostComments(postId: number) {
 }
 
 export async function getPostCommentsAxios(postId: number): Promise<AxiosResponse> {
-    return await api.get(`/api/blog/comments/${postId}`)
+    return await jsonApi.get(`/api/blog/comments/${postId}`)
 }

@@ -1,12 +1,11 @@
-import NavBar from "@/components/navbar/Navbar";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
-//import { refreshAccessToken } from "@/lib/services/authService";
 import QueryProvider from "@/lib/react-query/QueryProvider";
 export const revalidate = 0; // 캐시하지 않음
 export const dynamic = "force-dynamic";
 import { FaGithub } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
+import Header from "@/components/header/Header";
 
 export default async function RootLayout({
   children,
@@ -22,9 +21,8 @@ export default async function RootLayout({
         <QueryProvider>
           <StoreProvider>
             <header>
-              <NavBar />
+              <Header />
             </header>
-
             <main>
               <div className="max-w-7xl min-w-[320px] mx-auto">{children}</div>
             </main>

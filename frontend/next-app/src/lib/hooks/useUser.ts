@@ -4,7 +4,10 @@ import { getUserInfo, UserInfo } from "@/lib/services/userService";
 export function useUser():UseQueryResult<UserInfo, Error> {
     return useQuery<UserInfo, Error>({
         queryKey:['userInfo'],
-        queryFn: getUserInfo
+        queryFn: getUserInfo,
+        retry: false,                 // 🔥 핵심
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
     });
 
  }

@@ -1,4 +1,4 @@
-import {api} from "../axios"
+import {jsonApi} from "../axios"
 
 export interface UserInfo {
     id:number;
@@ -9,7 +9,7 @@ export interface UserInfo {
 }
 
 export async function getUserInfo():Promise<UserInfo> {    
-    const response = await api.get('/api/user/userinfo')
+    const response = await jsonApi.get('/api/user/userinfo')
 
     return response.data
 }

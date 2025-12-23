@@ -78,17 +78,13 @@ export default function LoginPage() {
               로그인
             </button>
           </form>
-
-          <form className="mt-4" action="goJoin" method="post">
-            {/* 클래스에 block 추가해줘야함. */}
             <Link
               href="/signup"
-              className="block w-full text-center bg-purple-500 text-white py-2 rounded hover:bg-gray-400 transition-colors"
+              className="mt-3 block w-full text-center bg-purple-500 text-white py-2 rounded hover:bg-gray-400 transition-colors"
             >
               회원가입
             </Link>
            
-          </form>
            {/* 구글 로그인 */}
             <GoogleLoginPage />
         </div>
