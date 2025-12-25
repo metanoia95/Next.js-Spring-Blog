@@ -1,15 +1,11 @@
 package com.springtemplate.domains.auth;
 
+import com.springtemplate.domains.auth.dto.*;
+import com.springtemplate.security.CustomUserDetails;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.springtemplate.domains.auth.dto.GoogleLoginReqDto;
-import com.springtemplate.domains.auth.dto.LoginReqDto;
-import com.springtemplate.domains.auth.dto.LoginResDto;
-import com.springtemplate.domains.auth.dto.SignUpReqDto;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -77,5 +73,18 @@ public class AuthController {
 		return ResponseEntity.ok(resDto);
 
 	}
+
+	//인증 처리
+	@GetMapping("/me")
+	public ResponseEntity<?> getMe(Authentication authentication){
+		if(authentication == null){
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+
+		CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
+		MeDto meDto = new MeDto(user.getId(), user.getEmail(), user.getRole().name());
+
+		return ResponseEntity.ok(meDto);
+	};
 
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Home, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { UserInfo } from "@/lib/services/userService";
@@ -31,7 +31,7 @@ export default function Header() {
     }
   }, [data, isLoading]);
 
-  // 경로 바뀌면 모바일 메뉴 닫기 (UX 좋아짐)
+  
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
@@ -47,7 +47,7 @@ export default function Header() {
       <div className="relative w-full max-w-screen-xl mx-auto px-6">
         {/* Top bar */}
         <div className="flex h-16 items-center justify-between">
-          {/* Desktop nav */}
+          {/*  네비게이션 */}
           <nav className="hidden sm:flex items-center gap-8 text-sm font-medium">
             {navLinks.map(({ href, label }) => {
               const isActive = pathname === href;
@@ -94,7 +94,7 @@ export default function Header() {
             </button>
 
             {/* Home */}
-            <Link href="/" aria-label="Home" className="
+            {/* <Link href="/" aria-label="Home" className="
                   inline-flex items-center justify-center
                   h-9 w-9 rounded-full
                   border border-gray-300
@@ -103,7 +103,7 @@ export default function Header() {
                   transition
                 ">
                 <Home className="h-5 w-5 stroke-[1.5]" />
-            </Link>
+            </Link> */}
 
             {/* Auth */}
             {isAuthenticated ? (

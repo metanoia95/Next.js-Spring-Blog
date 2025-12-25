@@ -33,9 +33,9 @@ public class LoginReqDto {
 	    return User.builder()
 	            .email(this.email)
 	            .pw(this.pw)
-	            .user_name("") // 로그인할 때는 이름 정보 없으니 기본값 빈 문자열
-	            .status_msg("")
-	            .profile_img("")
+	            .userName("") // 로그인할 때는 이름 정보 없으니 기본값 빈 문자열
+	            .statusMsg("")
+	            .profileImg("")
 	            .build();
 	}
 	

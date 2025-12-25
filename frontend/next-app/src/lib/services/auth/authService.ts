@@ -1,4 +1,6 @@
 import {jsonApi} from "@/lib/axios";
+import { ssrApi } from "@/lib/ssrApi";
+import { cookies } from "next/headers";
 
 interface LoginRequest {
     email : string ;
@@ -58,4 +60,19 @@ export async function googleLogin(data:ICredential): Promise<LoginResponse> { //
     const response = await jsonApi.post('/api/auth/login/google', data);
     return response.data;
     
+}
+
+// 현재 로그인한 사용자 정보 가져오기
+export async function getCurrentUser() {
+  const cookieStore = await cookies(); // 
+
+  const token = cookieStore.get('access_token')?.value;
+  if (!token) return null;
+
+  const res = await ssrApi(`/api/auth/`);
+
+  if (!res.ok) return null;
+
+  const user = await res.json(); 
+  return user;
 }

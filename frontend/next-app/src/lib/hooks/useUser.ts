@@ -5,7 +5,7 @@ export function useUser():UseQueryResult<UserInfo, Error> {
     return useQuery<UserInfo, Error>({
         queryKey:['userInfo'],
         queryFn: getUserInfo,
-        retry: false,                 // 🔥 핵심
+        retry: false,                 
         refetchOnMount: false,
         refetchOnWindowFocus: false,
     });

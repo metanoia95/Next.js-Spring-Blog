@@ -65,6 +65,9 @@ public class AuthService {
 		// 엔터티 변환
 		User user = reqDto.toEntity(encryptedPassword);
 
+		//게스트 처리
+		user.setRole(Role.GUEST);
+
 		userRepository.save(user);
 
 		LoginResDto resDto = LoginResDto.builder().build();
@@ -120,7 +123,7 @@ public class AuthService {
 		User user = userRepository.findBySub(sub)
 				.map(u->{ // user가 있으면 실행. 기존 유저 필드만 갱신
 					u.setEmail(dto.getEmail());
-					u.setUser_name(dto.getName());
+					u.setUserName(dto.getName());
 					return u;
 				})
 				.orElseGet(() ->  // 신규유저					
@@ -128,7 +131,8 @@ public class AuthService {
 					User.builder()
 						.sub(dto.getSub())
 						.email(dto.getEmail())
-						.user_name(dto.getName())
+						.userName(dto.getName())
+						.role(Role.GUEST)  //게스트 처리
 						.build()
 				);
 

@@ -34,24 +34,27 @@ public class BlogPost {
 	private Long id; // 인덱스
 	
     @Column(name = "author_id")
-	private Long authorId; 
-	
+	private Long authorId;
+
+	@Column(name = "title")
 	private String title;
 	
 	// 페이지 json 파일
-	@Column(columnDefinition = "jsonb")
+	@Column(columnDefinition = "jsonb", name = "page_json")
 	@JdbcTypeCode(SqlTypes.JSON)
-	private String page_json; 
+	private String pageJson;
 	
-    @Column(columnDefinition = "TEXT")
-	private String page_html;
+    @Column(columnDefinition = "TEXT", name = "page_html")
+	private String pageHtml;
 	
 	@CreationTimestamp
-	private LocalDateTime created_at;
+	@Column(name = "created_at")
+	private LocalDateTime createdAt;
 	    
     // 수정 일자
     @UpdateTimestamp
-	private LocalDateTime updated_at;
+	@Column(name = "updated_at")
+	private LocalDateTime updatedAt;
 	
 	
 	

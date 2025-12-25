@@ -4,33 +4,34 @@
 // 미들웨어에서는 요청가로채기& 리다이렉션만 처리할 것.
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { jwtVerify } from "jose";
+import { api_env } from "./lib/env";
 
-export function middleware(request: NextRequest) {
+const PROTECTED_PATHS = ["/editor"];
+
+export async function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
-  // 1️⃣ 인증 관련 페이지는 무조건 통과
-  if (
-    pathname === "/login" ||
-    pathname === "/signup" ||
-    pathname === "/refresh"
-  ) {
+  const isProtectedPath = PROTECTED_PATHS.some((path) =>
+    pathname.startsWith(path)
+  );
+
+  // 1. 보호 페이지 아니면 통과
+  if(!isProtectedPath){
     return NextResponse.next();
   }
 
-  // 2️⃣ 공개 페이지
-  if (pathname === "/" || pathname.startsWith("/blog")) {
-    return NextResponse.next();
-  }
-
+  // 2. 토큰 가져오기
   const accessToken = request.cookies.get("accessToken")?.value;
   const refreshToken = request.cookies.get("refreshToken")?.value;
 
-  // 3️⃣ 보호 페이지: refreshToken 없으면 로그인
+  // 3️. 보호 페이지
+  // 3.1.  refreshToken 없으면 로그인
   if (!refreshToken) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // 4️⃣ accessToken 없으면 refresh
+  // 3.2. accessToken 없으면 refresh
   if (!accessToken) {
     const nextUrl = encodeURIComponent(`${pathname}${search}`);
     return NextResponse.redirect(
@@ -38,8 +39,18 @@ export function middleware(request: NextRequest) {
     );
   }
 
-  // 5️⃣ 나머지는 통과
-  return NextResponse.next();
+  // 5️. 나머지는 통과
+  try{
+    await jwtVerify(
+      accessToken,
+      new TextEncoder().encode(api_env.JWT_SECRET)
+    );
+
+  }catch{
+    alert("권한이 없습니다.")
+  }
+
+  
 }
 
 export const config = {

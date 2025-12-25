@@ -38,8 +38,8 @@ public class BlogService {
 				.builder()
 				.authorId(authorId)
 				.title(dto.getTitle())
-				.page_html(dto.getPage_html())
-				.page_json(dto.getPage_json())
+				.pageHtml(dto.getPage_html())
+				.pageJson(dto.getPage_json())
 				.build();
 
 		blogPostRepository.save(post);
@@ -73,9 +73,9 @@ public class BlogService {
 				.id(post.getId())
 				.authorId(post.getAuthorId())
 				.title(post.getTitle())
-				.page_html(post.getPage_html())
-				.page_json(post.getPage_json())
-				.created_at(post.getCreated_at())
+				.page_html(post.getPageHtml())
+				.page_json(post.getPageJson())
+				.created_at(post.getCreatedAt())
 				.build();
 
 		return dto;
@@ -95,7 +95,10 @@ public class BlogService {
 
 		BlogPost post = blogPostRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("글이 존재하지 않습니다"));
 
-		PostDto dto = PostDto.builder().id(post.getId()).title(post.getTitle()).page_json(post.getPage_json())
+		PostDto dto = PostDto.builder()
+				.id(post.getId())
+				.title(post.getTitle())
+				.page_json(post.getPageJson())
 				.build();
 
 		return dto;
@@ -111,8 +114,8 @@ public class BlogService {
 		
 		// 2) 세터로 필드 업데이트
 		post.setTitle(dto.getTitle());
-		post.setPage_json(dto.getPage_json());
-		post.setPage_html(dto.getPage_html());
+		post.setPageJson(dto.getPage_json());
+		post.setPageHtml(dto.getPage_html());
 		// updatedAt 은 @UpdateTimestamp가 자동 반영해 줍니다.
 		blogPostRepository.save(post);
 

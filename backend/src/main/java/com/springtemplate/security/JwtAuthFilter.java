@@ -38,7 +38,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			FilterChain filterChain
 			)
 			throws ServletException, IOException {
-		
+		String token = null;
+
+		//AuthorizationHeader 추출(SSR)
+		String authHeader = request.getHeader("Authorization");
+		if(authHeader != null && authHeader.startsWith("Bearer")){
+			token = authHeader.substring(7); // Bearer 문자열 제외
+		}
+
+		// 헤더에 토큰이 없는 경우(CSR)
+		if(token == null ){
+			token = cookieUtil.resolveAccessTokenFromCookie(request);
+		};
+
 		final String uri = request.getRequestURI();
 		
 		// 1) 프리플라이트는 통과
@@ -57,11 +69,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		
 		
 		try {
-		// Jwt처리 로직
-		// 1. 쿠키에서 액세스 토큰 추출
-		String token = cookieUtil.resolveAccessTokenFromCookie(request); 
-		
-		// 2. 토큰 검증
+		// 토큰 검증
 		if(token !=null && jwtUtil.validateAccessToken(token)) {
 		
 			String email = jwtUtil.extractUserEmail(token);
@@ -82,8 +90,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			SecurityContextHolder.getContext().setAuthentication(authToken);
 			
 			/*  인증 객체 사용방법
-			 *   
-			 * 
+			 *
 			 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 					CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
 					Long user_id = userDetails.getId();

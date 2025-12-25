@@ -19,11 +19,11 @@ public interface BlogPostRepository extends JpaRepository<BlogPost, Long>{
     SELECT new com.springtemplate.domains.blog.dto.post.res.PostListDto(
         p.id,
         p.title,
-        p.created_at
+        p.createdAt
         )
     FROM BlogPost p
-    WHERE (:keyword IS NULL OR p.title Like %:keyWord%) 
-    ORDER BY p.created_at Desc
+    WHERE (:keyword IS NULL OR p.title Like %:keyword%) 
+    ORDER BY p.createdAt Desc
     """)
     Page<PostListDto> findPostList(@Param("keyword") String keyword, Pageable pageable);
 	

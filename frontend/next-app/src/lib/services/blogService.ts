@@ -109,15 +109,23 @@ export async function getPostList({
         params.append('page', page.toString());
         params.append('pageSize', pageSize.toString());
     }
+    const queryString  = params.toString();
+    const url = queryString ? `/api/blog/posts/${queryString }` : `/api/blog/posts`;
 
-    const res = await ssrApi(`/api/blog/posts/?${params.toString()}`);
-    const result = res.json();
-
-    return result
+    const res = await ssrApi(url);
+    if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`API Error ${res.status}: ${text}`);
+  }
+    
+    const result = await res.json();
+    console.log("result", result)  
+    return result.content;
 }
 
 export async function getBlogPost(id: number): Promise<getBlogPostRes> {
     const res = await ssrApi(`/api/blog/posts/${id}`)
+    
     const data: getBlogPostRes = await res.json();
     return data
 }

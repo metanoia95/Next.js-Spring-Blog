@@ -24,9 +24,9 @@ public class UserService {
 		UserInfoResDto dto = UserInfoResDto.builder()
 				.id(user.getId())
 				.email(user.getEmail())
-				.name(user.getUser_name())
-				.status_msg(user.getStatus_msg())
-				.profile_img(user.getProfile_img())
+				.name(user.getUserName())
+				.status_msg(user.getStatusMsg())
+				.profile_img(user.getProfileImg())
 				.build();
 		
 		return dto;
