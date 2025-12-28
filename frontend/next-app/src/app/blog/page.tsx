@@ -1,5 +1,7 @@
-import { getPostList } from "@/lib/services/blogService";
+
 import PostCard from "@/components/blog/post/PostCard";
+import { Pagination } from "@/components/common/Pagination";
+import { getPostList } from "@/lib/services/blog/blog.server";
 
 export type postsRes = {
   id: number;
@@ -7,8 +9,17 @@ export type postsRes = {
   created_at: string;
 };
 
-export default async function BlogList() {
-  const posts = await getPostList({});
+export default async function BlogList({
+  searchParams, // 쿼리스트링 파싱
+}: {
+  searchParams: Promise<{ page? : string}>
+}) {
+  const { page } = await searchParams;
+
+  const currentPage = Number(page ?? 1);
+  const pageSize = 10;
+
+  const posts = await getPostList({ currentPage, pageSize });
 
 
   return (
@@ -17,12 +28,9 @@ export default async function BlogList() {
         <div>
           <h1>Blog posts</h1>
         </div>
-        {/* <Link href="/editor" className="">
-          글쓰기
-        </Link> */}
       </div>
       <hr className="my-4 border-gray-300" />
-      <div className="flex flex-col-reverse">
+      <div className="flex flex-col">
         {posts.map((post: postsRes) => {
           return (
             <div key={post.id} >
@@ -31,6 +39,7 @@ export default async function BlogList() {
           );
         })}
       </div>
+      <Pagination currentPage={currentPage} />
     </div>
   );
 }

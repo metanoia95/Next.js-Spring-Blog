@@ -1,6 +1,5 @@
 import { jsonApi} from "@/lib/axios";
 import { AxiosResponse } from "axios";
-import { ssrApi } from "../ssrApi";
 
 
 
@@ -35,13 +34,6 @@ export interface getPostJsonRes {
 
 }
 
-export interface getBlogPostRes {
-    id: number;
-    authorId: number;
-    title: string;
-    page_html: string;
-    created_at: string;
-}
 
 
 export async function saveBlogPost(
@@ -94,45 +86,6 @@ export async function deleteComment(
 }
 
 
-export async function getPostList({
-    keyword,
-    page = 1,
-    pageSize = 10
-}:{
-    keyword?: string;
-    page?: number;
-    pageSize?: number;  
-}) {
-    const params = new URLSearchParams();
-    if(keyword){
-        params.append('keyword', keyword);
-        params.append('page', page.toString());
-        params.append('pageSize', pageSize.toString());
-    }
-    const queryString  = params.toString();
-    const url = queryString ? `/api/blog/posts/${queryString }` : `/api/blog/posts`;
-
-    const res = await ssrApi(url);
-    if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`API Error ${res.status}: ${text}`);
-  }
-    
-    const result = await res.json();
-    console.log("result", result)  
-    return result.content;
-}
-
-export async function getBlogPost(id: number): Promise<getBlogPostRes> {
-    const res = await ssrApi(`/api/blog/posts/${id}`)
-    
-    const data: getBlogPostRes = await res.json();
-    return data
-}
-
-export async function getPostComments(postId: number) {
-    return await ssrApi(`/api/blog/comments/${postId}`)
-}
 
 export async function getPostCommentsAxios(postId: number): Promise<AxiosResponse> {
     return await jsonApi.get(`/api/blog/comments/${postId}`)

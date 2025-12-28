@@ -3,6 +3,7 @@ package com.springtemplate.domains.auth;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -112,6 +113,15 @@ public class AuthService {
 		String newAccessToken = jwtUtil.generateAccessToken(user.getId(),user.getEmail()); // 이메일 값으로 액세스 토큰 생성
 		response.addCookie(cookieUtil.setTokenCookie("accessToken", newAccessToken));
 
+//		ResponseCookie accessToken = ResponseCookie.from("accessToken", newAccessToken)
+//				.httpOnly(true)
+//				.secure(false)
+//				.sameSite("None")
+//				.path("/")
+//				.maxAge(900)
+//				.build();
+//
+//		response.addHeader("Set-Cookie", accessToken.toString());
 	}
 	
 	//구글 로그인
@@ -143,8 +153,8 @@ public class AuthService {
 	
 	}
 	
-	
-	
+
+
 	// 참조 함수
 	private LoginResDto createLoginResDto (User user, HttpServletResponse response) {
 		String accessToken = addAcRfTokenToCookie(user, response);

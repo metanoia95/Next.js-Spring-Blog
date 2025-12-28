@@ -1,6 +1,5 @@
 import {jsonApi} from "@/lib/axios";
-import { ssrApi } from "@/lib/ssrApi";
-import { cookies } from "next/headers";
+
 
 interface LoginRequest {
     email : string ;
@@ -23,11 +22,18 @@ interface SignUpRes {
     accessToken: string;
 }
 
+// 인증 정보 조회
+export async function getCurrentUserCSR(){
+    console.log("getCurrentUserCSR called");
+    console.log("is browser:", typeof window !== "undefined");
+    const response = await jsonApi.get('/api/auth/me')
+    console.log("getCurrentUserCSR res", response.data);
+    return response.data
+}
 
 
 //로그인
 export async function login(data:LoginRequest): Promise<LoginResponse> { //Promise : 리턴 타입 지정
-    console.log("로그인 요청 데이터: ", data);
     const response = await jsonApi.post('/api/auth/login', data);
     return response.data;
     
@@ -42,9 +48,7 @@ export async function logout() {
 
 // 회원가입
 export async function signUp(data: SignUpReq) : Promise<SignUpRes>{
-
     const response = await jsonApi.post('/api/auth/signup', data)
-    console.log(response.data)
     return response.data
 }
 
@@ -58,21 +62,6 @@ export async function refreshAccessToken() {
 // 구글 로그인 
 export async function googleLogin(data:ICredential): Promise<LoginResponse> { //Promise : 리턴 타입 지정
     const response = await jsonApi.post('/api/auth/login/google', data);
-    return response.data;
-    
+    return response.data;    
 }
 
-// 현재 로그인한 사용자 정보 가져오기
-export async function getCurrentUser() {
-  const cookieStore = await cookies(); // 
-
-  const token = cookieStore.get('access_token')?.value;
-  if (!token) return null;
-
-  const res = await ssrApi(`/api/auth/`);
-
-  if (!res.ok) return null;
-
-  const user = await res.json(); 
-  return user;
-}

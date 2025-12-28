@@ -4,7 +4,7 @@ import { useState } from "react";
 import InputField from "@/components/common/InputField";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { signUp } from "@/lib/services/auth/authService";
+import { signUp } from "@/lib/services/auth/auth.client";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");

@@ -36,7 +36,7 @@ public class JwtUtil {
 	// 액세스 토큰 생성
 	public String generateAccessToken(Long userId,String userEmail) { // 사용자 아이디(username)을 받아 jwt 생성
 		return Jwts.builder() // jwt 빌더 객체를 생성
-				.setSubject(String.valueOf(userId)) // 토큰의 주체 설정(사용자 이름 들어감)
+				.setSubject(String.valueOf(userId)) // 토큰의 주체 설정(사용자 이름 들어감
 				.claim("email", userEmail)
 				.setIssuedAt(new Date()) // 발급시간 설정
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) // 만료시간 설정, 현재시간에 유효기간 추가.

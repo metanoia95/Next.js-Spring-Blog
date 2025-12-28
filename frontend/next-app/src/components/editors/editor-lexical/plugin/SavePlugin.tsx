@@ -3,7 +3,7 @@
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { useRouter } from "next/navigation";
 import { $generateHtmlFromNodes } from "@lexical/html"; // editorState를 html로 변환해서 저장
-import { saveBlogPost, SaveBlogPostReq, updateBlogPost } from "@/lib/services/blogService";
+import { saveBlogPost, SaveBlogPostReq, updateBlogPost } from "@/lib/services/blog/blogService";
 
 export const SavePlugin = ({
   id,

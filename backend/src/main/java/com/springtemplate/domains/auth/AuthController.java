@@ -55,7 +55,7 @@ public class AuthController {
 	//액세스 토큰 갱신
 	@PostMapping("/refresh")
 	public ResponseEntity<?> refreshAccessToken(HttpServletRequest request, HttpServletResponse response) {
-		log.info("[Refresh Attemp ]" + request.getHeader("refreshToken"));
+
 		authService.refreshAccessToken(request, response);
 
 		return ResponseEntity.ok().build();

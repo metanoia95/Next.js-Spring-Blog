@@ -45,6 +45,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		if(authHeader != null && authHeader.startsWith("Bearer")){
 			token = authHeader.substring(7); // Bearer 문자열 제외
 		}
+		log.debug(token);
 
 		// 헤더에 토큰이 없는 경우(CSR)
 		if(token == null ){
@@ -61,12 +62,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	    }
 
 	    // 2) 공개 경로는 통과 (signup/login/refresh 등)
-	    if (uri.startsWith("/api/auth/")) {
-	      log.debug("JWT FILTER: bypass public {}", uri);
-	      filterChain.doFilter(request, response);
-	      return;
-	    }
-		
+//	    if (uri.startsWith("/api/auth/")) {
+//	      log.debug("JWT FILTER: bypass public {}", uri);
+//	      filterChain.doFilter(request, response);
+//	      return;
+//	    }
+//
 		
 		try {
 		// 토큰 검증

@@ -2,11 +2,11 @@ import '@/components/editors/tiptap/styles.scss'
 import CommentSection from "@/components/blog/comment/CommentSection";
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { getBlogPost, getPostComments } from "@/lib/services/blogService";
 import { formatDate } from '@/lib/utils/date';
 import { api_env } from '@/lib/env';
 import { jwtVerify } from "jose";
 import PostDeleteButton from '@/components/blog/post/PostDeleteButton';
+import { getBlogPost, getPostComments } from '@/lib/services/blog/blog.server';
 
 type PostPageProps = {
   // params가 Promise<{ id: string }> 타입으로 옵니다
@@ -93,7 +93,7 @@ export default async function PostPage({ params }: PostPageProps) {
           <>
             <Link
               className="mr-2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors"
-              href={`/blog/${post.id}/edit`}
+              href={`/editor?id=${post.id}`}
             >
               {" "}
               수정하기{" "}

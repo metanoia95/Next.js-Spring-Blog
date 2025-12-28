@@ -1,6 +1,6 @@
 'use client'
 
-import { deletePost } from "@/lib/services/blogService";
+import { deletePost } from "@/lib/services/blog/blogService";
 import { useRouter } from "next/navigation"
 
 export default function PostDeleteButton({postId}:{postId:number}){

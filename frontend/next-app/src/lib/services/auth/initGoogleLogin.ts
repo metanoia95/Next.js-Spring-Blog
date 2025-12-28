@@ -1,6 +1,6 @@
 "use client";
 import { api_env } from "@/lib/env";
-import { googleLogin } from "./authService";
+import { googleLogin } from "./auth.client";
 import axios from "axios";
 
 export function initGoogleLogin(buttonEl: HTMLDivElement) {

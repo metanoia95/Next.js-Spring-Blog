@@ -2,19 +2,21 @@
 
 import { User } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { UserInfo } from "@/lib/services/userService";
-import { useState, useEffect, useRef } from "react";
-import { logout } from "@/lib/services/auth/authService";
 
-const UserDropdown = ({userInfo} : {userInfo : UserInfo|null}) => {
+import { useState, useEffect, useRef} from "react";
+import { logout } from "@/lib/services/auth/auth.client";
+import { getUserInfo } from "@/lib/services/userService";
+
+const UserDropdown = ({user} : {user 
+  : {id: number; email: string; role: string} | null}) => {
   const router = useRouter();
 
   const options = [
-    {
-      title: "회원정보 수정",
-      type: "link",
-      link: "/profile",
-    },
+    // {
+    //   title: "회원정보 수정",
+    //   type: "link",
+    //   link: "/profile",
+    // },
      {
       title : "글쓰기",
       type : "link",
@@ -30,6 +32,14 @@ const UserDropdown = ({userInfo} : {userInfo : UserInfo|null}) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const toggleDropdown = () => setIsOpen((prev) => !prev);
+  const [userInfo, setUserInfo] = useState<{id:number; email:string; name:string; status_msg:string; profile_img:string} | null>(null);
+
+  useEffect(() => {
+    if(user){
+      getUserInfo().then(setUserInfo);
+    }
+
+  },[]);
 
   // 드롭다운용 훅
   const handleOptionClick = (option: typeof options[number]) => {

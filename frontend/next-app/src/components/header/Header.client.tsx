@@ -4,15 +4,28 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { UserInfo } from "@/lib/services/userService";
-import { useUser } from "@/lib/hooks/useUser";
-import UserDropdown from "./UserDropdown";
+import { useQuery } from "@tanstack/react-query";
+import { getCurrentUserCSR } from "@/lib/services/auth/auth.client";
+import HeaderAuthMenu from "./HeaderAuthMenu";
 
-export default function Header() {
+
+export default function HeaderClient() {
   const pathname = usePathname();
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // 라우트 변경 시 모바일 메뉴 닫기
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
+  const { 
+    data: currentUser,
+    isLoading,
+   } = useQuery({
+    queryKey: ['currentUser'],
+    queryFn: getCurrentUserCSR,
+    retry : false
+  })
 
   const navLinks = [
     { href: "/", label: "홈" },
@@ -20,21 +33,7 @@ export default function Header() {
     { href: "/portfolio", label: "포트폴리오" },
   ];
 
-  const { data, isLoading } = useUser();
-
-  useEffect(() => {
-    if (!isLoading && data) {
-      setUserInfo(data);
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-    }
-  }, [data, isLoading]);
-
   
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
 
   return (
     <header
@@ -47,7 +46,7 @@ export default function Header() {
       <div className="relative w-full max-w-screen-xl mx-auto px-6">
         {/* Top bar */}
         <div className="flex h-16 items-center justify-between">
-          {/*  네비게이션 */}
+          {/* Navigation */}
           <nav className="hidden sm:flex items-center gap-8 text-sm font-medium">
             {navLinks.map(({ href, label }) => {
               const isActive = pathname === href;
@@ -71,7 +70,7 @@ export default function Header() {
           </nav>
 
           {/* Right actions */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 w-full sm:w-auto">
             {/* Mobile menu button */}
             <button
               onClick={() => setMobileOpen((prev) => !prev)}
@@ -93,54 +92,16 @@ export default function Header() {
               )}
             </button>
 
-            {/* Home */}
-            {/* <Link href="/" aria-label="Home" className="
-                  inline-flex items-center justify-center
-                  h-9 w-9 rounded-full
-                  border border-gray-300
-                  text-gray-600
-                  hover:text-black hover:border-black
-                  transition
-                ">
-                <Home className="h-5 w-5 stroke-[1.5]" />
-            </Link> */}
-
             {/* Auth */}
-            {isAuthenticated ? (
-              <UserDropdown userInfo={userInfo} />
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  className="
-                    inline-flex items-center justify-center
-                    h-9 px-4 rounded-full
-                    bg-black text-white text-sm
-                    hover:bg-gray-800
-                    transition
-                  "
-                >
-                  로그인
-                </Link>
-                <Link
-                  href="/signup"
-                  className="
-                    inline-flex items-center justify-center
-                    h-9 px-4 rounded-full
-                    border border-gray-300
-                    text-sm text-gray-700
-                    hover:border-black hover:text-black
-                    transition
-                  "
-                >
-                  회원가입
-                </Link>
-              </>
+            { isLoading ? null : (
+              <div className= "ml-auto">
+                <HeaderAuthMenu currentUser = {currentUser} />
+              </div>
             )}
           </div>
         </div>
 
-        {/* Mobile menu panel */}
+        {/* Mobile menu */}
         {mobileOpen && (
           <div
             className="

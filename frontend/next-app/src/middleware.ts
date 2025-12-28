@@ -10,14 +10,14 @@ import { api_env } from "./lib/env";
 const PROTECTED_PATHS = ["/editor"];
 
 export async function middleware(request: NextRequest) {
-  const { pathname, search } = request.nextUrl;
+  const { pathname } = request.nextUrl;
 
   const isProtectedPath = PROTECTED_PATHS.some((path) =>
     pathname.startsWith(path)
   );
 
   // 1. 보호 페이지 아니면 통과
-  if(!isProtectedPath){
+  if (!isProtectedPath) {
     return NextResponse.next();
   }
 
@@ -31,28 +31,28 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // 3.2. accessToken 없으면 refresh
+  // 3.2. accessToken 없으면 로그인으로 리다이렉트
   if (!accessToken) {
-    const nextUrl = encodeURIComponent(`${pathname}${search}`);
-    return NextResponse.redirect(
-      new URL(`/refresh?next=${nextUrl}`, request.url)
-    );
+    return NextResponse.redirect(new URL("/login", request.url));
+
   }
 
   // 5️. 나머지는 통과
-  try{
+  try {
     await jwtVerify(
       accessToken,
       new TextEncoder().encode(api_env.JWT_SECRET)
     );
 
-  }catch{
-    alert("권한이 없습니다.")
+    return NextResponse.next();
+
+  } catch {
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  
+
 }
 
-export const config = {
-  matcher: ["/((?!_next|favicon.ico).*)"],
-};
+// export const config = {
+//   matcher: ["/((?!_next|favicon.ico).*)"],
+// };

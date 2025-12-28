@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import InputField from "@/components/common/InputField";
 import Link from "next/link";
 
-import { login } from "@/lib/services/auth/authService";
+import { login } from "@/lib/services/auth/auth.client";
 
 import axios from "axios";
 import GoogleLoginPage from "@/components/common/Googlelogin";
@@ -42,11 +42,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <div className="flex flex-col md:flex-row items-center justify-center max-w-6xl w-full">
         
-        <div className="w-full md:w-1/2 max-w-md bg-white p-10 rounded-xl shadow-lg border border-gray-200">
-          <h1 className="text-3xl font-bold text-center text-gray-700 mb-8">
+        <div className="w-full md:w-1/2 max-w-md p-10 rounded-xl shadow-lg border border-gray-200">
+          <h1 className="text-3xl font-bold text-center mb-8">
             로그인
           </h1>
 

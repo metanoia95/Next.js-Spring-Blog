@@ -1,7 +1,7 @@
 'use client'
 
 import { useUser } from "@/lib/hooks/useUser";
-import { SaveComment, SaveCommentReq } from "@/lib/services/blogService"
+import { SaveComment, SaveCommentReq } from "@/lib/services/blog/blogService"
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 
