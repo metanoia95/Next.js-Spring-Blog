@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
 	public void addCorsMappings(CorsRegistry registry){
 		registry.addMapping("/api/**")
 			 	//.allowedOrigins("http://localhost:5173", "http://localhost:3000", "http://localhost:8080", "http://localhost","http://")
-				.allowedOrigins("http://localhost:8080", "http://frontend:3000", "http://localhost:3000", "http://192.168.0.20:8080")
+				.allowedOrigins("https://localhost", "http://frontend:3000", "http://localhost:3000", "http://192.168.0.20:8080")
 			 	.allowedMethods("GET","POST", "PUT","DELETE", "OPTIONS")
 			 	.allowedHeaders("*")
 			 	//.exposedHeaders("set-cookie")

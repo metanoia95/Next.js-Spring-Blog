@@ -56,9 +56,9 @@ public class AuthController {
 	@PostMapping("/refresh")
 	public ResponseEntity<?> refreshAccessToken(HttpServletRequest request, HttpServletResponse response) {
 
-		authService.refreshAccessToken(request, response);
+		LoginResDto dto = authService.refreshAccessToken(request, response);
 
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(dto);
 	}
 	
 	//구글 로그인

@@ -1,5 +1,7 @@
 package com.springtemplate.common.util;
 
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
 import com.springtemplate.domains.user.repository.UserRepository;
@@ -16,33 +18,39 @@ public class CookieUtil {
 	private final JwtUtil jwtUtil;
 
 	// 쿠키 세팅
-	public Cookie setTokenCookie(String tokenName, String token) {
-		Cookie tokenCookie = new Cookie(tokenName, token);
-		tokenCookie.setHttpOnly(true); // 자바스크립트에서 접근 불가.
-		tokenCookie.setSecure(false); // 로컬 개발 환경에서는 false로 설정. -> true로 설정 시 https 환경에서만 전송 가능
-		tokenCookie.setPath("/");
+	public void  setTokenCookie(String tokenName, String token, HttpServletResponse response) {
+		int maxAge;
 
 		if (tokenName.equals("accessToken")) {
-			tokenCookie.setMaxAge((int) (jwtUtil.EXPIRATION_TIME / 1000)); // 클라이언트에서 15분 유지
+			maxAge = (int) (jwtUtil.EXPIRATION_TIME / 1000); // 클라이언트에서 15분 유지
 		} else {
-			tokenCookie.setMaxAge((int) (jwtUtil.REFRESH_EXPIRATION_TIME / 1000)); // 클라이언트에서 7일 유지. !! 서버 측이 아님. 서버측은
-																					// jwtUtil에 있음.
+			maxAge = (int) (jwtUtil.REFRESH_EXPIRATION_TIME / 1000); // 클라이언트에서 7일 유지. !! 서버 측이 아님. 서버측은
 		}
 
-		return tokenCookie;
+		ResponseCookie cookie = ResponseCookie.from(tokenName, token)
+				.httpOnly(true)
+				.secure(true)
+				.sameSite("Lax")
+				.path("/")
+				.maxAge(maxAge)
+				.build();
+
+		response.addHeader("Set-Cookie", cookie.toString());
 
 	}
 	
 	// 쿠키 삭제
-	public Cookie deleteTokenCookie(String tokenName) {
-		
-		Cookie cookie = new Cookie(tokenName, null);
-		cookie.setHttpOnly(true); // 자바스크립트에서 접근 불가. xss 공격 방지
-		cookie.setSecure(false); // 로컬 개발 환경에서는 false로 설정.
-		cookie.setPath("/");
-		cookie.setMaxAge(0); // 즉시 만료
-		
-		return cookie;
+	public void deleteTokenCookie(String tokenName, HttpServletResponse response) {
+
+		ResponseCookie cookie = ResponseCookie.from(tokenName, "")
+				.httpOnly(true)
+				.secure(true)
+				.sameSite("None")
+				.path("/")
+				.maxAge(0)
+				.build();
+
+		response.addHeader("Set-Cookie", cookie.toString());
 	}
 
 	// 쿠키에서 액세스 토큰 추출

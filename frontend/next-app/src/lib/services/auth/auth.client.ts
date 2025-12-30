@@ -25,9 +25,8 @@ interface SignUpRes {
 // 인증 정보 조회
 export async function getCurrentUserCSR(){
     console.log("getCurrentUserCSR called");
-    console.log("is browser:", typeof window !== "undefined");
     const response = await jsonApi.get('/api/auth/me')
-    console.log("getCurrentUserCSR res", response.data);
+    console.log("getCurrentUserCSR response:", response.data);
     return response.data
 }
 
@@ -55,7 +54,7 @@ export async function signUp(data: SignUpReq) : Promise<SignUpRes>{
 // 리프레시 토큰으로 액세스 토큰 재발급 
 export async function refreshAccessToken() {
     const response = await jsonApi.post('/api/auth/refresh')
-    return response
+    return response.data
 }   
 
 

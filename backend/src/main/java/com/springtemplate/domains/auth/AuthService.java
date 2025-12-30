@@ -81,8 +81,8 @@ public class AuthService {
 	@Transactional
 	public void logOutUser(HttpServletRequest request, HttpServletResponse response) {
 
-		response.addCookie(cookieUtil.deleteTokenCookie("accessToken"));
-		response.addCookie(cookieUtil.deleteTokenCookie("refreshToken"));
+		cookieUtil.deleteTokenCookie("accessToken", response);
+		cookieUtil.deleteTokenCookie("refreshToken",response);
 		String refreshToken = cookieUtil.resolveRefreshTokenFromCookie(request);
 		userRepository.clearRefreshToken(refreshToken);
 
@@ -90,38 +90,36 @@ public class AuthService {
 
 	// 토큰 리프레시 로직
 	@Transactional
-	public void refreshAccessToken(HttpServletRequest request, HttpServletResponse response) {
+	public LoginResDto refreshAccessToken(HttpServletRequest request, HttpServletResponse response) {
 
 		// 1. 리프레시 토큰 추출
 		String refreshToken = cookieUtil.resolveRefreshTokenFromCookie(request);
 		// System.out.println("refreshToken : "+refreshToken);
 		if (refreshToken == null || !jwtUtil.validateRefreshToken(refreshToken)) {
-			response.addCookie(cookieUtil.deleteTokenCookie("accessToken"));
-			response.addCookie(cookieUtil.deleteTokenCookie("refreshToken"));
+			cookieUtil.deleteTokenCookie("accessToken", response);
+			cookieUtil.deleteTokenCookie("refreshToken",response);
 			throw new BadCredentialsException("유효하지 않은 리프레시 토큰입니다");
 		}
 
 		// 2. DB에서 정보 추출
 		User user = userRepository.getByRefreshToken(refreshToken);
 		if (user == null) {
-			response.addCookie(cookieUtil.deleteTokenCookie("accessToken"));
-			response.addCookie(cookieUtil.deleteTokenCookie("refreshToken"));
+			cookieUtil.deleteTokenCookie("accessToken", response);
+			cookieUtil.deleteTokenCookie("refreshToken",response);
 			throw new BadCredentialsException("리프레시 토큰과 일치하는 사용자을 찾을 수 없습니다.");
-
 		}
 
 		String newAccessToken = jwtUtil.generateAccessToken(user.getId(),user.getEmail()); // 이메일 값으로 액세스 토큰 생성
-		response.addCookie(cookieUtil.setTokenCookie("accessToken", newAccessToken));
 
-//		ResponseCookie accessToken = ResponseCookie.from("accessToken", newAccessToken)
-//				.httpOnly(true)
-//				.secure(false)
-//				.sameSite("None")
-//				.path("/")
-//				.maxAge(900)
-//				.build();
-//
-//		response.addHeader("Set-Cookie", accessToken.toString());
+		// 서블릿에 쿠키추가
+		cookieUtil.setTokenCookie("accessToken", newAccessToken, response);
+
+		LoginResDto dto = LoginResDto.builder()
+				.userId(user.getId())
+				.email(user.getEmail())
+				.build();
+
+		return dto;
 	}
 	
 	//구글 로그인
@@ -152,8 +150,6 @@ public class AuthService {
 		return createLoginResDto(user, response);
 	
 	}
-	
-
 
 	// 참조 함수
 	private LoginResDto createLoginResDto (User user, HttpServletResponse response) {
@@ -170,7 +166,7 @@ public class AuthService {
 		String accessToken = jwtUtil.generateAccessToken(user.getId(),user.getEmail()); // 이메일 값으로 액세스 토큰 생성
 
 		// 서블릿에 쿠키추가
-		response.addCookie(cookieUtil.setTokenCookie("accessToken", accessToken));
+		cookieUtil.setTokenCookie("accessToken", accessToken, response);
 
 		// 리프레시토큰용 uuid 생성
 		UUID uuid = UUID.randomUUID(); // 128bit uuid 생성
@@ -180,8 +176,8 @@ public class AuthService {
 		userRepository.save(user); // 리프레시 토큰을 user 객체에 넣어서 저장.
 		// 25.05.18 -> 차후에 커스텀 쿼리로 리팩토링하거나 redis로 전환?
 
-		// 서블릿에 쿠키 추가
-		response.addCookie(cookieUtil.setTokenCookie("refreshToken", refreshToken));
+		// 리프레시 토큰 추가
+		cookieUtil.setTokenCookie("refreshToken", refreshToken, response);
 
 		return accessToken;
 	}

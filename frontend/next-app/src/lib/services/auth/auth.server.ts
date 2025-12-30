@@ -14,3 +14,10 @@ export async function getCurrentUserSSR(): Promise<{
     const user = await res.json();
     return user;
 }
+
+
+// 리프레시 토큰으로 액세스 토큰 재발급 
+export async function refreshAccessTokenSSR() {
+    const response = await ssrApi('/api/auth/refresh', {method: 'POST'})
+    return response.json();
+}   

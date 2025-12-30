@@ -40,7 +40,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		String token = null;
 
-		//AuthorizationHeader 추출(SSR)
+		//AuthorizationHeader 추출
 		String authHeader = request.getHeader("Authorization");
 		if(authHeader != null && authHeader.startsWith("Bearer")){
 			token = authHeader.substring(7); // Bearer 문자열 제외
@@ -60,14 +60,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	      filterChain.doFilter(request, response);
 	      return;
 	    }
-
-	    // 2) 공개 경로는 통과 (signup/login/refresh 등)
-//	    if (uri.startsWith("/api/auth/")) {
-//	      log.debug("JWT FILTER: bypass public {}", uri);
-//	      filterChain.doFilter(request, response);
-//	      return;
-//	    }
-//
 		
 		try {
 		// 토큰 검증
