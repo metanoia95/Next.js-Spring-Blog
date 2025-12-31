@@ -58,6 +58,13 @@ mvn spring-boot:run
 spring.jpa.hibernate.ddl-auto=update
 ```
 
+### 2.4 nginx
+```
+mkcert로 localhost 인증서 추가: nginx > certs 폴더
+nginx 실행
+```
+
+
 
 
 ## 배포 방법 
