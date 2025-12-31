@@ -69,29 +69,42 @@ nginx 실행
 
 ## 배포 방법 
 ### 1. 이미지 빌드 및 준비
+```
 docker compose build
+```
 
 ### 1.1 이름 및 태그 확인
+```
 docker images
+```
 
 ### 2. ssh로 서버 접속 후 이미지 로드
+```
 ssh server@192.168.0.20 
- 
+```
 
 ### 3. 도커로 배포하기 
 #### 개발에서 레지스트리로 push
+```
 docker compose push
+```
 
 #### 배포에서 레지스트리 pull
-docker compose pull 
+```
+docker compose pull
+```
 : 컴포즈 파일에서 레지스트리 경로를 지정해둘 것. 
 
 #### 리눅스에서 도커 컴포즈 실행
+```
 docker compose up -d
+```
 :데몬으로 실행
 
 #### 배포된 url
 next-spring-blog.duckdns.org
 
 #### 호스트에서 certbot으로 인증서 발급
+```
 sudo certbot certonly --standalone -d next-spring-blog.duckdns.org -d next-spring-blog.duckdns.org
+```
