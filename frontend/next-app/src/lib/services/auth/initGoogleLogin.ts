@@ -26,7 +26,7 @@ export function initGoogleLogin(buttonEl: HTMLDivElement) {
 
             await googleLogin(userData);
 
-            window.location.href = "/";
+            window.location.replace("/");
           } catch (err : unknown) {
             if (axios.isAxiosError(err) && err.response) {
               alert("로그인 실패 : " + err.response.data);

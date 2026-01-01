@@ -28,7 +28,7 @@ export default function LoginPage() {
     try {
       await login({ email, password });
       // 로그인 후 이동
-      //window.location.href = '/';
+      window.location.replace('/');
     } catch (err : unknown) {
       console.error(err);
       if(axios.isAxiosError(err) &&err.response){
