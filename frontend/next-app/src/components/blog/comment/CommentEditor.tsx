@@ -1,7 +1,7 @@
 'use client'
 
 import { useUser } from "@/lib/hooks/useUser";
-import { SaveComment, SaveCommentReq } from "@/lib/services/blog/blogService"
+import { SaveComment, SaveCommentReq } from "@/services/blog/blogService"
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 
@@ -15,7 +15,7 @@ export default function CommentEditor({
     const router = useRouter();
     const [text, setText] = useState("")
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const { data, isLoading, isError } = useUser(); // 사용자 정보 훅
+    const { data, isLoading } = useUser(); // 사용자 정보 훅
     
     useEffect(() => {
         if (!isLoading && data) {

@@ -1,7 +1,7 @@
 
 import PostCard from "@/components/blog/post/PostCard";
 import { Pagination } from "@/components/common/Pagination";
-import { getPostList } from "@/lib/services/blog/blog.server";
+import { getPostList } from "@/services/blog/blog.server";
 
 export type postsRes = {
   id: number;
@@ -14,6 +14,7 @@ export default async function BlogList({
 }: {
   searchParams: Promise<{ page? : string}>
 }) {
+
   const { page } = await searchParams;
 
   const currentPage = Number(page ?? 1);

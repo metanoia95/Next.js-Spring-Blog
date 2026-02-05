@@ -2,7 +2,7 @@
 import { useState } from "react"
 import CommentEditor from "./CommentEditor";
 import PostComment from "./PostComment";
-import { getPostCommentsAxios } from "@/lib/services/blog/blogService";
+import { getPostCommentsAxios } from "@/services/blog/blogService";
 
 type CommentType = {
   id: number;

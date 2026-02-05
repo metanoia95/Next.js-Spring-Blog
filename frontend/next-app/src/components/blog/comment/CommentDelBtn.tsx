@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteComment } from "@/lib/services/blog/blogService";
+import { deleteComment } from "@/services/blog/blogService";
 
 export default function CommentDeleteButton({
   CommentId,

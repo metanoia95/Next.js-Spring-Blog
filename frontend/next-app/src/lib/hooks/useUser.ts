@@ -1,5 +1,5 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { getUserInfo, UserInfo } from "@/lib/services/userService";
+import { getUserInfo, UserInfo } from "@/services/userService";
 
 export function useUser():UseQueryResult<UserInfo, Error> {
     return useQuery<UserInfo, Error>({

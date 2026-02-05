@@ -1,4 +1,4 @@
-import {jsonApi} from "../axios"
+import {jsonApi} from "../lib/axios"
 
 export interface UserInfo {
     id:number;

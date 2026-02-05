@@ -6,6 +6,10 @@ const nextConfig:
   eslint: {
     ignoreDuringBuilds: true, // 빌드 시 ESLint 무시
   },
+  images: {
+    domains: ["lh3.googleusercontent.com"], // 구글 이미지 도메인 허가
+
+  }
 };
 
 export default nextConfig;

@@ -6,7 +6,7 @@ import { formatDate } from '@/lib/utils/date';
 import { api_env } from '@/lib/env';
 import { jwtVerify } from "jose";
 import PostDeleteButton from '@/components/blog/post/PostDeleteButton';
-import { getBlogPost, getPostComments } from '@/lib/services/blog/blog.server';
+import { getBlogPost, getPostComments } from '@/services/blog/blog.server';
 
 type PostPageProps = {
   // params가 Promise<{ id: string }> 타입으로 옵니다

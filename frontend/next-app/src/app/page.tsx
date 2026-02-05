@@ -1,6 +1,6 @@
 import PostCard from "@/components/blog/post/PostCard";
 import { postsRes } from "./blog/page";
-import { getPostList } from "@/lib/services/blog/blog.server";
+import { getPostList } from "@/services/blog/blog.server";
 
 
 

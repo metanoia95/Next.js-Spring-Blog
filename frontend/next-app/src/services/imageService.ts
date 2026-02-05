@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { fileApi } from "../axios";
+import { fileApi } from "../lib/axios";
 
 
 export async function uploadImage(

@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 import { FaGithub } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 import { QueryClient } from "@tanstack/react-query";
-import { getCurrentUserSSR } from "@/lib/services/auth/auth.server";
+import { getCurrentUserSSR } from "@/services/auth/auth.server";
 
 
 export default async function RootLayout({

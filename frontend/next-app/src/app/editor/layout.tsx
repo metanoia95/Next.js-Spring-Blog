@@ -1,5 +1,5 @@
 
-import { getCurrentUserSSR } from "@/lib/services/auth/auth.server";
+import { getCurrentUserSSR } from "@/services/auth/auth.server";
 import { redirect } from "next/navigation";
 
 

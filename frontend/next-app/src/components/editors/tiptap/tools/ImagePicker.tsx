@@ -1,4 +1,4 @@
-import { uploadImage } from '@/lib/services/imageService';
+import { uploadImage } from '@/services/imageService';
 import { Editor as TiptapEditor } from '@tiptap/react'
 import { Image } from 'lucide-react';
 import { useCallback, useRef } from 'react';

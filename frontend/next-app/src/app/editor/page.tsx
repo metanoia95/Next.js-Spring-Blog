@@ -1,5 +1,5 @@
 "use client";
-import { getPostJson, saveBlogPost, SaveBlogPostReq, updateBlogPost } from "@/lib/services/blog/blogService";
+import { getPostJson, saveBlogPost, SaveBlogPostReq, updateBlogPost } from "@/services/blog/blogService";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Tiptap from "@/components/editors/tiptap/TiptabEditor";

@@ -1,6 +1,6 @@
 "use client";
 
-import { initGoogleLogin } from "@/lib/services/auth/initGoogleLogin";
+import { initGoogleLogin } from "@/services/auth/initGoogleLogin";
 import { useEffect, useRef } from "react";
 
 

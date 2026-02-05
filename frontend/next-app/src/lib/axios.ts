@@ -1,6 +1,6 @@
 import axios from "axios";
 import { api_env } from "./env";
-import { refreshAccessToken } from "./services/auth/auth.client";
+import { refreshAccessToken } from "../services/auth/auth.client";
 
 export const jsonApi = axios.create({
   baseURL: api_env.EXTERNAL_BASE_URL,  // baseURL: process.env.NEXT_PUBLIC_API_URL
@@ -9,6 +9,7 @@ export const jsonApi = axios.create({
   },
   withCredentials : true,
 });
+
 
 
 export const fileApi = axios.create({

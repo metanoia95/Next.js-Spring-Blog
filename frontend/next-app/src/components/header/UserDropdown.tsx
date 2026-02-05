@@ -4,8 +4,8 @@ import { User } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { useState, useEffect, useRef} from "react";
-import { logout } from "@/lib/services/auth/auth.client";
-import { getUserInfo } from "@/lib/services/userService";
+import { logout } from "@/services/auth/auth.client";
+import { getUserInfo } from "@/services/userService";
 
 const UserDropdown = ({user} : {user 
   : {id: number; email: string; role: string} | null}) => {
