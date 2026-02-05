@@ -15,6 +15,8 @@ export default function AuthMenu() {
   //   queryFn: getCurrentUserCSR,
   //   retry: false
   // })
+  // TODO 여기 수정해야함.
+
 
   const isLoading = true
 

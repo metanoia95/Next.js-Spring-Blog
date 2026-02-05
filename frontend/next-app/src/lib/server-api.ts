@@ -6,7 +6,6 @@ export async function authApi(
   options: RequestInit = {}, //fetch함수에 넘길 옵션 선택
 ): Promise<Response> {
 
-
    // Headers 인스턴스 생성
   const headers = new Headers(options.headers);
 
