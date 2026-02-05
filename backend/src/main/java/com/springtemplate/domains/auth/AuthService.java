@@ -146,8 +146,22 @@ public class AuthService {
 
 		
 		userRepository.save(user);
+
+		// JWT 토큰 생성
+		// 액세스 토큰과 리프레시 토큰을 둘다 생성
+		String accessToken = jwtUtil.generateAccessToken(user.getId(),user.getEmail()); // 이메일 값으로 액세스 토큰 생성
+
+		// 리프레시토큰용 uuid 생성
+		UUID uuid = UUID.randomUUID(); // 128bit uuid 생성
+		String refreshToken = jwtUtil.generateRefreshToken(uuid.toString()); //
+
+		user.setRefreshToken(refreshToken);
+		userRepository.save(user); // 리프레시 토큰을 user 객체에 넣어서 저장.
+		// 25.05.18 -> 차후에 커스텀 쿼리로 리팩토링하거나 redis로 전환?
 		
-		return createLoginResDto(user, response);
+		LoginResDto resDto = LoginResDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+		
+		return resDto;
 	
 	}
 

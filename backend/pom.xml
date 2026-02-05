@@ -139,7 +139,7 @@
 		</dependency>
 
 
-		<!--postgre ㄴ비-->
+		<!--postgres-->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -178,8 +178,18 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
-		
+
+
+		<!-- query dsl -->
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+			<version>5.0.0</version>
+			<scope>compile</scope>
+		</dependency>
+
+
+
 	</dependencies>
 
 	<build>
@@ -203,6 +213,23 @@
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
+			</plugin>
+		<!--	query dsl plugin		-->
+			<plugin>
+				<groupId>com.mysema.maven</groupId>
+				<artifactId>apt-maven-plugin</artifactId>
+				<version>1.1.3</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/generated-sources/java</outputDirectory>
+							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

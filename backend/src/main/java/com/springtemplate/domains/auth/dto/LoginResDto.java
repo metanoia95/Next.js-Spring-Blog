@@ -13,6 +13,8 @@ public class LoginResDto {
 	
 	//jwt 토큰 리턴
 	private String accessToken; // 인증할 때 사용하는 토큰
+
+	private String refreshToken; // 리프레시 토큰
 	
 	// 유저 정보 -> 나중에 별도로 쓸 일 있으면 러턴하기 
 	private Long userId;
