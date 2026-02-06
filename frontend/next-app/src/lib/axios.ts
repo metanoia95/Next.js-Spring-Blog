@@ -18,6 +18,11 @@ export const fileApi = axios.create({
   withCredentials : true,
 });
 
+// 리퀘스트 헤더 추가
+
+
+
+
 
 // 응답 인터셉터 추가하기
 jsonApi.interceptors.response.use(

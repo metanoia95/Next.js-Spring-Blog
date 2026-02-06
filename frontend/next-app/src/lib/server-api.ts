@@ -1,6 +1,5 @@
-
-import { cookies } from "next/headers";
 import { api_env } from "./env";
+import { auth } from "@/auth";
 
 export async function authApi(
   path: string,
@@ -14,8 +13,12 @@ export async function authApi(
   headers.set("Content-Type", "application/json");
 
   //token 쿠키에서 가져오기
-  const cookieStore = await cookies();
-  const accessToken =  cookieStore.get("accessToken")?.value;
+  //const cookieStore = await cookies();
+  //const accessToken =  cookieStore.get("accessToken")?.value;
+
+  const session = await auth();
+  const accessToken = session?.accessToken
+  
   // Authorization 헤더 설정
   if(accessToken){
     headers.set("Authorization", `Bearer ${accessToken}`);

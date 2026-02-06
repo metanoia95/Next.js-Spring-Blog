@@ -1,7 +1,6 @@
 'use client'
-
-import { useUser } from "@/lib/hooks/useUser";
 import { SaveComment, SaveCommentReq } from "@/services/blog/blogService"
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 
@@ -15,20 +14,21 @@ export default function CommentEditor({
     const router = useRouter();
     const [text, setText] = useState("")
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const { data, isLoading } = useUser(); // 사용자 정보 훅
+
+    const { data: session } = useSession()
     
     useEffect(() => {
-        if (!isLoading && data) {
+        if (session?.user) {
             setIsLoggedIn(true);
         }else{
             setIsLoggedIn(false);
-        }}, [data,isLoading])
+        }}, [session])
 
 
     // 댓글 저장 핸들러
     const handleComment = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!data) {
+        if (!session?.user) {
             alert("로그인 후 댓글을 작성할 수 있습니다.");
             return;
         }
@@ -51,75 +51,45 @@ export default function CommentEditor({
     }
 
    
+const isDisabled = !isLoggedIn;
 
-    return (
-        isLoggedIn ? (
-             <form
-                className="
-                flex flex-col
-                mt-3 p-3 gap-3
-                 rounded-[6px]
-                 bg-gray-200"
-                onSubmit={handleComment}
-            >
-               
-                <textarea
-                    value={text}
-                    placeholder="댓글을 입력하세요"
-                    className="
-                    p-2
-                    min-h-16
-                    bg-white"
-                    onChange={(e) => { setText(e.target.value) }}
-                />
-                 <div
-                    className="
-                    flex
-                    justify-end"
-                >
-                    <button
-                        type="submit"
-                        className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors"
-                    >
-                        댓글 작성
-                    </button>
-                </div>
-            </form>
-        ) : (
-            <form
-                className="
-                flex flex-col
-                mt-3 p-3 gap-3
-                 rounded-[6px]
-                 bg-gray-200"
-            >
-                <div
-                    className="
-                    flex
-                    justify-between"
-                >
-                </div>
-                <textarea
-                    value={text}
-                    placeholder="로그인 후 댓글을 작성할 수 있습니다."
-                    className="
-                    p-2
-                    min-h-16
-                    bg-white"
-                    disabled={true}
-                />
-                <div
-                    className="flex justify-end">
-                    <button
-                    type="button"
-                        className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors"
-                        onClick={handleNavigateToLogin}> 로그인 </button>
-                </div>
+return (
+  <form
+    className="flex flex-col mt-3 p-3 gap-3 rounded-[6px] bg-gray-200"
+    onSubmit={isLoggedIn ? handleComment : undefined}
+  >
+    <textarea
+      value={text}
+      placeholder={
+        isLoggedIn
+          ? "댓글을 입력하세요"
+          : "로그인 후 댓글을 작성할 수 있습니다."
+      }
+      className="p-2 min-h-16 bg-white"
+      disabled={isDisabled}
+      onChange={(e) => setText(e.target.value)}
+    />
 
-            </form>
-        )
-    )
-
+    <div className="flex justify-end">
+      {isLoggedIn ? (
+        <button
+          type="submit"
+          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors"
+        >
+          댓글 작성
+        </button>
+      ) : (
+        <button
+          type="button"
+          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors"
+          onClick={handleNavigateToLogin}
+        >
+          로그인
+        </button>
+      )}
+    </div>
+  </form>
+);
 
 }
 

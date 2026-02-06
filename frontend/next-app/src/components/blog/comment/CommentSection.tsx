@@ -6,47 +6,46 @@ import { getPostCommentsAxios } from "@/services/blog/blogService";
 
 type CommentType = {
   id: number;
-  authorId: number;
+  authorId: string;
   text: string;
   created_at: string;
 };
 
 
-export default function CommentSection({id, initialComments}:{
-    id:number
-    initialComments:CommentType[]
-}){
+export default function CommentSection({ id, initialComments }: {
+  id: number
+  initialComments: CommentType[]
+}) {
 
-    const [comments, setComments] = useState(initialComments)
+  const [comments, setComments] = useState(initialComments)
 
-    const refreshComments = async () => {
-        const res = await getPostCommentsAxios(id);
-        const data = await res.data;
-        setComments(data);
-    }
+  const refreshComments = async () => {
+    const res = await getPostCommentsAxios(id);
+    const data = await res.data;
+    setComments(data);
+  }
 
 
-    return(
-        <>
-        <CommentEditor postId={id} onCommentSubmit={refreshComments}/>
-        <div>
-        {comments.map((comment : CommentType)=> {
-          return(
-           <PostComment 
-           key={comment.id} 
-           id={comment.id} 
-           authorId={comment.authorId} 
-           comment={comment.text} 
-           created_at = {comment.created_at}
-            onDelete={refreshComments}
-           />
+  return (
+    <>
+      <CommentEditor postId={id} onCommentSubmit={refreshComments} />
+      <div>
+        {comments.map((comment: CommentType) => {
+          return (
+            <PostComment
+              key={comment.id}
+              id={comment.id}
+              authorId={comment.authorId}
+              comment={comment.text}
+              created_at={comment.created_at}
+              onDelete={refreshComments}
+            />
           )
         })
-
         }
       </div>
-        </>
+    </>
 
-    )
+  )
 
 }
