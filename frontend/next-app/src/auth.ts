@@ -1,6 +1,7 @@
 import NextAuth,{ type DefaultSession } from "next-auth"
 import Google from "next-auth/providers/google"
 import { serverGoogleLogin } from "./services/auth/auth.server"
+import { decodeJwt } from "jose";
 
 
 // TS 처리
@@ -10,6 +11,11 @@ declare module "next-auth" {
     refreshToken?: string;
     user: {
       id: string;
+      name:string; 
+      // image:string;
+      role:string;
+      image:string;
+      email:string;
     } & DefaultSession["user"]
   }
 
@@ -47,12 +53,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       }
 
+      // 액세스 토큰 파싱 => 권한값 추가
+      if(!token.role && token.accessToken){
+        const payload = decodeJwt(token.accessToken as string)
+        token.role = payload.role
+        token.id = payload.sub
+        console.log("payload: ",payload)
+      }
+
       return token
     },
     session({ session, token }) {
       session.user.id = token.id as string //sub값을 세션 id로 사용
+      session.user.role = token.role as string; //role값.
       session.accessToken = token.accessToken as string;
       session.refreshToken = token.refreshToken as string;
+
 
       return session
     },

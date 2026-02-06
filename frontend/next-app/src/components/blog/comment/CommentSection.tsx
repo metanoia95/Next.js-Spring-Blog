@@ -22,7 +22,6 @@ export default function CommentSection({id, initialComments}:{
     const refreshComments = async () => {
         const res = await getPostCommentsAxios(id);
         const data = await res.data;
-        console.log("댓글 데이터:", data);
         setComments(data);
     }
 

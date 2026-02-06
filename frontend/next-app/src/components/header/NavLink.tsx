@@ -24,6 +24,7 @@ export default function NavLinks() {
 
     return (
         <>
+            {/* 데스크톱. 사이즈가 sm 이상일때 flex 처리 */}
             <nav className="hidden sm:flex items-center gap-8 text-sm font-medium">
                 {navLinks.map(({ href, label }) => {
                     const isActive = pathname === href;
@@ -45,7 +46,7 @@ export default function NavLinks() {
                 })}
             </nav>
 
-            {/* Mobile menu button */}
+            {/* 모바일. 사이즈가 sm 이상일 때 hidden*/}
             <button
                 onClick={() => setMobileOpen((prev) => !prev)}
                 className="
@@ -65,7 +66,8 @@ export default function NavLinks() {
                     <Menu className="h-5 w-5 stroke-[1.5]" />
                 )}
             </button>
-            {/* Mobile menu */}
+
+            {/* 모바일 토글 메뉴 */}
             {mobileOpen && (
                 <div
                     className="
@@ -82,13 +84,9 @@ export default function NavLinks() {
                                 <Link
                                     key={href}
                                     href={href}
-                                    className={`
-                      rounded-lg px-3 py-2 text-base font-medium transition
-                      ${isActive
-                                            ? "bg-gray-100 text-black"
-                                            : "text-gray-700 hover:bg-gray-50 hover:text-black"
-                                        }
-                    `}
+                                    className={`rounded-lg px-3 py-2 text-base font-medium transition
+                                    ${isActive ? "bg-gray-100 text-black"
+                                            : "text-gray-700 hover:bg-gray-50 hover:text-black"}  `}
                                 >
                                     {label}
                                 </Link>

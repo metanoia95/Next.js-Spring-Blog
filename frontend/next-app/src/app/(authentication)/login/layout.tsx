@@ -1,6 +1,4 @@
 import GoogleSignIn from "@/components/common/GoogleSignIn";
-import { SignOut } from "@/components/common/SignOut";
-
 
 export default async function LoginLayout({
     //children,
@@ -15,10 +13,9 @@ export default async function LoginLayout({
                         로그인
                     </h1>
                     {/* {children} */}
-                    <div>
+                    <div className="flex justify-center">
                         <GoogleSignIn />
-                        <SignOut />
-                    
+                        {/* <SignOut /> */}
                     </div>
                 </div>
         </div>

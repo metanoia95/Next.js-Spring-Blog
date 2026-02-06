@@ -1,5 +1,4 @@
-
-import { getCurrentUserSSR } from "@/services/auth/auth.server";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
 
@@ -8,8 +7,8 @@ export default async function EditorLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>){
-    const user = await getCurrentUserSSR();
-    console.log("EditorLayout user:", user);
+    const session = await auth();
+    const user = session?.user
 
     if (!user) {
         redirect('/login')       

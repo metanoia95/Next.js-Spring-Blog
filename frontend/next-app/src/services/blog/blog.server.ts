@@ -28,7 +28,7 @@ export async function getPostList({
     params.append('pageSize', pageSize.toString());
 
     const queryString  = params.toString(); //페이지네이션 위해 쿼리스트링 처리
-    //console.log("queryString :", queryString)
+    
     const url = queryString ? `/api/blog/posts?${queryString }` : `/api/blog/posts`;
 
     const res = await ssrApi(url);
