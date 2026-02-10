@@ -1,3 +1,4 @@
+'use server'
 import {jsonApi} from "../lib/axios"
 
 export interface UserInfo {

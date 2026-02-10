@@ -20,7 +20,7 @@ public class FileService {
 	
 	
 	String FILE_PATH = "/data/uploads/";
-	
+	//TODO PATH 위치 하드코딩 -> 환경변수 처리
 	
 	@Transactional
 	public String uploadImage(MultipartFile file){
