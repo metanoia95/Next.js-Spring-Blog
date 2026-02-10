@@ -1,3 +1,4 @@
+'use server'
 import { jsonApi} from "@/lib/axios";
 import { AxiosResponse } from "axios";
 
@@ -39,19 +40,19 @@ export interface getPostJsonRes {
 export async function saveBlogPost(
     data: SaveBlogPostReq
 
-): Promise<AxiosResponse> {
-
-    return await jsonApi.post('/api/blog/saveblogpost', data);
+){
+    const res = await jsonApi.post('/api/blog/saveblogpost', data);
+    return { status : res.status }
 
 }
 
 export async function updateBlogPost(
     data: SaveBlogPostReq
 
-): Promise<AxiosResponse> {
+){
+    const res = await jsonApi.put('/api/blog/posts', data);
 
-    return await jsonApi.put('/api/blog/posts', data);
-
+    return { status : res.status }
 }
 
 export async function deletePost(

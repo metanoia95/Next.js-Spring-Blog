@@ -63,6 +63,8 @@ export default function EditorPage() {
       }else{
         res = await saveBlogPost(dto);
       }
+      console.log("res: ",res)
+
       if (res.status === 200) {
         if(id) router.push(`/blog/${dto.id}`);
         else router.push("/blog"); // 새 글이면 목록으로 이동

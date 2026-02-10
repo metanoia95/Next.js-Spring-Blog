@@ -6,9 +6,8 @@ import { getPostList } from "@/services/blog/blog.server";
 
 
 export default async function IndexPage() {
-    const posts = await getPostList({});
+  const posts = await getPostList({});
   
-
   return (
     <div className="min-h-screen p-2">
       <div className="flex flex-col mt-4 pb-3 justify-center gap-5 border-b-1 border-gray-400 items-center" >
