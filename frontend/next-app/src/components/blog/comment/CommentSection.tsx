@@ -1,34 +1,35 @@
-'use client'
-import { useState } from "react"
+import { getPostComments } from "@/services/blog/blog.server";
 import CommentEditor from "./CommentEditor";
 import PostComment from "./PostComment";
-import { getPostCommentsAxios } from "@/services/blog/blogService";
 
 type CommentType = {
-  id: number;
+  id: string;
   authorId: string;
   text: string;
   created_at: string;
 };
 
 
-export default function CommentSection({ id, initialComments }: {
-  id: number
-  initialComments: CommentType[]
+export default async function CommentSection({ id }: {
+  id: string
 }) {
 
-  const [comments, setComments] = useState(initialComments)
 
-  const refreshComments = async () => {
-    const res = await getPostCommentsAxios(id);
-    const data = await res.data;
-    setComments(data);
+  // 댓글정보
+  const commentRes = await getPostComments(id)
+  let comments = [];
+  if (commentRes.ok) {
+    comments = await commentRes.json();
+  } else {
+    const errorText = await commentRes.text();
+    console.error("Comment fetch error:", errorText);
+    // 필요시 빈 배열 유지 or 오류 메시지 표시
   }
 
 
   return (
     <>
-      <CommentEditor postId={id} onCommentSubmit={refreshComments} />
+      <CommentEditor postId={id} />
       <div>
         {comments.map((comment: CommentType) => {
           return (
@@ -38,7 +39,6 @@ export default function CommentSection({ id, initialComments }: {
               authorId={comment.authorId}
               comment={comment.text}
               created_at={comment.created_at}
-              onDelete={refreshComments}
             />
           )
         })

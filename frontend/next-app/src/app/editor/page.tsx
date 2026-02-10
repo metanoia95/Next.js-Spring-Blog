@@ -15,7 +15,7 @@ export default function EditorPage() {
 
 
   const searchParams = useSearchParams(); // 쿼리스트링 가져오기
-  const id = Number(searchParams.get("id"));
+  const id = searchParams.get("id");
 
   useEffect(() => {
     if(!id){  //새 글인 경우
@@ -23,7 +23,7 @@ export default function EditorPage() {
       return;
     }
 
-    async function fetchPost(id: number) {
+    async function fetchPost(id: string) {
       try{
         
       const post = await getPostJson(id);

@@ -4,13 +4,13 @@ import { AxiosResponse } from "axios";
 
 
 export interface SaveCommentReq {
-    post_id: number
+    post_id: string
     text: string;
 }
 
 export interface SaveBlogPostReq {
 
-    id?: number; // undefined. id가 없으면 -> create / id가 있으면 -> update로
+    id?: string | null; // undefined. id가 없으면 -> create / id가 있으면 -> update로
     title: string;
     page_json: string;
     page_html?: string | null;
@@ -28,7 +28,7 @@ export interface SaveBlogPostReq {
 
 export interface getPostJsonRes {
 
-    id: number;
+    id: string;
     title: string;
     page_json: string;
 
@@ -55,14 +55,14 @@ export async function updateBlogPost(
 }
 
 export async function deletePost(
-    id: number
+    id: string
 ): Promise<AxiosResponse> {
 
     return await jsonApi.delete(`/api/blog/posts/${id}`)
 }
 
 export async function getPostJson(
-    id: number
+    id: string
 ): Promise<getPostJsonRes> {
 
     const res = await jsonApi.get(`/api/blog/posts/getjson/${id}`);
@@ -79,7 +79,7 @@ export async function SaveComment(
 
 
 export async function deleteComment(
-    id: number
+    id: string
 ): Promise<AxiosResponse> {
 
     return await jsonApi.delete(`/api/blog/comment/${id}`)

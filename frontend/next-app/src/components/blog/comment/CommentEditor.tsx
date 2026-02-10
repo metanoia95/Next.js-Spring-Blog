@@ -1,15 +1,13 @@
 'use client'
-import { SaveComment, SaveCommentReq } from "@/services/blog/blogService"
+import { refreshPath } from "@/lib/actions";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 
 export default function CommentEditor({
-    postId,
-    onCommentSubmit
+    postId, 
 }: {
-    postId: number,
-    onCommentSubmit: () => void
+    postId: string,
 }) {
     const router = useRouter();
     const [text, setText] = useState("")
@@ -33,12 +31,17 @@ export default function CommentEditor({
             return;
         }
         try {
-            const dto: SaveCommentReq = {
-                post_id: postId,
-                text: text
-            }
-            await SaveComment(dto);
-            onCommentSubmit(); // 댓글 목록 갱신
+            // const dto: SaveCommentReq = {
+            //     post_id: postId,
+            //     text: text
+            // }
+            
+            // await SaveComment(dto); // TODO bff 처리
+            // onCommentSubmit(); // 댓글 목록 갱신
+            console.log("저장.")
+            await refreshPath(`/blog/${postId}`)
+
+
 
         } catch (err: unknown) {
             console.log(err)
@@ -46,7 +49,6 @@ export default function CommentEditor({
     }
 
     const handleNavigateToLogin = () => {
-        debugger;
         router.push("/login")
     }
 

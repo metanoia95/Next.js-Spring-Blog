@@ -1,8 +1,8 @@
 import { ssrApi } from "@/lib/ssrApi";
 
 export interface getBlogPostRes {
-    id: number;
-    authorId: number;
+    id: string;
+    authorId: string;
     title: string;
     page_html: string;
     created_at: string;
@@ -42,13 +42,13 @@ export async function getPostList({
     return result.content;
 }
 
-export async function getBlogPost(id: number): Promise<getBlogPostRes> {
+export async function getBlogPost(id: string): Promise<getBlogPostRes> {
     const res = await ssrApi(`/api/blog/posts/${id}`)
     
     const data: getBlogPostRes = await res.json();
     return data
 }
 
-export async function getPostComments(postId: number) {
+export async function getPostComments(postId: string) {
     return await ssrApi(`/api/blog/comments/${postId}`)
 }

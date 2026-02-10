@@ -1,14 +1,15 @@
-import CommentDeleteButton from "./CommentDelBtn";
+'use client'
 import { useEffect, useState } from "react";
 import { formatDate } from "@/lib/utils/date";
 import { useSession } from "next-auth/react";
+import { deleteComment } from "@/services/blog/blogService";
 
 interface PostCommentProps {
-    id: number;
+    id: string;
     authorId: string;
     comment: string
     created_at: string
-    onDelete: (id: number) => void;
+
 }
 
 export default function PostComment({
@@ -16,15 +17,15 @@ export default function PostComment({
     authorId,
     comment,
     created_at,
-    onDelete
+
 }: PostCommentProps) {
     const [isAuthor, setIsAuthor] = useState(false);
-    const {data : session} = useSession();
+    const { data: session } = useSession();
 
     useEffect(() => {
         if (session?.user) {
-            if (session?.user.id == authorId 
-            //    || session?.user.role == "ADMIN"
+            if (session?.user.id === authorId
+                 || session?.user.role == "ADMIN"
             ) {
                 setIsAuthor(true);
             } else {
@@ -32,6 +33,17 @@ export default function PostComment({
             }
         }
     }, [session, authorId])
+
+
+    const handleDelete = async () => {
+        try {
+            await deleteComment(id);
+        } catch (err: unknown) {
+            console.log(err);
+        }
+    };
+
+
 
     return (
         <div key={id}
@@ -41,10 +53,15 @@ export default function PostComment({
                 <div className="mb-3">{authorId} </div>
                 <span className="ml-2 text-gray-500">{formatDate(created_at)}</span>
             </div>
-            <div  className="flex flex-row justify-between"  >
+            <div className="flex flex-row justify-between"  >
                 <div>{comment}</div>
                 {isAuthor &&
-                    <CommentDeleteButton CommentId={id} onDelete={() => onDelete(id)} />
+                    <button
+                        className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors"
+                        onClick={handleDelete}
+                    >
+                        삭제
+                    </button>
                 }
             </div>
 
