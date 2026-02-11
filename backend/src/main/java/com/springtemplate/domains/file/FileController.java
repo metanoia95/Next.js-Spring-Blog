@@ -9,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -17,10 +19,10 @@ public class FileController {
 	private final FileService fileService;
 	
 	@PostMapping("/image")
-	public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile file){
+	public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
 		
 		String imgPath=fileService.uploadImage(file);
-		
+
 		//리턴값은 이미지 주소값.
 		return ResponseEntity.ok(imgPath);
 	}

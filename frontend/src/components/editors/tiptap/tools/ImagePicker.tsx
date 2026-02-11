@@ -27,9 +27,10 @@ export const ImagePicker = ({ editor }: ToolbarProps) => {
         formData.append('image', file);
 
         const url = await uploadImage(formData);
-
+        console.log("url: ",url)
         //const objectUrl = URL.createObjectURL(file);
-        const objectUrl = url.data
+        const objectUrl = url
+        console.log("objectUrl ",objectUrl)
 
         // 에디터에 임시 이미지 삽입 (data-temp: true)
         editor.chain().focus().setImage({

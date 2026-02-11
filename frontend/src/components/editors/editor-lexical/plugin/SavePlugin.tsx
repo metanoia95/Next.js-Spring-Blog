@@ -10,7 +10,7 @@ export const SavePlugin = ({
   title,
   pageJson,
 }: {
-  id?: number;
+  id?: string;
   title: string;
   pageJson: string;
 }) => {

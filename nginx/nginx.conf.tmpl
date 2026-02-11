@@ -41,15 +41,6 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
 }
-
-     location /api/ { #백엔드 api 서버
-        proxy_pass http://${BE_HOST}:${BE_PORT};
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
-
-    }
-
     
     location /uploads/{
         alias /data/uploads/;

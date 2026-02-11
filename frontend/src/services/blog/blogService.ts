@@ -57,9 +57,11 @@ export async function updateBlogPost(
 
 export async function deletePost(
     id: string
-): Promise<AxiosResponse> {
+): Promise<number> {
 
-    return await jsonApi.delete(`/api/blog/posts/${id}`)
+    const res = await jsonApi.delete(`/api/blog/posts/${id}`)
+
+    return res.status;
 }
 
 export async function getPostJson(

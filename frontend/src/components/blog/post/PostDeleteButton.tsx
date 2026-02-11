@@ -9,8 +9,8 @@ export default function PostDeleteButton({postId}:{postId:string}){
 
     const handleDelete = async () => {
         try {
-            const res = await deletePost(postId)
-            if (res.status === 200) {
+            const status = await deletePost(postId)
+            if (status === 200) {
                 router.push("/blog");
               }
 

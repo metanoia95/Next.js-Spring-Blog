@@ -3,7 +3,7 @@ import { api_env } from "./env";
 import { refreshAccessToken } from "../services/auth/auth.client";
 
 export const jsonApi = axios.create({
-  baseURL: api_env.EXTERNAL_BASE_URL,  // baseURL: process.env.NEXT_PUBLIC_API_URL
+  baseURL: api_env.INTERNAL_BASE_URL,  // bff처리하면 모두 내부로 처리
   headers: {
     "Content-Type": "application/json", // json 형식
   },
@@ -13,7 +13,7 @@ export const jsonApi = axios.create({
 
 
 export const fileApi = axios.create({
-  baseURL: api_env.EXTERNAL_BASE_URL,  // baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000' #환경변수 사용 시 
+  baseURL: api_env.INTERNAL_BASE_URL,  // bff처리하면 모두 내부로 처리
   headers: {},
   withCredentials : true,
 });
