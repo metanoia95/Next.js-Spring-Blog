@@ -3,6 +3,7 @@ package com.springtemplate.domains.blog;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.springtemplate.domains.blog.dto.post.PostSearchCond;
 import com.springtemplate.domains.blog.dto.post.res.PostListDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,17 +49,14 @@ public class BlogService {
 
 	// 글 목록 조회
 	@Transactional(readOnly = true)
-	public Page<PostListDto> getPostList(String keyword, int page, int pageSize) {
+	public Page<PostListDto> getPostList(
+			PostSearchCond param
+			, Pageable pageable
+	) {
 
-		Pageable pageable = PageRequest.of(
-				page -1,
-				pageSize,
-				Sort.by("createdAt").descending()
-		);
 
-		return blogPostRepository.findPostList(keyword, pageable); // 테이블 정보 전체 다 가져오기;
-		// 일단 엔터티 통째로 가져와서 DTO에 주입해서 프론트로 보냄.
-		// 나중에 시간되면 리팩토링 할 것.
+		return blogPostRepository.findPostList(param, pageable); // 테이블 정보 전체 다 가져오기;
+
 
 	}
 

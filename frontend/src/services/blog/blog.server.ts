@@ -9,10 +9,11 @@ export interface getBlogPostRes {
 }
 
 
+// 글 목록 조회
 export async function getPostList({
     keyword,
     currentPage = 1,
-    pageSize = 10
+    pageSize = 10,
 }:{
     keyword?: string;   // 검색어
     currentPage?: number; //현재 페이지
@@ -20,12 +21,18 @@ export async function getPostList({
 }) {
     const params = new URLSearchParams();
     //console.log("currentPage", currentPage)
+    
     if(keyword){
         params.append('keyword', keyword);
         
+    }else{
+        params.append('keyword', "");
     }
-    params.append('page', currentPage.toString());
-    params.append('pageSize', pageSize.toString());
+    
+    params.append('page', (currentPage-1).toString());
+    params.append('size', pageSize.toString());
+    params.append('sort', 'createdAt,desc')
+    
 
     const queryString  = params.toString(); //페이지네이션 위해 쿼리스트링 처리
     
@@ -38,10 +45,12 @@ export async function getPostList({
   }
     
     const result = await res.json();
-    //console.log("result", result)  
-    return result.content;
+    console.log("result", result)  
+    return result;
 }
 
+
+// 본문 조회
 export async function getBlogPost(id: string): Promise<getBlogPostRes> {
     const res = await ssrApi(`/api/blog/posts/${id}`)
     

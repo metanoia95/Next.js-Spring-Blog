@@ -6,13 +6,14 @@ import { getPostList } from "@/services/blog/blog.server";
 
 
 export default async function IndexPage() {
-  const posts = await getPostList({});
+  const res = await getPostList({});
+  const posts = res.content
   
   return (
     <div className="min-h-screen p-2">
       <div className="flex flex-col mt-4 pb-3 justify-center gap-5 border-b-1 border-gray-400 items-center" >
         <h1 className="text-4xl text-bold">Blog</h1>
-        <span>프론트엔드, 백엔드, 웹, 퀀트, 알고리즘, 그외 기타 여러 것들을 다룹니다.</span>
+        <span>아무거나 만들고 싶은거 만들어보는 블로그</span>
       </div>
 
       <div className="mt-5">

@@ -14,7 +14,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -23,7 +22,7 @@ public class FileService {
 	
 	
 	private final Path FILE_PATH ;
-	//TODO PATH 위치 하드코딩 -> 환경변수 처리
+
 	public FileService(@Value("${files.dir}") String dir){
 		this.FILE_PATH = Paths.get(dir);
 	}

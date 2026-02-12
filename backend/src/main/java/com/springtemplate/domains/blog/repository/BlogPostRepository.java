@@ -13,18 +13,18 @@ import org.springframework.stereotype.Repository;
 import com.springtemplate.domains.blog.entity.BlogPost;
 
 @Repository
-public interface BlogPostRepository extends JpaRepository<BlogPost, Long>{
+public interface BlogPostRepository extends JpaRepository<BlogPost, Long>, PostRepositoryCustom{
 
-    @Query("""
-    SELECT new com.springtemplate.domains.blog.dto.post.res.PostListDto(
-        p.id,
-        p.title,
-        p.createdAt
-        )
-    FROM BlogPost p
-    WHERE (:keyword IS NULL OR p.title Like %:keyword%) 
-    ORDER BY p.createdAt Desc
-    """)
-    Page<PostListDto> findPostList(@Param("keyword") String keyword, Pageable pageable);
+//    @Query("""
+//    SELECT new com.springtemplate.domains.blog.dto.post.res.PostListDto(
+//        p.id,
+//        p.title,
+//        p.createdAt
+//        )
+//    FROM BlogPost p
+//    WHERE (:keyword IS NULL OR p.title Like %:keyword%)
+//    ORDER BY p.createdAt Desc
+//    """)
+//    Page<PostListDto> findPostList(@Param("keyword") String keyword, Pageable pageable);
 	
 }
