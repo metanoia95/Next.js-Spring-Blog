@@ -2,12 +2,16 @@
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "../ui/Pagination";
 import { useSearchParams } from "next/navigation";
 
+interface BlogPaginationProps {
+    currentPage: number;
+    totalPages: number; 
+}
 
-export function BlogPagination({ currentPage, totalPages }: { currentPage: number, totalPages: number }) {
 
-    //const pageArr = Array.from({ length: totalPages }, (_, i) => i + 1);
+export function BlogPagination({ currentPage, totalPages }
+    : BlogPaginationProps) {
+
     const searchParams = useSearchParams();
-
     // 기존 쿼리를 유지하면서 page만 바꾸는 헬퍼 함수
     const createPageURL = (pageNumber: number | string) => {
         const params = new URLSearchParams(searchParams.toString());
@@ -49,10 +53,11 @@ export function BlogPagination({ currentPage, totalPages }: { currentPage: numbe
 
 
     return (
+
         <Pagination>
             <PaginationContent>
                 <PaginationItem>
-                    <PaginationPrevious href={isFirstPage ? "#" : createPageURL(currentPage-1)} />
+                    <PaginationPrevious href={isFirstPage ? "#" : createPageURL(currentPage - 1)} />
                 </PaginationItem>
                 {rangeWithDots.map((page, index) => {
                     if (page === "...") {
@@ -66,7 +71,7 @@ export function BlogPagination({ currentPage, totalPages }: { currentPage: numbe
                     const isCur = page == currentPage
                     return (
                         <PaginationItem key={index}>
-                            <PaginationLink href={`?page=${page}`} isActive={isCur}>
+                            <PaginationLink href={createPageURL(page)} isActive={isCur}>
                                 {page}
                             </PaginationLink>
                         </PaginationItem>
@@ -74,7 +79,7 @@ export function BlogPagination({ currentPage, totalPages }: { currentPage: numbe
                 })
                 }
                 <PaginationItem>
-                    <PaginationNext href={isLastPage ? "#" : createPageURL(currentPage+1)} />
+                    <PaginationNext href={isLastPage ? "#" : createPageURL(currentPage + 1)} />
                 </PaginationItem>
             </PaginationContent>
         </Pagination>

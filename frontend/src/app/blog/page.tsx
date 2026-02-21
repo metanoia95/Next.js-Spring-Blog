@@ -4,6 +4,7 @@ import { BlogPagination } from "@/components/blog/BlogPagination";
 import { getPostList } from "@/services/blog/blog.server";
 import { SearchBox } from "@/components/common/SearchBox";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export type postsRes = {
   id: number;
@@ -81,7 +82,7 @@ export default async function BlogList({
 
         {/* 하단 페이지네이션 */}
         <div className="mt-auto py-4">
-          <BlogPagination currentPage={currentPage} totalPages={totalPages} />
+          <BlogPagination currentPage={currentPage} totalPages={totalPages}/>
         </div>
       </main>
     </div>

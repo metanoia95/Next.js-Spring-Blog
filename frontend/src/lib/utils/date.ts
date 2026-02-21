@@ -1,6 +1,8 @@
-import { format } from "date-fns";
-
+import { formatInTimeZone } from "date-fns-tz";
 export const formatDate = (created_at:string) => {
-    return format(new Date(created_at),"yyyy.MM.dd. HH:mm");
+    
+    const kst = formatInTimeZone(new Date(created_at), "Asia/Seoul","yyyy.MM.dd. HH:mm");
+    
+    return kst
 }
 

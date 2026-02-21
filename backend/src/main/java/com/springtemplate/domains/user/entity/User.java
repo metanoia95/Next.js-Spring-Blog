@@ -1,7 +1,6 @@
 package com.springtemplate.domains.user.entity;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import com.springtemplate.domains.auth.Role;
 import jakarta.persistence.*;
@@ -50,15 +49,15 @@ public class User {
 	private String sub;
 
 	// 가입 일자
-	// 생성일자 : sql은 TimeStamp를 사용하지만 엔터티는 LocalDateTime을 사용할 것.
+	// 생성일자 : sql은 TimeStamp를 사용하지만 엔터티는 OffsetDateTime을 사용할 것.
     @CreationTimestamp
 	@Column(name = "created_at")
-	private LocalDateTime createdAt;
+	private OffsetDateTime createdAt;
     
     // 수정 일자
     @UpdateTimestamp
 	@Column(name = "updated_at")
-	private LocalDateTime updatedAt;
+	private OffsetDateTime updatedAt;
     
     // 리프레시 토큰
     @Column(name = "refresh_token")

@@ -88,6 +88,7 @@ ssh server@192.168.0.20
 ```
 docker compose push
 ```
+: push 전에 레지스트리 컨테이너 켤 것.
 
 #### 배포에서 레지스트리 pull
 ```

@@ -1,3 +1,6 @@
+limit_req_zone $binary_remote_addr zone=one:10m rate=10r/s;
+
+
 resolver 127.0.0.11 valid=30s ipv6=off;
 
 log_format cors '"$http_referer" $remote_addr "$request" $status '
@@ -36,6 +39,7 @@ server {
 
 
     location / { # 프론트엔드 
+        limit_req zone=one burst=20 nodelay; # 20건까지 허용
         proxy_pass http://${FE_HOST}:${FE_PORT};
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-Proto $scheme;
@@ -43,7 +47,13 @@ server {
 }
     
     location /uploads/{
+
+        limit_req zone=one burst=50 nodelay; # 50건까지 허용
         alias /data/uploads/;
+
+        # 캐시: 30일 (원하면 7d/365d로 조정)
+        expires 30d;
+        add_header Cache-Control "public, max-age=2592000, immutable" always;
 
     }
 

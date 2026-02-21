@@ -48,7 +48,6 @@ export default async function PostPage({ params }: PostPageProps) {
       <div className="post-title">{post.title}</div>
       <hr />
       <div className='flex justify-between items-center flex-row'>
-        <div className="post-author p-2">작성자: {post.authorId}</div>
         <div className="flex p-2 h-16 justify-end items-center" ><p>{formatDate(post.created_at)}</p></div>
       </div>
 
