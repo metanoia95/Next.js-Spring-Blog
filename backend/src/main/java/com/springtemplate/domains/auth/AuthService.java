@@ -109,7 +109,7 @@ public class AuthService {
 			throw new BadCredentialsException("리프레시 토큰과 일치하는 사용자을 찾을 수 없습니다.");
 		}
 
-		String newAccessToken = jwtUtil.generateAccessToken(user.getId(),user.getEmail()); // 이메일 값으로 액세스 토큰 생성
+		String newAccessToken = jwtUtil.generateAccessToken(user.getId(),user.getEmail(), user.getRole()); // 이메일 값으로 액세스 토큰 생성
 
 		// 서블릿에 쿠키추가
 		cookieUtil.setTokenCookie("accessToken", newAccessToken, response);
@@ -146,8 +146,22 @@ public class AuthService {
 
 		
 		userRepository.save(user);
+
+		// JWT 토큰 생성
+		// 액세스 토큰과 리프레시 토큰을 둘다 생성
+		String accessToken = jwtUtil.generateAccessToken(user.getId(),user.getEmail(), user.getRole()); // 이메일 값으로 액세스 토큰 생성
+
+		// 리프레시토큰용 uuid 생성
+		UUID uuid = UUID.randomUUID(); // 128bit uuid 생성
+		String refreshToken = jwtUtil.generateRefreshToken(uuid.toString()); //
+
+		user.setRefreshToken(refreshToken);
+		userRepository.save(user); // 리프레시 토큰을 user 객체에 넣어서 저장.
+		// 25.05.18 -> 차후에 커스텀 쿼리로 리팩토링하거나 redis로 전환?
+
+		LoginResDto resDto = LoginResDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
 		
-		return createLoginResDto(user, response);
+		return resDto;
 	
 	}
 
@@ -158,12 +172,12 @@ public class AuthService {
 		return resDto;
 	}
 
-	
+
 	private String addAcRfTokenToCookie(User user, HttpServletResponse response) {
 
 		// JWT 토큰 생성
 		// 액세스 토큰과 리프레시 토큰을 둘다 생성
-		String accessToken = jwtUtil.generateAccessToken(user.getId(),user.getEmail()); // 이메일 값으로 액세스 토큰 생성
+		String accessToken = jwtUtil.generateAccessToken(user.getId(),user.getEmail(), user.getRole()); // 이메일 값으로 액세스 토큰 생성
 
 		// 서블릿에 쿠키추가
 		cookieUtil.setTokenCookie("accessToken", accessToken, response);

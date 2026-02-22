@@ -25,8 +25,8 @@ public class UserRepositoryTest {
 		User user =  User.builder()
 				.email("Test@email.com")
 				.pw("12345")
-				.status_msg("")
-				.profile_img(null)
+				.statusMsg("")
+				.profileImg(null)
 				.build();
 		
 		userRepository.save(user);

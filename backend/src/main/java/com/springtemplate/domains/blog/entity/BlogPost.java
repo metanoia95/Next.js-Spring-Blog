@@ -1,9 +1,8 @@
 package com.springtemplate.domains.blog.entity;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
@@ -49,12 +48,12 @@ public class BlogPost {
 	
 	@CreationTimestamp
 	@Column(name = "created_at")
-	private LocalDateTime createdAt;
+	private OffsetDateTime createdAt;
 	    
     // 수정 일자
     @UpdateTimestamp
 	@Column(name = "updated_at")
-	private LocalDateTime updatedAt;
+	private OffsetDateTime updatedAt;
 	
 	
 	

@@ -2,7 +2,9 @@ package com.springtemplate.domains.blog;
 
 import java.util.List;
 
+import com.springtemplate.domains.blog.dto.post.PostSearchCond;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,13 +26,10 @@ public class BlogController {
 
 	// 글 목록 조회
 	@GetMapping("/posts")
-	public ResponseEntity<?> getPostList(
-			@RequestParam(required = false) String keyword,
-			@RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "10") int pageSize
+	public ResponseEntity<?> getPostList(PostSearchCond param, Pageable pageable
 	) {
 
-		Page<PostListDto> result = blogService.getPostList(keyword, page, pageSize);
+		Page<PostListDto> result = blogService.getPostList(param, pageable);
 
 		return ResponseEntity.ok(result);
 	}

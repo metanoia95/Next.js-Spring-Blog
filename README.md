@@ -10,7 +10,7 @@ Database: PostgreSQL
 기타: REST API, JPA 등
 
 ## 주요 기술
-- lexical에디터(위지윅) Next.js 적용 예제
+- tiptap Next.js 적용 예제
 - middleware, Spring Security를 활용한 액세스 토큰과 리프레시 토큰 관리
 
 
@@ -88,6 +88,7 @@ ssh server@192.168.0.20
 ```
 docker compose push
 ```
+: push 전에 레지스트리 컨테이너 켤 것.
 
 #### 배포에서 레지스트리 pull
 ```

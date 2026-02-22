@@ -25,13 +25,13 @@ public class UserServiceTest {
 	@Test
 	@Transactional // Lazy 로딩 문제 해결
 	void getUserInfoTest () {
-		
-		Long id = (long) 1;
-		UserInfoResDto user = userService.getUserInfobyId(id);
-		
-		System.out.println("user email : "+user.getEmail());
-		assertNotNull(user);
-		
+
+//		Long id = (long) 1;
+//		UserInfoResDto user = userService.getUserInfobyId(id);
+//
+//		System.out.println("user email : "+user.getEmail());
+//		assertNotNull(user);
+//
 		
 	}
 

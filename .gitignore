@@ -6,10 +6,13 @@
 
 #환경변수
 .env
+.env.prod
+.env.local
 
 # nginx
 nginx/nginx-1.29.0/
 nginx/certificates/
+nginx/nginx-1.29.2/
 
 # 빌드 파일
 /blog-full.tar

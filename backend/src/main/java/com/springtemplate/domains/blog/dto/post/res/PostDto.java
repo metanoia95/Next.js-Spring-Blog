@@ -1,6 +1,6 @@
 package com.springtemplate.domains.blog.dto.post.res;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +23,6 @@ public class PostDto {
 	
 	private String page_json;
 	
-	private LocalDateTime created_at;
+	private OffsetDateTime created_at;
 	
 }

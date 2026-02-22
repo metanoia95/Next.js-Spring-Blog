@@ -3,7 +3,7 @@ services:
 
   frontend:   # 서비스명
     build: 
-      context : ./frontend/next-app  #Dockerfile이 위치한 디렉토리 지정. yml이 있는 디렉토리 기준 상대경로
+      context : ./frontend  #Dockerfile이 위치한 디렉토리 지정. yml이 있는 디렉토리 기준 상대경로
       #dockerfile: Dockerfile.dev # 개발환경에서. 배포할 땐 주석처리
     #ports:  #컨테이너 포트 설정. 만약 해당 컨테이너 내부에서 별도의 포트를 지정해준다면 그것과 맞출 것
     # - "3000:3000"
@@ -11,9 +11,11 @@ services:
       - backend
     environment:
       - INTERNAL_BASE_URL=${INTERNAL_BASE_URL}
-      - EXTERNAL_BASE_URL=${EXTERNAL_BASE_URL}
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-      - JWT_SECRET=${JWT_SECRET}
+      - AUTH_GOOGLE_ID=${AUTH_GOOGLE_ID}
+      - AUTH_GOOGLE_SECRET=${AUTH_GOOGLE_SECRET}
+      - AUTH_SECRET=${AUTH_SECRET}
+      - AUTH_URL=${AUTH_URL}
+      - AUTH_TRUST_HOST=true
     image: localhost:5000/blog-frontend:latest # 빌드된 이미지 이름 지정.
     
   backend:
@@ -26,8 +28,9 @@ services:
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
       - JWT_SECRET=${JWT_SECRET}
+      - FILE_DIR=${FILE_DIR} # 컨테이너 내부 이미지 경로
     volumes:
-      - ${FILE_UPLOAD_PATH}:/data/uploads # 이미지 업로드 경로. 컨테이너 경로는 스프링 프로퍼티와 동일하게 맞출것.
+      - ${FILE_UPLOAD_PATH}:${FILE_DIR} # 이미지 업로드 경로. 컨테이너 경로는 스프링 프로퍼티와 동일하게 맞출것.
     depends_on:
       - db
     image: localhost:5000/blog-backend:latest # 빌드된 이미지 이름 지정.
@@ -56,7 +59,7 @@ services:
     env_file: .env # 환경변수 파일 지정
     volumes: # 호스트와 컨테이너 간의 파일 공유
       - ./nginx/certs:/etc/nginx/certs:ro # 인증서 파일 공유
-      - ${FILE_UPLOAD_PATH}:/data/uploads/
+      - ${FILE_UPLOAD_PATH}:/data/uploads/ #/data/uploads/는 컨테이너 내 절대 경로로 매핑
     depends_on:
       - frontend
       - backend

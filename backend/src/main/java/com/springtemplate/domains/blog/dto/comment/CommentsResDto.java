@@ -1,6 +1,6 @@
 package com.springtemplate.domains.blog.dto.comment;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,6 +22,6 @@ public class CommentsResDto {
     private String text;
 
     @JsonProperty("created_at")
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
 
 }

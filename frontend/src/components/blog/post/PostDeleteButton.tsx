@@ -1,0 +1,30 @@
+'use client'
+
+import { deletePost } from "@/services/blog/blogService";
+import { useRouter } from "next/navigation"
+
+export default function PostDeleteButton({postId}:{postId:string}){
+
+    const router = useRouter();
+
+    const handleDelete = async () => {
+        try {
+            const status = await deletePost(postId)
+            if (status === 200) {
+                router.push("/blog");
+              }
+
+        } catch(err:unknown){
+            console.log(err)
+
+        }
+        
+    }
+
+    return <button 
+        className="bg-red-500 text-white p-2 rounded hover:bg-red-600 transition-colors"
+        onClick={handleDelete}
+    > 삭제하기 </button>
+
+
+}
