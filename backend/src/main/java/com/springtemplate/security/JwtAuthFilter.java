@@ -30,7 +30,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	private final JwtUtil jwtUtil;
 	private final CookieUtil cookieUtil;
 	private final CustomUserDetailService userDetailService;
-	
+	private static final String headerString = "Bearer ";
+
 	@Override
 	protected void doFilterInternal(
 			HttpServletRequest request,
@@ -42,14 +43,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 		//AuthorizationHeader 추출
 		String authHeader = request.getHeader("Authorization");
-		if(authHeader != null && authHeader.startsWith("Bearer")){
-			token = authHeader.substring(7); // Bearer 문자열 제외
+
+		if(authHeader != null && authHeader.startsWith(headerString)){
+			token = authHeader.substring(headerString.length()).trim(); // Bearer 문자열 제외
 		}
 		log.debug(token);
 
-		// 헤더에 토큰이 없는 경우(CSR)
+		// 토큰이 없는 경우 그냥 통과 -> 필터체인에서 처리
 		if(token == null ){
-			token = cookieUtil.resolveAccessTokenFromCookie(request);
+			filterChain.doFilter(request, response);
+			return;
 		};
 
 		final String uri = request.getRequestURI();
@@ -63,7 +66,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		
 		try {
 		// 토큰 검증
-		if(token !=null && jwtUtil.validateAccessToken(token)) {
+		if(jwtUtil.validateAccessToken(token)) {
 		
 			String email = jwtUtil.extractUserEmail(token);
 			
@@ -81,13 +84,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 			// 인증 정보를 SecurityContext에 저장. 필터나 컨트롤러에서 사용자를 여기서 꺼내서 사용함. 
 			SecurityContextHolder.getContext().setAuthentication(authToken);
-			
+
 			/*  인증 객체 사용방법
 			 *
-			 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-					CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
-					Long user_id = userDetails.getId();
-			 * 
+  				@AuthenticationPrincipal CustomUserDetails userDetails
+  				Long userId = userDetails.getId()
+
+  				@AuthenticationPrincipal(expression = "id") Long userId)
 			 *  */
 			
 			
@@ -96,7 +99,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		      log.error("JWT FILTER: error at {} msg={}", uri, e.getMessage());
 				
 		}
-		
+
 		filterChain.doFilter(request, response);
 	}
 	

@@ -1,3 +1,5 @@
+'use server'
+
 import {jsonApi} from "@/lib/axios";
 
 
@@ -49,18 +51,5 @@ export async function logout() {
 export async function signUp(data: SignUpReq) : Promise<SignUpRes>{
     const response = await jsonApi.post('/api/auth/signup', data)
     return response.data
-}
-
-// 리프레시 토큰으로 액세스 토큰 재발급 
-export async function refreshAccessToken() {
-    const response = await jsonApi.post('/api/auth/refresh')
-    return response.data
-}   
-
-
-// 구글 로그인 
-export async function googleLogin(data:ICredential): Promise<LoginResponse> { //Promise : 리턴 타입 지정
-    const response = await jsonApi.post('/api/auth/login/google', data);
-    return response.data;    
 }
 

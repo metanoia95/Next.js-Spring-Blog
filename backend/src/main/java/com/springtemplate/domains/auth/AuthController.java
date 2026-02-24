@@ -1,10 +1,12 @@
 package com.springtemplate.domains.auth;
 
 import com.springtemplate.domains.auth.dto.*;
+import com.springtemplate.domains.auth.dto.req.RefreshRequest;
 import com.springtemplate.security.CustomUserDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +27,7 @@ public class AuthController {
 		
 		log.info("[Login Attemp ]" + user);
 		LoginResDto resDto = authService.login(user, response);
-		log.info("[Login Success] accessToken:"+resDto.getAccessToken());
+		log.info("[Login Success] accessToken:"+resDto.accessToken());
 
 		return ResponseEntity.ok(resDto);
 
@@ -35,7 +37,7 @@ public class AuthController {
 	public ResponseEntity<?> signUpUser(@RequestBody SignUpReqDto dto, HttpServletResponse res) {
 		log.info("[Signup Attemp ]" + dto);
 		LoginResDto resDto = authService.signUp(dto);
-		log.info("[Signup Success] :"+resDto.getAccessToken());
+		log.info("[Signup Success] :"+resDto.accessToken());
 
 		return ResponseEntity.ok(resDto);
 
@@ -43,8 +45,10 @@ public class AuthController {
 
 	// 로그아웃
 	@PostMapping("/logout")
-	public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
-		log.info("[Logout Attemp ]" + request.getHeader("access-Token"));
+	public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response,
+									@AuthenticationPrincipal CustomUserDetails userDetails
+	) {
+		log.info("[Logout Attemp ]" + userDetails.getId());
 		authService.logOutUser(request ,response);
 		
 		
@@ -54,9 +58,9 @@ public class AuthController {
 	
 	//액세스 토큰 갱신
 	@PostMapping("/refresh")
-	public ResponseEntity<?> refreshAccessToken(HttpServletRequest request, HttpServletResponse response) {
+	public ResponseEntity<?> refreshAccessToken(@RequestBody RefreshRequest request) {
 
-		LoginResDto dto = authService.refreshAccessToken(request, response);
+		LoginResDto dto = authService.refreshAccessToken(request);
 
 		return ResponseEntity.ok(dto);
 	}
@@ -67,7 +71,7 @@ public class AuthController {
 		
 		log.info("[GoogleLogin Attemp ]" + user);
 		LoginResDto resDto = authService.googleLogin(user, response);
-		log.info("[GoogleLogin Success] accessToken:"+resDto.getAccessToken());
+		log.info("[GoogleLogin Success] accessToken:"+resDto.accessToken());
 		log.info(response.getHeader("Set-Cookie"));
 
 		return ResponseEntity.ok(resDto);

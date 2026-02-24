@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { formatDate } from "@/lib/utils/date";
 import { useSession } from "next-auth/react";
 import { deleteComment } from "@/services/blog/blogService";
+import { useRouter } from "next/navigation";
 
 interface PostCommentProps {
     id: string;
@@ -21,6 +22,7 @@ export default function PostComment({
 }: PostCommentProps) {
     const [isAuthor, setIsAuthor] = useState(false);
     const { data: session } = useSession();
+    const router = useRouter()
 
     useEffect(() => {
         if (session?.user) {
@@ -37,7 +39,14 @@ export default function PostComment({
 
     const handleDelete = async () => {
         try {
-            await deleteComment(id);
+            const res = await deleteComment(id);
+            if(res == 200){
+                router.refresh()
+                return;
+            }else{
+                alert("삭제할 수 없습니다.")
+                return;
+            }
         } catch (err: unknown) {
             console.log(err);
         }
@@ -64,8 +73,6 @@ export default function PostComment({
                     </button>
                 }
             </div>
-
-
         </div>
     )
 }

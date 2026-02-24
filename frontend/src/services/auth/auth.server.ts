@@ -1,6 +1,21 @@
 import { authApi } from "@/lib/server-api";
 import { ssrApi } from "@/lib/ssrApi";
 
+
+// 1. Error를 상속받는 커스텀 클래스 정의
+export class RefreshError extends Error {
+  status?: number;
+  code?: string;
+
+  constructor(message: string, status?: number, code?: string) {
+    super(message);
+    this.name = 'RefreshError';
+    this.status = status;
+    this.code = code;
+  }
+}
+
+
 // 현재 로그인한 사용자 정보 가져오기
 export async function getCurrentUserSSR(): Promise<{
     id: number;
@@ -16,21 +31,38 @@ export async function getCurrentUserSSR(): Promise<{
 
 
 // 리프레시 토큰으로 액세스 토큰 재발급 
-export async function refreshAccessTokenSSR() {
-    const response = await ssrApi('/api/auth/refresh', {method: 'POST'})
-    return response.json();
-}   
+export async function refreshAccessTokenSSR(refreshToken: string) {
+    const response = await ssrApi('/api/auth/refresh',
+        {
+            method: 'POST',
+            body: JSON.stringify({
+                refreshToken
+            })
+        })
+    
+    const data  = await response.json()
+    if (!response.ok) {
+        // 표준: status + 서버 error code를 함께 넘겨서 상위에서 분기
+        const err = new RefreshError(data?.message || "refresh failed")
+        err.status = response.status
+        err.code = data?.code;
+
+        throw err;
+    }
+
+    return data
+}
 
 export async function serverGoogleLogin(
-    data: { 
+    data: {
         sub: string,
-        email:string,
-        name:string
-    } 
-){
-    
+        email: string,
+        name: string
+    }
+) {
+
     const res = await authApi('/api/auth/login/google', {
-        method:"POST",
+        method: "POST",
         body: JSON.stringify(data),
         credentials: "include"
     });

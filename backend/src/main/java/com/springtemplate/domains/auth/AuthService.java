@@ -3,6 +3,7 @@ package com.springtemplate.domains.auth;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.springtemplate.domains.auth.dto.req.RefreshRequest;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,7 +49,7 @@ public class AuthService {
 			throw new LoginFailException("비밀번호가 일치하지 않습니다");
 		}
 
-		return createLoginResDto(user, response); // 로그인 성공
+		return createLoginResDto(user); // 로그인 성공
 	}
 
 	// 회원가입 로직
@@ -81,8 +82,6 @@ public class AuthService {
 	@Transactional
 	public void logOutUser(HttpServletRequest request, HttpServletResponse response) {
 
-		cookieUtil.deleteTokenCookie("accessToken", response);
-		cookieUtil.deleteTokenCookie("refreshToken",response);
 		String refreshToken = cookieUtil.resolveRefreshTokenFromCookie(request);
 		userRepository.clearRefreshToken(refreshToken);
 
@@ -90,31 +89,25 @@ public class AuthService {
 
 	// 토큰 리프레시 로직
 	@Transactional
-	public LoginResDto refreshAccessToken(HttpServletRequest request, HttpServletResponse response) {
+	public LoginResDto refreshAccessToken(RefreshRequest request) {
 
-		// 1. 리프레시 토큰 추출
-		String refreshToken = cookieUtil.resolveRefreshTokenFromCookie(request);
-		// System.out.println("refreshToken : "+refreshToken);
+		String refreshToken = request.refreshToken();
+
 		if (refreshToken == null || !jwtUtil.validateRefreshToken(refreshToken)) {
-			cookieUtil.deleteTokenCookie("accessToken", response);
-			cookieUtil.deleteTokenCookie("refreshToken",response);
 			throw new BadCredentialsException("유효하지 않은 리프레시 토큰입니다");
 		}
 
 		// 2. DB에서 정보 추출
 		User user = userRepository.getByRefreshToken(refreshToken);
 		if (user == null) {
-			cookieUtil.deleteTokenCookie("accessToken", response);
-			cookieUtil.deleteTokenCookie("refreshToken",response);
 			throw new BadCredentialsException("리프레시 토큰과 일치하는 사용자을 찾을 수 없습니다.");
 		}
 
 		String newAccessToken = jwtUtil.generateAccessToken(user.getId(),user.getEmail(), user.getRole()); // 이메일 값으로 액세스 토큰 생성
 
 		// 서블릿에 쿠키추가
-		cookieUtil.setTokenCookie("accessToken", newAccessToken, response);
-
 		LoginResDto dto = LoginResDto.builder()
+				.accessToken(newAccessToken)
 				.userId(user.getId())
 				.email(user.getEmail())
 				.build();
@@ -166,21 +159,19 @@ public class AuthService {
 	}
 
 	// 참조 함수
-	private LoginResDto createLoginResDto (User user, HttpServletResponse response) {
-		String accessToken = addAcRfTokenToCookie(user, response);
+	private LoginResDto createLoginResDto (User user) {
+		String accessToken = addAcRfTokenToCookie(user);
 		LoginResDto resDto = LoginResDto.builder().accessToken(accessToken).build();
 		return resDto;
 	}
 
 
-	private String addAcRfTokenToCookie(User user, HttpServletResponse response) {
+	private String addAcRfTokenToCookie(User user) {
 
 		// JWT 토큰 생성
 		// 액세스 토큰과 리프레시 토큰을 둘다 생성
 		String accessToken = jwtUtil.generateAccessToken(user.getId(),user.getEmail(), user.getRole()); // 이메일 값으로 액세스 토큰 생성
 
-		// 서블릿에 쿠키추가
-		cookieUtil.setTokenCookie("accessToken", accessToken, response);
 
 		// 리프레시토큰용 uuid 생성
 		UUID uuid = UUID.randomUUID(); // 128bit uuid 생성
@@ -189,9 +180,6 @@ public class AuthService {
 		user.setRefreshToken(refreshToken);
 		userRepository.save(user); // 리프레시 토큰을 user 객체에 넣어서 저장.
 		// 25.05.18 -> 차후에 커스텀 쿼리로 리팩토링하거나 redis로 전환?
-
-		// 리프레시 토큰 추가
-		cookieUtil.setTokenCookie("refreshToken", refreshToken, response);
 
 		return accessToken;
 	}

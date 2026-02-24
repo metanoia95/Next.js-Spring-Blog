@@ -4,7 +4,6 @@ import { BlogPagination } from "@/components/blog/BlogPagination";
 import { getPostList } from "@/services/blog/blog.server";
 import { SearchBox } from "@/components/common/SearchBox";
 import Link from "next/link";
-import { Suspense } from "react";
 
 export type postsRes = {
   id: number;

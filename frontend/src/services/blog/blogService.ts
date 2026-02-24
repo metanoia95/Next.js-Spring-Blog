@@ -1,6 +1,7 @@
 'use server'
 import { jsonApi} from "@/lib/axios";
 import { AxiosResponse } from "axios";
+import { revalidatePath } from "next/cache";
 
 
 
@@ -74,18 +75,22 @@ export async function getPostJson(
 
 }
 
-export async function SaveComment(
+export async function saveComment(
     data: SaveCommentReq
-): Promise<AxiosResponse> {
-    return await jsonApi.post(`/api/blog/comment`, data)
+): Promise<number> {
+
+    const res = await jsonApi.post(`/api/blog/comment`, data)
+    revalidatePath(`/blog/${data.post_id}`);
+
+    return res.status
 }
 
 
 export async function deleteComment(
     id: string
-): Promise<AxiosResponse> {
-
-    return await jsonApi.delete(`/api/blog/comment/${id}`)
+): Promise<number> {
+    const res = await jsonApi.delete(`/api/blog/comment/${id}`)
+    return res.status //axios는 4xx면 throw 자동으로 됨.
 }
 
 

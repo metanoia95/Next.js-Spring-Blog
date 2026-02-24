@@ -25,7 +25,7 @@ public class JwtUtil {
 
 	// 생성자에서 secret_key를 주입받아 초기화
 	// 선언
-	private String secret_key; // 관리자 비밀 키. 이걸 암호화 해서 사용. 256비트 키
+	private final String secret_key; // 관리자 비밀 키. 이걸 암호화 해서 사용. 256비트 키
 	private final SecretKey key; // JWT 서명 및 검증에 사용될 HMAC SHA 키 (256비트)
 
 	public JwtUtil(@Value("${jwt.secret}") String secretKey) {

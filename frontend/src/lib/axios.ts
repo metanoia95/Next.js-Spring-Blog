@@ -1,6 +1,6 @@
 import axios from "axios";
 import { api_env } from "./env";
-import { refreshAccessToken } from "../services/auth/auth.client";
+import { auth } from "@/auth";
 
 export const jsonApi = axios.create({
   baseURL: api_env.INTERNAL_BASE_URL,  // bff처리하면 모두 내부로 처리
@@ -11,7 +11,6 @@ export const jsonApi = axios.create({
 });
 
 
-
 export const fileApi = axios.create({
   baseURL: api_env.INTERNAL_BASE_URL,  // bff처리하면 모두 내부로 처리
   headers: {},
@@ -19,9 +18,22 @@ export const fileApi = axios.create({
 });
 
 // 리퀘스트 헤더 추가
+jsonApi.interceptors.request.use(
+  async function (config){
+    const session = await auth();
+
+    if(session?.accessToken){
+      
+      config.headers.Authorization = `Bearer ${session.accessToken}`
+    }
 
 
+    return config;
+  }, function(error){
 
+    return Promise.reject(error);
+  }
+)
 
 
 // 응답 인터셉터 추가하기
@@ -31,12 +43,7 @@ jsonApi.interceptors.response.use(
     return response;
   }, async function (error) { // 2xx 외 범위
     console.log("axios response error:", error.response);
-    if(error.response && error.response.status === 401){ // 401 Unauthorized (액세스 토큰 없음)
-      // refresh 토큰을 사용하여 새로운 액세스 토큰 요청
-      const res = await refreshAccessToken();
-      console.log("refresh token response:", res);
-    }
-
+  
     return Promise.reject(error);
   });
 

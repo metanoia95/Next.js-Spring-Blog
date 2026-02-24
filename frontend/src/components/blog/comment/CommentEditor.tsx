@@ -1,5 +1,5 @@
 'use client'
-import { refreshPath } from "@/lib/actions";
+import { saveComment, SaveCommentReq } from "@/services/blog/blogService";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
@@ -30,18 +30,19 @@ export default function CommentEditor({
             alert("로그인 후 댓글을 작성할 수 있습니다.");
             return;
         }
+        if(!text) {
+          alert("댓글을 입력하세요") 
+          return;
+        }
         try {
-            // const dto: SaveCommentReq = {
-            //     post_id: postId,
-            //     text: text
-            // }
             
-            // await SaveComment(dto); // TODO bff 처리
-            // onCommentSubmit(); // 댓글 목록 갱신
-            console.log("저장.")
-            await refreshPath(`/blog/${postId}`)
-
-
+            const dto: SaveCommentReq = {
+                post_id: postId,
+                text: text
+            }
+            
+            await saveComment(dto); 
+            return;
 
         } catch (err: unknown) {
             console.log(err)
