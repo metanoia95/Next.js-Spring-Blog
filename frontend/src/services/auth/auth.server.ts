@@ -1,5 +1,18 @@
+
+import { jsonApi } from "@/lib/axios";
 import { authApi } from "@/lib/server-api";
 import { ssrApi } from "@/lib/ssrApi";
+
+interface SignUpReq {
+    email : string ;
+    password : string;
+    name : string;
+}
+
+interface SignUpRes {
+    accessToken: string;
+}
+
 
 
 // 1. Error를 상속받는 커스텀 클래스 정의
@@ -70,4 +83,24 @@ export async function serverGoogleLogin(
 
     return res.json()
 
+}
+
+//로그아웃
+export async function logout(refreshToken:string) {
+
+
+    const res = await authApi('/api/auth/logout', {
+        method:"POST",
+        body : JSON.stringify({refreshToken : refreshToken}),
+        credentials: "include"
+    })
+    
+    return res.status
+}
+
+
+// 회원가입
+export async function signUp(data: SignUpReq) : Promise<SignUpRes>{
+    const response = await jsonApi.post('/api/auth/signup', data)
+    return response.data
 }

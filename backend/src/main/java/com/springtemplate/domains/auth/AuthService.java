@@ -80,9 +80,8 @@ public class AuthService {
 
 	// 로그아웃 로직
 	@Transactional
-	public void logOutUser(HttpServletRequest request, HttpServletResponse response) {
+	public void logOutUser(String refreshToken) {
 
-		String refreshToken = cookieUtil.resolveRefreshTokenFromCookie(request);
 		userRepository.clearRefreshToken(refreshToken);
 
 	}

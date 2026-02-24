@@ -1,8 +1,9 @@
 import NextAuth, { Account, Profile, type DefaultSession } from "next-auth"
 import Google from "next-auth/providers/google"
-import { refreshAccessTokenSSR, serverGoogleLogin } from "./services/auth/auth.server"
+
 import { decodeJwt } from "jose";
 import { JWT } from "@auth/core/jwt";
+import { logout, refreshAccessTokenSSR, serverGoogleLogin } from "./services/auth/auth.server";
 
 
 // TS 처리
@@ -33,9 +34,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Google],
   callbacks: {
     async jwt({ token, user, account, profile }) {
-      //token은 authjs.session-token 쿠키
-
-
+      
       if (account) {
         token.id = user.id
         return await handleInitialLogin(token, account, profile)
@@ -43,32 +42,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       else if (Date.now() < (token.accessTokenExpires as number)) { // utc로 비교
         return token
-
       } else {
-        //console.log("refreshAcToken")
-        //console.log(token.refreshToken)
-        if(!token.refreshToken) throw new TypeError("Missing refresh_token")
-
+        if (!token.refreshToken) throw new TypeError("Missing refresh_token")
         try {
 
           const res = await refreshAccessTokenSSR(token.refreshToken as string)
-          
-          token.accessToken= res.accessToken 
+          token.accessToken = res.accessToken
           return applyAccessTokenToJWT(token)
+        } catch (error: unknown) {
+          if (error instanceof ReferenceError) {
+          
 
-
-        } catch (error:unknown) {
-          if(error instanceof ReferenceError ){
-            
-
-            
           }
         }
 
       }
-
-
-
       return token
     },
     session({ session, token }) {
@@ -81,6 +69,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
 
   },
+  events:{
+    async signOut(message) {
+      const token = "token" in message ? message.token : null;
+
+      if(token?.refreshToken){
+        try{
+          await logout(token.refreshToken as string)
+
+        }catch(e){
+
+          console.log("로그아웃 요청 실패",e)
+        }
+
+      }
+
+    },
+
+  }
 })
 
 const handleInitialLogin = async (token: JWT, account: Account, profile: Profile | undefined) => {
@@ -105,8 +111,8 @@ const handleInitialLogin = async (token: JWT, account: Account, profile: Profile
 
 }
 
-const applyAccessTokenToJWT =  (token:JWT) => {
-  
+const applyAccessTokenToJWT = (token: JWT) => {
+
   // 액세스 토큰 파싱 => 권한값 추가
   const payload = decodeJwt(token.accessToken as string)
   token.role = payload.role

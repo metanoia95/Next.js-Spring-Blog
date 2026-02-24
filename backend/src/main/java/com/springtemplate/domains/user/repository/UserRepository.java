@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import com.springtemplate.domains.user.entity.User;
 
-import java.util.List;
 import java.util.Optional;
 
 
@@ -32,9 +31,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	User getByRefreshToken(String refreshToken);
 
 	// 리프레시 토큰 삭제
-	@Modifying //Select문이 아닌 insert, update, delete인 경우 붙여줘야함.
+	@Modifying(clearAutomatically = true) //@Query를 붙이고 insert, update, delete인 경우 붙여줘야함.
 	@Query("UPDATE User u SET u.refreshToken=null where u.refreshToken = :refreshToken") //@Query의 경우 엔터티의 컬럼명과 맞출 것. 
-	int clearRefreshToken(@Param("refreshToken") String refreshToken);
+	void clearRefreshToken(@Param("refreshToken") String refreshToken);
 
 	boolean existsBySub(String sub);
 

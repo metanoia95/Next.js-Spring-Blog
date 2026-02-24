@@ -4,7 +4,7 @@ import { User } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { useState, useEffect, useRef } from "react";
-import { logout } from "@/services/auth/auth.client";
+
 import { signOut } from "next-auth/react"
 import Image from "next/image";
 
@@ -41,7 +41,6 @@ const UserDropdown = ({ user }: {
     setIsOpen(false);
 
     if (option.type === "logout") {
-      logout();
       await signOut(); //auth.js 로그아웃 처리.
 
       window.location.replace("/login") //로그인 페이지로 이동

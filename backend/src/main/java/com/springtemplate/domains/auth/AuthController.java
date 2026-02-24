@@ -1,6 +1,7 @@
 package com.springtemplate.domains.auth;
 
 import com.springtemplate.domains.auth.dto.*;
+import com.springtemplate.domains.auth.dto.req.LogoutReq;
 import com.springtemplate.domains.auth.dto.req.RefreshRequest;
 import com.springtemplate.security.CustomUserDetails;
 import org.springframework.http.HttpStatus;
@@ -46,10 +47,11 @@ public class AuthController {
 	// 로그아웃
 	@PostMapping("/logout")
 	public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response,
-									@AuthenticationPrincipal CustomUserDetails userDetails
+									@AuthenticationPrincipal CustomUserDetails userDetails,
+									@RequestBody LogoutReq req
 	) {
-		log.info("[Logout Attemp ]" + userDetails.getId());
-		authService.logOutUser(request ,response);
+		log.info("[Logout Attemp ]" + userDetails.getId() +" // "+ req.refreshToken());
+		authService.logOutUser(req.refreshToken());
 		
 		
 		return ResponseEntity.ok("Logged out success");
