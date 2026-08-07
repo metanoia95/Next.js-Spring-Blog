@@ -9,6 +9,11 @@ import Footer from "@/components/footer/Footer";
 
 
 export const metadata: Metadata = {
+
+  metadataBase: new URL("https://next-spring-blog.duckdns.org"),
+  alternates: {
+    canonical: "/",
+  },
   title: {
     default: "metanoia95의 기술 블로그",
     template: "%s | metanoia95의 기술 블로그",

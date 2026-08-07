@@ -17,7 +17,7 @@ export default async function IndexPage() {
       </div>
 
       <div className="mt-5">
-        <h5 className="text-2xl text-bold">최근 게시글</h5>
+        <h1 className="text-2xl text-bold">최근 게시글</h1>
         <div className="grid grid-cols-3 gap-4 pt-5">
             {posts.map((post: postsRes) => {
               return (
