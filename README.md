@@ -10,8 +10,16 @@ Database: PostgreSQL
 기타: REST API, JPA 등
 
 ## 주요 기술
-- tiptap Next.js 적용 예제
-- middleware, Spring Security를 활용한 액세스 토큰과 리프레시 토큰 관리
+- 팁탭 에디터 라이브러리를 이용한 WISYWIG 게시글 에디터 제작
+- SSR 처리와 유지보수를 위한 BFF 아키텍쳐
+- Auth.js 라이브러리를 이용한 SSR 환경에서 JWT 세션 개체 유지
+- UI 컴포넌트 재사용성을 높이기 위한 shadcn/ui 사용
+- nginx 리버스 프록시를 이용한 HTTPS (let's encrypt 이용) 처리
+- nginx 이미지 정적 서빙 및 캐싱
+- Spring Aop를 이용한 로깅 등 공통 로직 처리
+- GlobalExceptionHanler 전역 예외처리를 이용한 API Spec(HTTP Method, Status Code)을 만족하는 API 개발
+- Docker, Docker compose를 이용한 CD
+- 스트레스 테스트, 서버 유지비 감소를 위한 온프레미스서버 세팅 및 구축
 
 
 ## 0. 공통 요구사항
